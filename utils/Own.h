@@ -1,16 +1,8 @@
-
-/* Copyright (c) 2020 Jin Li, http://www.luvfight.me
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
 #pragma once
 
-NS_DOROTHY_BEGIN
+#include <memory>
 
+namespace ant2d {
 /** @brief Used with Composition Relationship. */
 template<class Item, class Del = std::default_delete<Item>>
 using Own = std::unique_ptr<Item, Del>;
@@ -43,42 +35,4 @@ inline OwnArray<T> MakeOwnArray(T* item)
 	return OwnArray<T>(item);
 }
 
-/** @brief vector of pointers, but accessed as values
- pointers pushed into OwnVector are owned by the vector,
- pointers will be auto deleted when it`s erased/removed from the vector
- or the vector is destroyed.
- Used with Composition Relationship.
-*/
-template<class T>
-class OwnVector : public vector<Own<T>>
-{
-	typedef vector<Own<T>> OwnV;
-public:
-	using OwnV::OwnV;
-	using OwnV::insert;
-
-	bool remove(T* item)
-	{
-		auto it = std::remove(OwnV::begin(), OwnV::end(), item);
-		if (it == OwnV::end()) return false;
-		OwnV::erase(it);
-		return true;
-	}
-	typename OwnV::iterator index(T* item)
-	{
-		return std::find(OwnV::begin(), OwnV::end(), item);
-	}
-	bool fast_remove(T* item)
-	{
-		size_t index = std::distance(OwnV::begin(), OwnVector::index(item));
-		if (index < OwnV::size())
-		{
-			OwnV::at(index) = OwnV::back();
-			OwnV::pop_back();
-			return true;
-		}
-		return false;
-	}
-};
-
-NS_DOROTHY_END
+} //namespace ant2d

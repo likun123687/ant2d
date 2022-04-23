@@ -1,10 +1,13 @@
+#pragma once
 
+namespace ant2d {
 /* Short names for C++ casts */
 #define s_cast static_cast
 #define r_cast reinterpret_cast
 #define c_cast const_cast
 #define d_cast dynamic_cast
 
+//typedef const Slice& String;
 
 /** @brief Helper function to iterate a std::tuple.
  @example Use it as below.
@@ -51,3 +54,4 @@ namespace Tuple
 		return s_cast<int>(std::tuple_size<TupleT>::value);
 	}
 } // namespace Tuple
+}// namespace ant2d

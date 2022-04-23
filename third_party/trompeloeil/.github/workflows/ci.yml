@@ -1,0 +1,1194 @@
+name: CI
+
+# Trigger on pushes to all branches and for all pull-requests
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          # GCC-4.8
+          - {
+            name: "Linux GCC 4.8 C++11",
+            os: ubuntu-18.04,
+            #cc: "gcc-4.8", cxx: "g++-4.8",
+            compiler: gcc,
+            version: "4.8",
+            cxx_standard: 11,
+            cxx_asan: true
+          }
+          # GCC-4.9
+          - {
+            name: "Linux GCC 4.9 C++11",
+            os: ubuntu-18.04,
+            compiler: gcc,
+            version: "4.9",
+            cxx_standard: 11,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 4.9 C++14",
+            os: ubuntu-18.04,
+            compiler: gcc,
+            version: "4.9",
+            cxx_standard: 14,
+            cxx_asan: true
+          }
+          # GCC-5
+          - {
+            name: "Linux GCC 5 C++11",
+            os: ubuntu-18.04,
+            compiler: gcc,
+            version: "5",
+            cxx_standard: 11,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 5 C++14",
+            os: ubuntu-18.04,
+            compiler: gcc,
+            version: "5",
+            cxx_standard: 14,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 5 C++17",
+            os: ubuntu-18.04,
+            compiler: gcc,
+            version: "5",
+            cxx_standard: 17,
+            cxx_asan: true
+          }
+          # GCC-6
+          - {
+            name: "Linux GCC 6 C++11",
+            os: ubuntu-18.04,
+            compiler: gcc,
+            version: "6",
+            cxx_standard: 11,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 6 C++14",
+            os: ubuntu-18.04,
+            compiler: gcc,
+            version: "6",
+            cxx_standard: 14,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 6 C++17",
+            os: ubuntu-18.04,
+            compiler: gcc,
+            version: "6",
+            cxx_standard: 17,
+            cxx_asan: true
+          }
+
+          # GCC-7
+          - {
+            name: "Linux GCC 7 C++11",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "7",
+            cxx_standard: 11,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 7 C++14",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "7",
+            cxx_standard: 14,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 7 C++17",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "7",
+            cxx_standard: 17,
+            cxx_asan: true
+          }
+
+          # GCC-8
+          - {
+            name: "Linux GCC 8 C++11",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "8",
+            cxx_standard: 11,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 8 C++14",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "8",
+            cxx_standard: 14,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 8 C++17",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "8",
+            cxx_standard: 17,
+            cxx_asan: true
+          }
+
+          # GCC-9
+          - {
+            name: "Linux GCC 9 C++11",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "9",
+            cxx_standard: 11,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 9 C++14",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "9",
+            cxx_standard: 14,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 9 C++17",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "9",
+            cxx_standard: 17,
+            cxx_asan: true
+          }
+
+          # GCC-10
+          - {
+            name: "Linux GCC 10 C++11",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "10",
+            cxx_standard: 11,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 10 C++14",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "10",
+            cxx_standard: 14,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 10 C++17",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "10",
+            cxx_standard: 17,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 10 C++20",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "10",
+            cxx_standard: 20,
+            cxx_asan: true
+          }
+
+          # GCC-11
+          - {
+            name: "Linux GCC 11 C++11",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "11",
+            cxx_standard: 11,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 11 C++14",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "11",
+            cxx_standard: 14,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 11 C++17",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "11",
+            cxx_standard: 17,
+            cxx_asan: true
+          }
+          - {
+            name: "Linux GCC 11 C++20",
+            os: ubuntu-20.04,
+            compiler: gcc,
+            version: "11",
+            cxx_standard: 20,
+            cxx_asan: true
+          }
+
+          # Clang-3.5
+          - {
+            name: "Linux Clang 3.5 C++11 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.5",
+            cxx_standard: 11,
+            cxx_asan: false,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 3.5 C++14 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.5",
+            cxx_standard: 14,
+            cxx_asan: false,
+            libcxx: false
+          }
+          #- {
+          #  name: "Linux Clang 3.5 C++11 / libc++",
+          #  os: ubuntu-18.04,
+          #  compiler: clang,
+          #  version: "3.5",
+          #  cxx_standard: 11,
+          #  cxx_asan: false,
+          #  libcxx: true
+          #}
+          #- {
+          #  name: "Linux Clang 3.5 C++14 / libc++",
+          #  os: ubuntu-18.04,
+          #  compiler: clang,
+          #  version: "3.5",
+          #  cxx_standard: 14,
+          #  cxx_asan: false,
+          #  libcxx: true
+          #}
+          # Clang-3.6
+          - {
+            name: "Linux Clang 3.6 C++11 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.6",
+            cxx_standard: 11,
+            cxx_asan: false,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 3.6 C++14 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.6",
+            cxx_standard: 14,
+            cxx_asan: false,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 3.6 C++11 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.6",
+            cxx_standard: 11,
+            cxx_asan: false,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 3.6 C++14 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.6",
+            cxx_standard: 14,
+            cxx_asan: false,
+            libcxx: true
+          }
+          # Clang-3.7
+          - {
+            name: "Linux Clang 3.7 C++11 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.7",
+            cxx_standard: 11,
+            cxx_asan: false,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 3.7 C++14 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.7",
+            cxx_standard: 14,
+            cxx_asan: false,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 3.7 C++11 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.7",
+            cxx_standard: 11,
+            cxx_asan: false,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 3.7 C++14 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.7",
+            cxx_standard: 14,
+            cxx_asan: false,
+            libcxx: true
+          }
+          # Clang-3.8
+          - {
+            name: "Linux Clang 3.8 C++11 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.8",
+            cxx_standard: 11,
+            cxx_asan: false,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 3.8 C++14 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.8",
+            cxx_standard: 14,
+            cxx_asan: false,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 3.8 C++11 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.8",
+            cxx_standard: 11,
+            cxx_asan: false,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 3.8 C++14 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.8",
+            cxx_standard: 14,
+            cxx_asan: false,
+            libcxx: true
+          }
+          # Clang-3.9
+          - {
+            name: "Linux Clang 3.9 C++11 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.9",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 3.9 C++14 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.9",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 3.9 C++11 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.9",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 3.9 C++14 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "3.9",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: true
+          }
+          # Clang-4.0
+          - {
+            name: "Linux Clang 4.0 C++11 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "4.0",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 4.0 C++14 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "4.0",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 4.0 C++11 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "4.0",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 4.0 C++14 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "4.0",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: true
+          }
+          # Clang-5.0
+          - {
+            name: "Linux Clang 5.0 C++11 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "5.0",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 5.0 C++14 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "5.0",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 5.0 C++17 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "5.0",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 5.0 C++11 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "5.0",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 5.0 C++14 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "5.0",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 5.0 C++17 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "5.0",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: true
+          }
+
+          # Clang-6.0
+          - {
+            name: "Linux Clang 6.0 C++11 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "6.0",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 6.0 C++14 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "6.0",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 6.0 C++17 / libstdc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "6.0",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 6.0 C++11 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "6.0",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 6.0 C++14 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "6.0",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 6.0 C++17 / libc++",
+            os: ubuntu-18.04,
+            compiler: clang,
+            version: "6.0",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: true
+          }
+
+          # Clang-8
+          - {
+            name: "Linux Clang 8 C++11 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "8",
+            cxx_standard: 11,
+            cxx_asan: false,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 8 C++14 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "8",
+            cxx_standard: 14,
+            cxx_asan: false,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 8 C++17 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "8",
+            cxx_standard: 17,
+            cxx_asan: false,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 8 C++11 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "8",
+            cxx_standard: 11,
+            cxx_asan: false,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 8 C++14 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "8",
+            cxx_standard: 14,
+            cxx_asan: false,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 8 C++17 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "8",
+            cxx_standard: 17,
+            cxx_asan: false,
+            libcxx: true
+          }
+
+          # Clang-9
+          - {
+            name: "Linux Clang 9 C++11 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "9",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 9 C++14 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "9",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 9 C++17 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "9",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 9 C++11 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "9",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 9 C++14 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "9",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 9 C++17 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "9",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: true
+          }
+
+          # Clang-10
+          - {
+            name: "Linux Clang 10 C++11 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "10",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 10 C++14 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "10",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 10 C++17 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "10",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 10 C++20 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "10",
+            cxx_standard: 20,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 10 C++11 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "10",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 10 C++14 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "10",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 10 C++17 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "10",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 10 C++20 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "10",
+            cxx_standard: 20,
+            cxx_asan: true,
+            libcxx: true
+          }
+
+          # Clang-11
+          - {
+            name: "Linux Clang 11 C++11 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "11",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 11 C++14 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "11",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 11 C++17 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "11",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 11 C++20 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "11",
+            cxx_standard: 20,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 11 C++11 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "11",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 11 C++14 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "11",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 11 C++17 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "11",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 11 C++20 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "11",
+            cxx_standard: 20,
+            cxx_asan: true,
+            libcxx: true
+          }
+
+          # Clang-12
+          - {
+            name: "Linux Clang 12 C++11 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "12",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 12 C++14 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "12",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 12 C++17 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "12",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 12 C++20 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "12",
+            cxx_standard: 20,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 12 C++11 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "12",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 12 C++14 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "12",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 12 C++17 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "12",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 12 C++20 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "12",
+            cxx_standard: 20,
+            cxx_asan: true,
+            libcxx: true
+          }
+
+          # Clang-13
+          - {
+            name: "Linux Clang 13 C++11 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "13",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 13 C++14 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "13",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 13 C++17 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "13",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 13 C++20 / libstdc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "13",
+            cxx_standard: 20,
+            cxx_asan: true,
+            libcxx: false
+          }
+          - {
+            name: "Linux Clang 13 C++11 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "13",
+            cxx_standard: 11,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 13 C++14 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "13",
+            cxx_standard: 14,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 13 C++17 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "13",
+            cxx_standard: 17,
+            cxx_asan: true,
+            libcxx: true
+          }
+          - {
+            name: "Linux Clang 13 C++20 / libc++",
+            os: ubuntu-20.04,
+            compiler: clang,
+            version: "13",
+            cxx_standard: 20,
+            cxx_asan: true,
+            libcxx: true
+          }
+
+          # AppleClang
+          - {
+            name: "macOS Clang C++11",
+            os: macos-latest,
+            cc: "clang", cxx: "clang++",
+            cxx_standard: 11,
+            cxx_asan: true
+          }
+          - {
+            name: "macOS Clang C++14",
+            os: macos-latest,
+            cc: "clang", cxx: "clang++",
+            cxx_standard: 14,
+            cxx_asan: true
+          }
+          - {
+            name: "macOS Clang C++17",
+            os: macos-latest,
+            cc: "clang", cxx: "clang++",
+            cxx_standard: 17,
+            cxx_asan: true
+          }
+
+          # MSVC 2019
+          - {
+            name: "Windows MSVC 2019 C++11",
+            os: windows-2019,
+            cc: "cl", cxx: "cl",
+            cxx_standard: 11,
+          }
+          - {
+            name: "Windows MSVC 2019 C++14",
+            os: windows-2019,
+            cc: "cl", cxx: "cl",
+            cxx_standard: 14,
+          }
+          - {
+            name: "Windows MSVC 2019 C++17",
+            os: windows-2019,
+            cc: "cl", cxx: "cl",
+            cxx_standard: 17,
+          }
+          - {
+            name: "Windows MSVC 2019 C++20",
+            os: windows-2019,
+            cc: "cl", cxx: "cl",
+            cxx_standard: 20,
+          }
+          - {
+              name: "Windows MSVC 2017 C++11",
+              os: windows-2016,
+              cc: "cl", cxx: "cl",
+              cxx_standard: 11,
+          }
+          - {
+            name: "Windows MSVC 2017 C++14",
+            os: windows-2016,
+            cc: "cl", cxx: "cl",
+            cxx_standard: 14,
+          }
+          - {
+            name: "Windows MSVC 2017 C++17",
+            os: windows-2016,
+            cc: "cl", cxx: "cl",
+            cxx_standard: 17,
+          }
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prep apt
+        id: prep_apt
+        if: startsWith(matrix.config.os, 'ubuntu')
+        shell: bash
+        run: |
+          sudo add-apt-repository "deb http://dk.archive.ubuntu.com/ubuntu/ xenial main"
+          sudo add-apt-repository "deb http://dk.archive.ubuntu.com/ubuntu/ xenial universe"
+          sudo apt-add-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+
+      - name: Install gcc
+        id: install_gcc
+        if: startsWith(matrix.config.os, 'ubuntu') && ( matrix.config.compiler == 'gcc' )
+        shell: bash
+        working-directory: ${{ env.HOME }}
+        run: |
+          sudo apt-get install -y gcc-${{matrix.config.version}} g++-${{matrix.config.version}}
+          echo "CC=gcc-${{ matrix.config.version }}" >> $GITHUB_ENV
+          echo "CXX=g++-${{ matrix.config.version }}" >> $GITHUB_ENV
+
+      - name: Install Clang
+        id: install_clang
+        if: startsWith(matrix.config.os, 'ubuntu') && ( matrix.config.compiler == 'clang' )
+        shell: bash
+        working-directory: ${{ env.HOME }}
+        run: |
+          sudo ln -s /usr/include/locale.h /usr/include/xlocale.h
+          if [ "${{matrix.config.version}}" = "13" ]
+          then
+              wget https://apt.llvm.org/llvm.sh
+              chmod +x llvm.sh
+              sudo ./llvm.sh 13
+          else
+              sudo apt-get install -y clang-${{matrix.config.version}}
+          fi
+          echo "CC=clang-${{matrix.config.version}}" >> $GITHUB_ENV
+          echo "CXX=clang++-${{matrix.config.version}}" >> $GITHUB_ENV
+
+      - name: Set MacOS compiler env
+        id: set_macos_cc_cxx
+        if: startsWith(matrix.config.os, 'macos')
+        shell: bash
+        run: |
+          echo "CC=clang" >> $GITHUB_ENV
+          echo "CXX=clang++" >> $GITHUB_ENV
+
+      - name: Cache libc++
+        id: cache-libcxx
+        if: matrix.config.libcxx
+        uses: actions/cache@v2
+        with:
+          path: llvm
+          key: ${{matrix.config.os}}-libcxx-${{matrix.config.version}}
+
+      - name: Install libc++
+        id: install_libcxx
+        if: matrix.config.libcxx && (steps.cache-libcxx.outputs.cache-hit != 'true')
+        shell: bash
+        working-directory: ${{ env.HOME }}
+        run: |
+          $GITHUB_WORKSPACE/install_libcxx.sh
+
+      - name: Install kcov
+        if: startsWith(matrix.config.os, 'ubuntu')
+        run: |
+          sudo apt-get install -y libdw-dev libcurl4-openssl-dev
+          mkdir kcov
+          cd kcov
+          wget https://github.com/SimonKagstrom/kcov/archive/refs/tags/38.tar.gz
+          tar xf 38.tar.gz
+          mkdir build
+          cd build
+          cmake ../kcov-38
+          cmake --build .
+          sudo cmake --install .
+
+      - name: Verify compilation errors
+        if: (!startsWith(matrix.config.os, 'windows'))
+        shell: bash
+        run: |
+          CXXFLAGS="-std=c++${{ matrix.config.cxx_standard }}" ./check_errors.sh ||
+          {
+            FAILURES="$?" ;
+            if [[ "${{ matrix.config.cxx_standard }}" == "11" ]]; then
+              if [[ ${FAILURES} != "4" ]]; then
+                echo "Expected four failures from C++11 check_errors.sh, got ${FAILURES}" ;
+                exit 1 ;
+              fi ;
+            else
+              echo "Expected zero failures from check_errors.sh, got ${FAILURES}" ;
+              exit 1 ;
+            fi ;
+          }
+
+
+      - name: Configure
+        shell: bash
+        run: |
+          if [ "x${{ matrix.config.libcxx }}" == "xtrue" ]
+          then
+            cxx_flags="${cxx_flags} -stdlib=libc++ -nostdinc++ -cxx-isystem ${GITHUB_WORKSPACE}/llvm/include/c++/v1/ -Wno-unused-command-line-argument"
+            link_flags="${link_flags} -L ${GITHUB_WORKSPACE}/llvm/lib -Wl,-rpath,${GITHUB_WORKSPACE}/llvm/lib -lc++abi"
+          fi
+
+          if [ "x${{ matrix.config.cxx_asan }}" == "xtrue" ]
+          then
+            cxx_flags="${cxx_flags} -fno-omit-frame-pointer"
+          fi
+
+          cmake \
+              -S . \
+              -B build \
+              -D CMAKE_BUILD_TYPE=Debug \
+              -D CMAKE_VERBOSE_MAKEFILE=ON \
+              -D CXX_STANDARD:STRING=${{ matrix.config.cxx_standard }} \
+              -D "CMAKE_CXX_FLAGS:STRING=${cxx_flags}" \
+              -D "CMAKE_EXE_LINKER_FLAGS:STRING=${link_flags}" \
+              -D SANITIZE=${{matrix.config.cxx_asan}} \
+              ${{ matrix.config.cmake_args }} \
+              ${extra_cmake_args}
+
+      - name: Build
+        shell: bash
+        run: |
+          cmake --build build --parallel 4 --target self_test custom_recursive_mutex
+
+      - name: Run tests
+        shell: bash
+        run: |
+          cmake --build build --target run_self_test
+
+      - name: Collect coverage
+        if: (startsWith(matrix.config.os, 'ubuntu'))
+        shell: bash
+        run: |
+          cmake --build build --target run_coverage || true
+
+      - name: Upload coverage
+        if: startsWith(matrix.config.os, 'ubuntu') && github.repository == 'rollbear/trompeloeil'
+        uses: codecov/codecov-action@v1
+        with:
+          directory: build/coverage
+          files: self_test*/cobertura.xml
+          name: ${{ matrix.config.name }}
+          fail_ci_if_error: true
+          verbose: true

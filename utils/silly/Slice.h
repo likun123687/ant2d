@@ -175,5 +175,4 @@ constexpr Slice operator"" _slice(const char* s, size_t n) {
 }
 
 } // namespace slice
-
 }  // namespace silly

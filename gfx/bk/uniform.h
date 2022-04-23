@@ -3,17 +3,17 @@ namespace bk {
 
     class UniformBlock
     {
-    private:
-        string name_;
-        uint8_t slot_;
-        uint8_t size_;
-    public:
-       int32_t UniformBlock(string name, UniformType xType)
-       {
-           slot_ = prog_mod_uniformblock_slot(SG_SHADERSTAGE_VS, "vs_params");
-           name_ = name;
-           size_ = prog_mod_uniformblock_size(SG_SHADERSTAGE_VS, "vs_params");
-       }
+        private:
+            string name_;
+            uint8_t slot_;
+            uint8_t size_;
+        public:
+            int32_t UniformBlock(string name, UniformType xType)
+            {
+                slot_ = prog_mod_uniformblock_slot(SG_SHADERSTAGE_VS, "vs_params");
+                name_ = name;
+                size_ = prog_mod_uniformblock_size(SG_SHADERSTAGE_VS, "vs_params");
+            }
     }
 
     class UniformBlockBuffer
@@ -25,8 +25,8 @@ namespace bk {
 
         public:
             UniformBlockBuffer():buffer_()
-            {
-            }
+        {
+        }
 
             uint32_t GetPos()
             {
@@ -73,7 +73,7 @@ namespace bk {
     void Uniform_decode(uint32_t code, uint8_t slot_, uint8_t size)
     {
         *loc = uint8((code >> 16) & 0xFF)
-        *size = uint8((code >> 8) & 0xFF)
+            *size = uint8((code >> 8) & 0xFF)
     }
 
     uint32_t Uniform_encode(uint8_t slot_, uint8_t size_)

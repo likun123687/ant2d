@@ -1,4 +1,6 @@
+#pragma once
 
+namespace ant2d {
 template <class T>
 class Singleton : public T
 {
@@ -13,3 +15,4 @@ public:
 private:
     Singleton() {}
 };
+} //namespace ant2d

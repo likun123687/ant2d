@@ -123,7 +123,7 @@ namespace bk {
             }
 
             std::tuple<uint16_t, Uniform*> AllocUniform(uint16_t shId, string name,
-                     UniformType xType, uint32_t num) {
+                    UniformType xType, uint32_t num) {
                 uint16_t id = 0;
                 Uniform *um = nullptr;
 
@@ -175,7 +175,7 @@ namespace bk {
                     case IdTypeVertex:
                         vertexBuffers_[v].Destroy();
                         vbFrees_.Push(v)
-                        break;
+                            break;
                     case IdTypeTexture:
                         textures_[v].Destroy();
                         ttFrees_.Push(v);
@@ -192,118 +192,118 @@ namespace bk {
                 }
             }
 
-}
+    }
 
-////// STATE MASK AND VALUE DEFINES
-struct {
-    uint64_t RGB_WRITE;
-    uint64_t ALPHA_WRITE;
-    uint64_t DEPTH_WRITE;
+    ////// STATE MASK AND VALUE DEFINES
+    struct {
+        uint64_t RGB_WRITE;
+        uint64_t ALPHA_WRITE;
+        uint64_t DEPTH_WRITE;
 
-    uint64_t DEPTH_TEST_MASK;
-    uint64_t DEPTH_TEST_SHIFT;
+        uint64_t DEPTH_TEST_MASK;
+        uint64_t DEPTH_TEST_SHIFT;
 
-    uint64_t BLEND_MASK;
-    uint64_t BLEND_SHIFT;
+        uint64_t BLEND_MASK;
+        uint64_t BLEND_SHIFT;
 
-    uint64_t PT_MASK;
-    uint64_t PT_SHIFT;
-} ST = {
-    0x0000000000000001,
-    0x0000000000000002,
-    0x0000000000000004,
+        uint64_t PT_MASK;
+        uint64_t PT_SHIFT;
+    } ST = {
+        0x0000000000000001,
+        0x0000000000000002,
+        0x0000000000000004,
 
-    0x00000000000000F0,
-    4,
+        0x00000000000000F0,
+        4,
 
-    0x0000000000000F00,
-    8,
+        0x0000000000000F00,
+        8,
 
-    0x000000000000F000,
-    12,
-};
+        0x000000000000F000,
+        12,
+    };
 
-// zero means no depth-test
-struct {
-    uint64_t LESS;
-    uint64_t LEQUAL;
-    uint64_t EQUAL;
+    // zero means no depth-test
+    struct {
+        uint64_t LESS;
+        uint64_t LEQUAL;
+        uint64_t EQUAL;
 
-    uint64_t GEQUAL;
-    uint64_t GREATER;
-    uint64_t NOTEQUAL;
+        uint64_t GEQUAL;
+        uint64_t GREATER;
+        uint64_t NOTEQUAL;
 
-    uint64_t NEVER;
-    uint64_t ALWAYS;
-} ST_DEPTH = {
-    0x0000000000000010,
-    0x0000000000000020,
-    0x0000000000000030,
+        uint64_t NEVER;
+        uint64_t ALWAYS;
+    } ST_DEPTH = {
+        0x0000000000000010,
+        0x0000000000000020,
+        0x0000000000000030,
 
-    0x0000000000000040,
-    0x0000000000000050,
-    0x0000000000000060,
+        0x0000000000000040,
+        0x0000000000000050,
+        0x0000000000000060,
 
-    0x0000000000000070,
-    0x0000000000000080,
-};
+        0x0000000000000070,
+        0x0000000000000080,
+    };
 
-uint32_t g_CmpFunc[] = {
-    0, // ignored
-    gl.LESS,
-    gl.LEQUAL,
-    gl.EQUAL,
-    gl.GEQUAL,
-    gl.GREATER,
-    gl.NOTEQUAL,
-    gl.NEVER,
-    gl.ALWAYS,
-};
+    uint32_t g_CmpFunc[] = {
+        0, // ignored
+        gl.LESS,
+        gl.LEQUAL,
+        gl.EQUAL,
+        gl.GEQUAL,
+        gl.GREATER,
+        gl.NOTEQUAL,
+        gl.NEVER,
+        gl.ALWAYS,
+    };
 
-// zero means no blend
-struct {
-    uint64_t DEFAULT;
-    uint64_t ISABLE;
-    uint64_t ALPHA_PREMULTIPLIED;
-    uint64_t ALPHA_NON_PREMULTIPLIED;
-    uint64_t ADDITIVE;
-} ST_BLEND = {
-    0x0,
-    0x0000000000000100,
-    0x0000000000000200,
-    0x0000000000000300,
-    0x0000000000000400,
-}
+    // zero means no blend
+    struct {
+        uint64_t DEFAULT;
+        uint64_t ISABLE;
+        uint64_t ALPHA_PREMULTIPLIED;
+        uint64_t ALPHA_NON_PREMULTIPLIED;
+        uint64_t ADDITIVE;
+    } ST_BLEND = {
+        0x0,
+        0x0000000000000100,
+        0x0000000000000200,
+        0x0000000000000300,
+        0x0000000000000400,
+    }
 
-struct {
-    uint32_t Src;
-    uint32_t Dst;
-} g_Blend[] = {
-    {0, 0},
-    {gl.ONE, gl.ZERO},
-    {gl.ONE, gl.ONE_MINUS_SRC_ALPHA},
-    {gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA},
-    {gl.SRC_ALPHA, gl.ONE},
-}
+    struct {
+        uint32_t Src;
+        uint32_t Dst;
+    } g_Blend[] = {
+        {0, 0},
+        {gl.ONE, gl.ZERO},
+        {gl.ONE, gl.ONE_MINUS_SRC_ALPHA},
+        {gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA},
+        {gl.SRC_ALPHA, gl.ONE},
+    }
 
-struct {
-   uint64_t TRIANGLES;
-   uint64_t TRIANGLE_STRIP;
-   uint64_t LINES;
-   uint64_t LINE_STRIP;
-   uint64_t POINTS;
-} ST_PT = {
-    0x0000000000000000,
-    0x0000000000001000,
-    0x0000000000002000,
-    0x0000000000003000,
-    0x0000000000004000,
-}
+    struct {
+        uint64_t TRIANGLES;
+        uint64_t TRIANGLE_STRIP;
+        uint64_t LINES;
+        uint64_t LINE_STRIP;
+        uint64_t POINTS;
+    } ST_PT = {
+        0x0000000000000000,
+        0x0000000000001000,
+        0x0000000000002000,
+        0x0000000000003000,
+        0x0000000000004000,
+    }
 
-uint32_t g_PrimInfo[] = {
-    gl.TRIANGLES,
-    gl.TRIANGLE_STRIP,
-    gl.LINES,
-    gl.LINE_STRIP,
-    gl.POINTS,
-};
+    uint32_t g_PrimInfo[] = {
+        gl.TRIANGLES,
+        gl.TRIANGLE_STRIP,
+        gl.LINES,
+        gl.LINE_STRIP,
+        gl.POINTS,
+    };
