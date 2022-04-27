@@ -11,6 +11,13 @@ add_includedirs("$(projectdir)")
 if is_plat("windows") then
     add_cxflags("/utf-8")
     add_defines("BK_PLATFORM_WINDOWS")
+elseif is_plat("macosx") then
+    add_defines("BK_PLATFORM_OSX")
+    add_frameworks("Foundation")
+    add_frameworks("Cocoa")
+    add_frameworks("QuartzCore")
+    add_frameworks("Metal")
+    add_frameworks("MetalKit")
 end
 
 option("with_test")
@@ -29,6 +36,11 @@ target("ant2d")
     add_files("utils/silly/*.cpp")
     add_files("gfx/bk/buffer.cpp")
     add_files("gfx/bk/sokol_gfx.cpp")
+    if is_plat("macosx", "iphoneos") then
+        del_files("gfx/bk/sokol_gfx.cpp")
+        add_files("gfx/bk/sokol_gfx.mm")
+        add_files("utils/*.mm")
+    end
 target_end()
 
 if has_config("with_test") then
