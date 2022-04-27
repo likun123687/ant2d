@@ -1,20 +1,26 @@
 #include <utils/Content.h>
 #include <filesystem>
 #include<utils/Utils.h>
-#include <windows.h>
 #include <cfile.hpp>
+
+#if BK_PLATFORM_WINDOWS
+#include <windows.h>
+#endif // BK_PLATFORM_WINDOWS
 
 namespace fs = std::filesystem;
 using namespace ant2d;
 
+#if BK_PLATFORM_WINDOWS
 Content::Content()
 {
     _assetPath = fs::current_path().string();
 }
+#endif
 
 Content::~Content()
 { }
 
+#if BK_PLATFORM_WINDOWS
 bool Content::isFileExist(const Slice& filePath)
 {
     std::string strPath = filePath;
@@ -24,7 +30,10 @@ bool Content::isFileExist(const Slice& filePath)
     }
     return GetFileAttributesA(strPath.c_str()) != -1 ? true : false;
 }
+#endif
 
+
+#if BK_PLATFORM_WINDOWS
 bool Content::isAbsolutePath(const Slice& strPath)
 {
     if (strPath.size() > 2
@@ -35,7 +44,9 @@ bool Content::isAbsolutePath(const Slice& strPath)
     }
     return false;
 }
+#endif
 
+#if BK_PLATFORM_WINDOWS
 std::string Content::getFullPathForDirectoryAndFilename(const Slice& directory, const Slice& filename)
 {
     auto rootPath = fs::path(isAbsolutePath(directory) ? Slice::Empty : _assetPath);
@@ -46,6 +57,7 @@ std::string Content::getFullPathForDirectoryAndFilename(const Slice& directory, 
     }
     return fullPath;
 }
+#endif
 
 std::string Content::getAssertPath()
 {
@@ -57,12 +69,12 @@ static std::tuple<std::string, std::string> splitDirectoryAndFilename(const std:
     std::string file = filePath;
     std::string path;
     std::size_t pos = filePath.find_last_of("/\\");
-	if (pos != std::string::npos)
-	{
-		path = filePath.substr(0, pos + 1);
-		file = filePath.substr(pos + 1);
-	}
-	return std::make_tuple(path, file);
+    if (pos != std::string::npos)
+    {
+        path = filePath.substr(0, pos + 1);
+        file = filePath.substr(pos + 1);
+    }
+    return std::make_tuple(path, file);
 }
 
 std::string Content::getFullPath(const Slice& filename)
