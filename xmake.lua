@@ -5,9 +5,12 @@ set_project("ant2d")
 set_xmakever("2.3.1")
 set_languages("cxx17")
 
-add_rules("mode.release", "mode.debug") 
+add_requires("stb")
+
+add_rules("mode.release", "mode.debug")
 add_includedirs("$(projectdir)")
 
+add_defines("ANT2D_DEBUG")
 if is_plat("windows") then
     add_cxflags("/utf-8")
     add_defines("BK_PLATFORM_WINDOWS")
@@ -29,10 +32,11 @@ option_end()
 add_includedirs("$(projectdir)/third_party/cpp-stdio-file-wrapper/include",  {public = true})
 add_includedirs("$(projectdir)/third_party/sokol", {public = true})
 add_includedirs("$(projectdir)/third_party/trompeloeil/include", {public = true})
+add_includedirs("$(projectdir)/third_party/fmt/include", {public = true})
 
 target("ant2d")
     set_kind("static")
-    add_files("utils/*.cpp")
+    add_files("utils/Content.cpp")
     add_files("utils/silly/*.cpp")
     add_files("gfx/bk/buffer.cpp")
     add_files("gfx/bk/sokol_gfx.cpp")

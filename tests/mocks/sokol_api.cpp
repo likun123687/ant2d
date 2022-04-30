@@ -17,3 +17,22 @@ void sg_destroy_buffer(sg_buffer buf)
     return sokol_gfx_api_mock.sg_destroy_buffer(buf);
 }
 
+void sg_update_image(sg_image img, const sg_image_data* data)
+{
+    return sokol_gfx_api_mock.sg_update_image(img, data);
+}
+
+sg_image sg_alloc_image(void)
+{
+    return sokol_gfx_api_mock.sg_alloc_image();
+}
+
+void sg_destroy_image(sg_image img)
+{
+    return sokol_gfx_api_mock.sg_destroy_image(img);
+}
+
+void sg_init_image(sg_image img_id, const sg_image_desc* desc)
+{
+    return sokol_gfx_api_mock.sg_init_image(img_id, desc);
+}

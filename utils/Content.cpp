@@ -2,11 +2,9 @@
 #include <filesystem>
 #include<utils/Utils.h>
 #include <cfile.hpp>
+#include <utils/silly/Slice.h>
 
-#if BK_PLATFORM_WINDOWS
-#include <windows.h>
-#endif // BK_PLATFORM_WINDOWS
-
+using namespace silly::slice;
 namespace fs = std::filesystem;
 using namespace ant2d;
 
@@ -21,36 +19,37 @@ Content::~Content()
 { }
 
 #if BK_PLATFORM_WINDOWS
-bool Content::isFileExist(const Slice& filePath)
+bool Content::isFileExist(const std::string& filePath)
 {
-    std::string strPath = filePath;
-    if (!isAbsolutePath(strPath))
+    auto strPath = fs::path(filePath);
+    if (!isAbsolutePath(filePath))
     {
-        strPath.insert(0, _assetPath);
+        strPath = fs::path(_assetPath) / strPath;
     }
-    return GetFileAttributesA(strPath.c_str()) != -1 ? true : false;
+    return fs::exists(strPath);
 }
 #endif
 
 
 #if BK_PLATFORM_WINDOWS
-bool Content::isAbsolutePath(const Slice& strPath)
+bool Content::isAbsolutePath(const std::string& strPath)
 {
-    if (strPath.size() > 2
-        && ((strPath[0] >= 'a' && strPath[0] <= 'z') || (strPath[0] >= 'A' && strPath[0] <= 'Z'))
-        && strPath[1] == ':')
-    {
-        return true;
-    }
-    return false;
+    return fs::path(strPath).is_absolute();
+    //if (strPath.size() > 2
+    //    && ((strPath[0] >= 'a' && strPath[0] <= 'z') || (strPath[0] >= 'A' && strPath[0] <= 'Z'))
+    //    && strPath[1] == ':')
+    //{
+    //    return true;
+    //}
+    //return false;
 }
 #endif
 
 #if BK_PLATFORM_WINDOWS
-std::string Content::getFullPathForDirectoryAndFilename(const Slice& directory, const Slice& filename)
+std::string Content::getFullPathForDirectoryAndFilename(const std::string& directory, const std::string& filename)
 {
-    auto rootPath = fs::path(isAbsolutePath(directory) ? Slice::Empty : _assetPath);
-    std::string fullPath = (rootPath / directory.toString() / filename.toString()).string();
+    auto rootPath = fs::path(isAbsolutePath(directory) ? "" : _assetPath);
+    std::string fullPath = (rootPath / directory / filename).string();
     if (!isFileExist(fullPath))
     {
         fullPath.clear();
@@ -59,7 +58,7 @@ std::string Content::getFullPathForDirectoryAndFilename(const Slice& directory, 
 }
 #endif
 
-std::string Content::getAssertPath()
+std::string Content::getAssetPath()
 {
     return _assetPath;
 }
@@ -77,7 +76,7 @@ static std::tuple<std::string, std::string> splitDirectoryAndFilename(const std:
     return std::make_tuple(path, file);
 }
 
-std::string Content::getFullPath(const Slice& filename)
+std::string Content::getFullPath(const std::string& filename)
 {
     Slice targetFile = filename;
     targetFile.trimSpace();
@@ -120,17 +119,17 @@ std::string Content::getFullPath(const Slice& filename)
         return fullPath;
     }
 
-    return targetFile;
+    return fullPath;
 }
 
-std::pair<OwnArray<std::uint8_t>,std::size_t> Content::loadFile(const Slice& filename)
+std::pair<OwnArray<uint8_t>, size_t> Content::loadFile(const std::string& filename)
 {
-    std::int64_t size = 0;
-    std::uint8_t* data = Content::_loadFileUnsafe(filename, size);
-    return {OwnArray<std::uint8_t>(data), s_cast<std::size_t>(size)};
+    int64_t size = 0;
+    uint8_t* data = Content::_loadFileUnsafe(filename, size);
+    return {OwnArray<uint8_t>(data), s_cast<size_t>(size)};
 }
 
-std::uint8_t* Content::_loadFileUnsafe(const Slice& filename, std::int64_t& size)
+uint8_t* Content::_loadFileUnsafe(const std::string& filename, int64_t& size)
 {
     if (filename.empty()) {
         return nullptr;
@@ -139,7 +138,7 @@ std::uint8_t* Content::_loadFileUnsafe(const Slice& filename, std::int64_t& size
     auto file_io = xtr::cfile(fullPath.c_str(), xtr::cfile::mode::read | xtr::cfile::mode::binary);
 
     size = fs::file_size(fullPath);
-    auto buffer = new std::uint8_t[s_cast<std::size_t>(size)];
-    file_io.fread<std::uint8_t>(buffer, s_cast<std::size_t>(size));
+    auto buffer = new uint8_t[s_cast<size_t>(size)];
+    file_io.fread<uint8_t>(buffer, s_cast<size_t>(size));
     return buffer;
 }

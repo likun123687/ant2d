@@ -3,30 +3,26 @@
 #include <string>
 #include <cinttypes>
 #include <cstddef>
-
 #include <utils/Own.h>
-#include <utils/silly/Slice.h>
 #include <unordered_map>
 #include <vector>
 #include <utils/Singleton.h>
-
-using namespace silly::slice;
 
 namespace ant2d {
 class Content
 {
 public:
-    std::string getFullPath(const Slice& filename);
-    std::pair<OwnArray<std::uint8_t>,std::size_t> loadFile(const Slice& filename);
-    bool isAbsolutePath(const Slice& strPath);
-    bool isFileExist(const Slice& filePath); //只能检测绝对路径
-    std::string getFullPathForDirectoryAndFilename(const Slice& directory, const Slice& filename);
-    std::string getAssertPath();
+    std::string getFullPath(const std::string& filename);
+    std::pair<OwnArray<uint8_t>, size_t> loadFile(const std::string& filename);
+    bool isAbsolutePath(const std::string& strPath);
+    bool isFileExist(const std::string& filePath); 
+    std::string getFullPathForDirectoryAndFilename(const std::string& directory, const std::string& filename);
+    std::string getAssetPath();
     virtual ~Content();
 protected:
     Content();
 private:
-    std::uint8_t* _loadFileUnsafe(const Slice& filename, std::int64_t& size);
+    std::uint8_t* _loadFileUnsafe(const std::string& filename, int64_t& size);
     std::string _assetPath;
     std::vector<std::string> _searchPaths;
     std::unordered_map<std::string, std::string> _fullPathCache;

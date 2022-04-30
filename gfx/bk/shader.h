@@ -4,11 +4,17 @@ class Shader {
     sg_shader sg_shd_id_;
     std::array<AttribBind, 32> AttrBinds_;
     uint32_t numAttr_;
+    std::string program_name_;
 
     public:
     Shader()
     {
-         sg_shd_id_ = sg_make_shader(simple_shader_desc());
+        if () {
+             sg_shd_id_ = sg_make_shader(simple_shader_desc());
+        } else if () {
+        } else {
+        }
+
     }
 
     void BindAttributes(ResManager *R,  const &std::array<Stream, 2> streams)

@@ -7,6 +7,8 @@ namespace ant2d {
 #define c_cast const_cast
 #define d_cast dynamic_cast
 
+#define ANT2D_DUMMY do {} while (0)
+
 //typedef const Slice& String;
 
 /** @brief Helper function to iterate a std::tuple.
