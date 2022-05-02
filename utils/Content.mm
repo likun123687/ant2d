@@ -11,69 +11,69 @@ Content::Content()
     _assetPath = std::string(base) + "/";
 }
 
-bool Content::isFileExist(const Slice& filePath)
+bool Content::isFileExist(const std::string& filePath)
 {
-	if (filePath[0] != '/')
-	{
-		std::string path = filePath;
-		std::string file;
-		size_t pos = path.find_last_of("/");
-		if (pos != std::string::npos)
-		{
-			file = path.substr(pos+1);
-			path = path.substr(0, pos+1);
-			NSString* fullPath = [[NSBundle mainBundle] pathForResource:[NSString stringWithUTF8String:file.c_str()]
-				ofType:nil
-				inDirectory:[NSString stringWithUTF8String:path.c_str()]
-			];
-			if (fullPath != nil)
-			{
-				return true;
-			}
-		}
-	}
-	else
-	{
-		// Search path is an absolute path.
-		NSFileManager* fileManager = [NSFileManager defaultManager];
-		if ([fileManager fileExistsAtPath:[NSString stringWithUTF8String:filePath.toString().c_str()]])
-		{
-			return true;
-		}
-	}
-	return false;
+    if (filePath[0] != '/')
+    {
+        std::string path = filePath;
+        std::string file;
+        size_t pos = path.find_last_of("/");
+        if (pos != std::string::npos)
+        {
+            file = path.substr(pos+1);
+            path = path.substr(0, pos+1);
+            NSString* fullPath = [[NSBundle mainBundle] pathForResource:[NSString stringWithUTF8String:file.c_str()]
+                ofType:nil
+                inDirectory:[NSString stringWithUTF8String:path.c_str()]
+            ];
+            if (fullPath != nil)
+            {
+                return true;
+            }
+        }
+    }
+    else
+    {
+        // Search path is an absolute path.
+        NSFileManager* fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:[NSString stringWithUTF8String:filePath.c_str()]])
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
-std::string Content::getFullPathForDirectoryAndFilename(const Slice& directory, const Slice& filename)
+std::string Content::getFullPathForDirectoryAndFilename(const std::string& directory, const std::string& filename)
 {
-	if (directory[0] != '/')
-	{
-		NSString* fullPath = [[NSBundle mainBundle] pathForResource:[NSString stringWithUTF8String:filename.toString().c_str()]
-			ofType:nil
-			inDirectory:[NSString stringWithUTF8String:directory.toString().c_str()]
-		];
-		if (fullPath != nil)
-		{
-			return [fullPath UTF8String];
-		}
-	}
-	else
-	{
-		std::string fullPath = directory + filename;
-		// Search path is an absolute path.
-		NSFileManager* fileManager = [NSFileManager defaultManager];
-		if ([fileManager fileExistsAtPath:[NSString stringWithUTF8String:fullPath.c_str()]])
-		{
-			return fullPath;
-		}
-	}
-	return Slice::Empty;
+    if (directory[0] != '/')
+    {
+        NSString* fullPath = [[NSBundle mainBundle] pathForResource:[NSString stringWithUTF8String:filename.c_str()]
+            ofType:nil
+            inDirectory:[NSString stringWithUTF8String:directory.c_str()]
+        ];
+        if (fullPath != nil)
+        {
+            return [fullPath UTF8String];
+        }
+    }
+    else
+    {
+        std::string fullPath = directory + filename;
+        // Search path is an absolute path.
+        NSFileManager* fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:[NSString stringWithUTF8String:fullPath.c_str()]])
+        {
+            return fullPath;
+        }
+    }
+    return "";
 }
 
-bool Content::isAbsolutePath(const Slice& strPath)
+bool Content::isAbsolutePath(const std::string& strPath)
 {
-	NSString* path = [NSString stringWithUTF8String:strPath.toString().c_str()];
-	return [path isAbsolutePath] ? true : false;
+    NSString* path = [NSString stringWithUTF8String:strPath.c_str()];
+    return [path isAbsolutePath] ? true : false;
 }
 
 }

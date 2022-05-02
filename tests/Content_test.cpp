@@ -22,7 +22,11 @@ TEST_CASE("test_content")
     auto test_path = fs::path(asset_path) / file_exist;
     REQUIRE(fs::path(full_path_file_exist) == test_path);
 
+#ifdef _WIN32
     REQUIRE(SharedContent.isAbsolutePath("C:\\testfile.txt") == true);
+#else
+    REQUIRE(SharedContent.isAbsolutePath("/abc/abc.txt") == true);
+#endif
     REQUIRE(SharedContent.isAbsolutePath("testfile\\aa\\bb.txt") == false);
 
     REQUIRE(SharedContent.isFileExist(file_exist) == true);
