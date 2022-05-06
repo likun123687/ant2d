@@ -38,9 +38,9 @@ class Rect
 
 struct Stream
 {
-    uint16_t vertexBuffer_;
-    uint16_t vertexFormat_;
-    uint16_t firstVertex_;
+    uint16_t vertexBuffer;
+    uint16_t vertexFormat;
+    uint16_t firstVertex;
 };
 
 class RenderDraw

@@ -27,6 +27,6 @@ TEST_CASE("testBuffer")
     .WITH(_1->data.ptr == buffer && _1->data.size == size)
     .RETURN(buffer_id);
 
-    index_buffer.Create(size, buffer, 0);
+    index_buffer.Create(buffer, size,0);
 }
 

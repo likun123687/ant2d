@@ -10,6 +10,36 @@ add_requires("stb")
 add_rules("mode.release", "mode.debug")
 add_includedirs("$(projectdir)")
 
+rule("sokol-shdc")
+    set_extensions(".glsl")
+    on_buildcmd_file(function (target, batchcmds, sourcefile, opt)
+        import("lib.detect.find_tool")
+        local sokol_shdc = assert(find_tool("sokol-shdc", {check = "-h"}), "sokol-shdc not found!")
+        local slang = target:extraconf("rules", "sokol-shdc", "slang")
+        local plat = target:extraconf("rules", "sokol-shdc", "plat")
+        if not(slang) then
+            slang = "glsl330"
+        end
+
+        if not(plat) then
+            plat = "windows"
+        end
+
+        local target_dir = path.join(path.directory(sourcefile), plat)
+        batchcmds:mkdir(target_dir)
+
+        local targetfile = path.join(target_dir, path.basename(sourcefile) .. ".h")
+
+        --target:add("includedirs", path.directory(sourcefile))
+
+        batchcmds:vrunv(sokol_shdc.program, {"--input", sourcefile, "--output", targetfile, "--slang",slang, "--format", "sokol_impl", "--reflection"})
+        batchcmds:show_progress(opt.progress, "${color.build.object}glsl %s", sourcefile)
+
+        -- only rebuild the file if its changed since last run
+        batchcmds:add_depfiles(sourcefile)
+    end)
+rule_end()
+
 add_defines("ANT2D_DEBUG")
 if is_plat("windows") then
     add_cxflags("/utf-8")
@@ -36,14 +66,30 @@ add_includedirs("$(projectdir)/third_party/fmt/include", {public = true})
 
 target("ant2d")
     set_kind("static")
+    add_packages("stb") 
     add_files("utils/Content.cpp")
-    add_files("utils/silly/*.cpp")
     add_files("gfx/bk/buffer.cpp")
-    add_files("gfx/bk/sokol_gfx.cpp")
-    if is_plat("macosx", "iphoneos") then
-        del_files("gfx/bk/sokol_gfx.cpp")
-        add_files("gfx/bk/sokol_gfx.mm")
-        add_files("utils/*.mm")
+    add_files("gfx/bk/texture.cpp")
+    add_files("asset/image.cpp")
+    add_files("asset/stb_image.cpp")
+    add_files("asset/shader_utils.cpp")
+    add_files("gfx/bk/shader.cpp")
+    add_files("gfx/bk/R.cpp")
+
+    --add_files("asset/shdc.cpp")
+    --add_files("gfx/bk/sokol_gfx.cpp")
+    add_files("tests/mocks/*.cpp")
+
+    add_files("asset/*.glsl")
+    add_files("gfx/bk/uniform.cpp")
+    add_files("third_party/fmt/src/format.cc")
+    if is_plat("windows") then
+        add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})
+    elseif is_plat("macosx", "iphoneos") then
+        add_rules("sokol-shdc", {slang = "metal_macos", plat = "macosx"})
+        add_files("utils/Content.mm")
+        --del_files("gfx/bk/sokol_gfx.cpp")
+        --add_files("gfx/bk/sokol_gfx.mm")
     end
 target_end()
 

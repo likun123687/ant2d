@@ -36,3 +36,91 @@ void sg_init_image(sg_image img_id, const sg_image_desc* desc)
 {
     return sokol_gfx_api_mock.sg_init_image(img_id, desc);
 }
+
+
+sg_shader sg_make_shader(const sg_shader_desc* desc)
+{
+    return sokol_gfx_api_mock.sg_make_shader(desc);
+}
+
+sg_backend sg_query_backend(void)
+{
+    return sokol_gfx_api_mock.sg_query_backend();
+}
+
+void sg_destroy_shader(sg_shader shd)
+{
+    return sokol_gfx_api_mock.sg_destroy_shader(shd);
+}
+
+const sg_shader_desc* batch_shader_desc(sg_backend backend)
+{
+    return sokol_gfx_api_mock.batch_shader_desc(backend);
+}
+
+int batch_attr_slot(const char* attr_name)
+{
+    return sokol_gfx_api_mock.batch_attr_slot(attr_name);
+}
+
+int batch_image_slot(sg_shader_stage stage, const char* img_name)
+{
+    return sokol_gfx_api_mock.batch_image_slot(stage, img_name);
+}
+
+int batch_uniformblock_slot(sg_shader_stage stage, const char* ub_name)
+{
+    return sokol_gfx_api_mock.batch_uniformblock_slot(stage, ub_name);
+}
+
+size_t batch_uniformblock_size(sg_shader_stage stage, const char* ub_name)
+{
+    return sokol_gfx_api_mock.batch_uniformblock_size(stage, ub_name);
+}
+
+int batch_uniform_offset(sg_shader_stage stage, const char* ub_name, const char* u_name)
+{
+    return sokol_gfx_api_mock.batch_uniform_offset(stage, ub_name, u_name);
+}
+
+sg_shader_uniform_desc batch_uniform_desc(sg_shader_stage stage, const char* ub_name, const char* u_name)
+{
+    return sokol_gfx_api_mock.batch_uniform_desc(stage, ub_name, u_name);
+}
+
+//
+//
+const sg_shader_desc* mesh_shader_desc(sg_backend backend)
+{
+    return sokol_gfx_api_mock.mesh_shader_desc(backend);
+}
+
+int mesh_attr_slot(const char* attr_name)
+{
+    return sokol_gfx_api_mock.mesh_attr_slot(attr_name);
+}
+
+int mesh_image_slot(sg_shader_stage stage, const char* img_name)
+{
+    return sokol_gfx_api_mock.mesh_image_slot(stage, img_name);
+}
+
+int mesh_uniformblock_slot(sg_shader_stage stage, const char* ub_name)
+{
+    return sokol_gfx_api_mock.mesh_uniformblock_slot(stage, ub_name);
+}
+
+size_t mesh_uniformblock_size(sg_shader_stage stage, const char* ub_name)
+{
+    return sokol_gfx_api_mock.mesh_uniformblock_size(stage, ub_name);
+}
+
+int mesh_uniform_offset(sg_shader_stage stage, const char* ub_name, const char* u_name)
+{
+    return sokol_gfx_api_mock.mesh_uniform_offset(stage, ub_name, u_name);
+}
+
+sg_shader_uniform_desc mesh_uniform_desc(sg_shader_stage stage, const char* ub_name, const char* u_name)
+{
+    return sokol_gfx_api_mock.mesh_uniform_desc(stage, ub_name, u_name);
+}

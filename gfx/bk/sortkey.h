@@ -1,8 +1,8 @@
 namespace bk {
-    const uint32_t  SK_LayerMask   = 0xF0000000;
-    const uint32_t  SK_ShaderMask  = 0x0F000000;
-    const uint32_t  SK_BlendMask   = 0x00F00000;
-    const uint32_t  SK_TextureMask = 0x000FF000;
+    const uint32_t SK_LayerMask   = 0xF0000000;
+    const uint32_t SK_ShaderMask  = 0x0F000000;
+    const uint32_t SK_BlendMask   = 0x00F00000;
+    const uint32_t SK_TextureMask = 0x000FF000;
 
     class SortKey
     {
@@ -32,5 +32,4 @@ namespace bk {
             uint16_t blend_;
             uint16_t texture_;
     }
-
 }

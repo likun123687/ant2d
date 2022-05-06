@@ -3,7 +3,7 @@
 
 using namespace bk;
 
-void IndexBuffer::Create(uint32_t size, void *data, uint16_t flags)
+void IndexBuffer::Create(const void *data, size_t size, uint16_t flags)
 {
     size_ = size;
     flags_ = flags;
@@ -22,12 +22,12 @@ void IndexBuffer::Create(uint32_t size, void *data, uint16_t flags)
     assert(id_.id != SG_INVALID_ID);
 }
 
-void IndexBuffer::Update(uint32_t offset, uint32_t size, void *data, bool discard)
+void IndexBuffer::Update(const void *data, size_t size, size_t offset, bool discard)
 {
     assert(id_.id != SG_INVALID_ID);
     if (discard) {
         Destroy();
-        Create(size, nullptr, flags_);
+        Create(nullptr, size, flags_);
     }
     sg_range ran = {data, size};
     //ran.ptr = data;
@@ -41,7 +41,7 @@ void IndexBuffer::Destroy()
     id_.id = SG_INVALID_ID;
 }
 
-void VertexBuffer::Create(uint32_t size, void *data, uint16_t layout,uint16_t flags)
+void VertexBuffer::Create(const void *data, size_t size, uint16_t layout, uint16_t flags)
 {
     size_ = size;
     layout_ = layout;
@@ -59,12 +59,12 @@ void VertexBuffer::Create(uint32_t size, void *data, uint16_t layout,uint16_t fl
     assert(id_.id != SG_INVALID_ID);
 }
 
-void VertexBuffer::Update(uint32_t offset, uint32_t size, void *data, bool discard)
+void VertexBuffer::Update(const void *data, size_t size, size_t offset, bool discard)
 {
     assert(id_.id != SG_INVALID_ID);
     if (discard) {
         Destroy();
-        Create(size_, nullptr,layout_, 0);
+        Create(nullptr, size_, layout_, 0);
     }
     sg_range ran = {};
     ran.ptr = data;

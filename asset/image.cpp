@@ -3,7 +3,7 @@
 
 using namespace ant2d;
 
-ImageData::stb_pixels_p ImageData::createPixels_(const uint8_t* data, int64_t size)
+ImageData::stb_pixels_p ImageData::createPixels_(const uint8_t* data, size_t size)
 {
     const int desired_channels = 4;
     auto mem_pixels = stbi_load_from_memory(
@@ -15,7 +15,7 @@ ImageData::stb_pixels_p ImageData::createPixels_(const uint8_t* data, int64_t si
     return stb_pixels_p(mem_pixels, stbi_image_free);
 }
 
-ImageData::ImageData(const uint8_t* data, int64_t size):pixels(createPixels_(data, size))
+ImageData::ImageData(const uint8_t* data, size_t size):pixels(createPixels_(data, size))
 {
     this->size = size;
 }
