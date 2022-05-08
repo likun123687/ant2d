@@ -67,6 +67,7 @@ add_includedirs("$(projectdir)/third_party/fmt/include", {public = true})
 target("ant2d")
     set_kind("static")
     add_packages("stb") 
+    add_files("asset/*.glsl") --最好加在比较前面
     add_files("utils/Content.cpp")
     add_files("gfx/bk/buffer.cpp")
     add_files("gfx/bk/texture.cpp")
@@ -75,12 +76,12 @@ target("ant2d")
     add_files("asset/shader_utils.cpp")
     add_files("gfx/bk/shader.cpp")
     add_files("gfx/bk/R.cpp")
+    add_files("gfx/bk/queue.cpp")
 
     --add_files("asset/shdc.cpp")
     --add_files("gfx/bk/sokol_gfx.cpp")
     add_files("tests/mocks/*.cpp")
 
-    add_files("asset/*.glsl")
     add_files("gfx/bk/uniform.cpp")
     add_files("third_party/fmt/src/format.cc")
     if is_plat("windows") then
