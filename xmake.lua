@@ -78,9 +78,12 @@ target("ant2d")
     add_files("gfx/bk/R.cpp")
     add_files("gfx/bk/queue.cpp")
 
-    --add_files("asset/shdc.cpp")
-    --add_files("gfx/bk/sokol_gfx.cpp")
-    add_files("tests/mocks/*.cpp")
+    if (not has_config("with_test")) then
+        add_files("asset/shdc.cpp")
+        add_files("gfx/bk/sokol_gfx.cpp")
+    else
+        add_files("tests/mocks/*.cpp")
+    end
 
     add_files("gfx/bk/uniform.cpp")
     add_files("third_party/fmt/src/format.cc")
@@ -89,8 +92,11 @@ target("ant2d")
     elseif is_plat("macosx", "iphoneos") then
         add_rules("sokol-shdc", {slang = "metal_macos", plat = "macosx"})
         add_files("utils/Content.mm")
-        --del_files("gfx/bk/sokol_gfx.cpp")
-        --add_files("gfx/bk/sokol_gfx.mm")
+
+        if (not has_config("with_test")) then
+            del_files("gfx/bk/sokol_gfx.cpp")
+            add_files("gfx/bk/sokol_gfx.mm")
+        end
     end
 target_end()
 
