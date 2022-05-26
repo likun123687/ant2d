@@ -155,7 +155,7 @@ class RenderContext
 {
     private:
         ResManager *res_manager_;
-        UniformblockBuffer *ubb_;
+        UniformblockBuffer *uniformblock_buffer_;
         Rect w_rect_;
         float pixel_ratio_;
         std::vector<Rect> clips_;
@@ -172,7 +172,7 @@ class RenderContext
         void DoDraw(RenderDraw &draw, RenderDraw &current_state);
 
     public:
-        RenderContext(ResManager *res_manager, UniformblockBuffer *ubb);
+        RenderContext(ResManager *res_manager, UniformblockBuffer *uniformblock_buffer);
         void Reset();
         uint16_t AddClipRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h);
 

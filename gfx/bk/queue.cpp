@@ -4,8 +4,8 @@
 
 using namespace ant2d;
 
-RenderQueue::RenderQueue(ResManager *R):ubb_(new UniformblockBuffer()),
-        ctx_(new RenderContext(R, ubb_.get())), rm_(R)
+RenderQueue::RenderQueue(ResManager *R):uniformblock_buffer_(new UniformblockBuffer()),
+        ctx_(new RenderContext(R, uniformblock_buffer_.get())), rm_(R)
 {
 }
 
@@ -57,8 +57,8 @@ void RenderQueue::SetUniformblock(uint16_t id, uint8_t *ptr)
     auto ub = rm_->GetUniformblock(id);
     if (ub) {
         uint32_t opcode = Uniformblock::encode(ub->GetStage(), ub->GetSlot(), ub->GetSize());
-        ubb_->WriteUInt32(opcode);
-        ubb_->Copy(ptr, static_cast<uint32_t>(ub->GetSize()));
+        uniformblock_buffer_->WriteUInt32(opcode);
+        uniformblock_buffer_->Copy(ptr, static_cast<uint32_t>(ub->GetSize()));
     }
 }
 
@@ -114,7 +114,7 @@ void RenderQueue::SetViewClear(uint8_t id, uint16_t flags, uint32_t rgba, float 
 
 uint32_t RenderQueue::Submit(uint8_t id, uint16_t shader, uint64_t depth)
 {
-    uniformblock_end_ = static_cast<uint16_t>(ubb_->GetPos());
+    uniformblock_end_ = static_cast<uint16_t>(uniformblock_buffer_->GetPos());
     sort_key_.layer_ = static_cast<uint16_t>(id);
     sort_key_.order_ = static_cast<uint16_t>(depth+0xFFFF>>1);
 
@@ -132,7 +132,7 @@ uint32_t RenderQueue::Submit(uint8_t id, uint16_t shader, uint64_t depth)
     draw_call_num_++;
 
     draw_call_.reset();
-    uniformblock_begin_ = static_cast<uint16_t>(ubb_->GetPos());
+    uniformblock_begin_ = static_cast<uint16_t>(uniformblock_buffer_->GetPos());
     return 0;
 }
 
@@ -163,7 +163,7 @@ int RenderQueue::Flush()
     draw_call_num_ = 0;
     uniformblock_begin_ = 0;
     uniformblock_end_ = 0;
-    ubb_->Reset();
+    uniformblock_buffer_->Reset();
     ctx_->Reset();
     return 0;
 }

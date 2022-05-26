@@ -2,7 +2,7 @@
 
 using namespace ant2d;
 
-RenderContext::RenderContext(ResManager *res_manager, UniformblockBuffer *ubb):res_manager_(res_manager),ubb_(ubb)
+RenderContext::RenderContext(ResManager *res_manager, UniformblockBuffer *uniformblock_buffer):res_manager_(res_manager),uniformblock_buffer_(uniformblock_buffer)
 {
     clips_.reserve(1);
 }
@@ -169,14 +169,14 @@ void RenderContext::Draw(std::vector<uint64_t> sort_keys, std::vector<uint16_t> 
 }
 
 void RenderContext::BindUniformblock(uint32_t begin, uint32_t end) {
-    ubb_->Seek(begin);
+    uniformblock_buffer_->Seek(begin);
 
-    while(ubb_->GetPos() < end) {
-        auto opcode = ubb_->ReadUInt32();
+    while(uniformblock_buffer_->GetPos() < end) {
+        auto opcode = uniformblock_buffer_->ReadUInt32();
 
         uint8_t stage, slot, size;
         Uniformblock::decode(opcode, &stage, &slot, &size);
-        auto data = ubb_->ReadPointer(size);
+        auto data = uniformblock_buffer_->ReadPointer(size);
 
         sg_apply_uniforms(static_cast<sg_shader_stage>(stage), static_cast<int>(slot), 
                 &sg_range{data, size});

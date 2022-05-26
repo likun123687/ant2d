@@ -44,7 +44,7 @@ private:
     std::array<ClearItem,4> clears_;
 
     ResManager *rm_;
-    std::unique_ptr<UniformblockBuffer> ubb_;
+    std::unique_ptr<UniformblockBuffer> uniformblock_buffer_;
     std::unique_ptr<RenderContext> ctx_;
 
 public:
