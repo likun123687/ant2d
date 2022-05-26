@@ -2,12 +2,12 @@
 
 #include <asset/shdc.h>
 
-namespace bk {
+namespace ant2d {
 
-typedef const sg_shader_desc* (*shader_desc_func)(sg_backend backend);
-typedef int (*attr_slot_func)(const char* attr_name);
-typedef int (*uniformblock_slot_func)(sg_shader_stage stage, const char* ub_name);
-typedef size_t (*uniformblock_size_func)(sg_shader_stage stage, const char* ub_name);
+using shader_desc_func = const sg_shader_desc* (*)(sg_backend backend);
+using attr_slot_func = int (*)(const char* attr_name);
+using uniformblock_slot_func = int (*)(sg_shader_stage stage, const char* ub_name);
+using uniformblock_size_func = size_t (*)(sg_shader_stage stage, const char* ub_name);
 
 enum ShaderType {
     kBatch,

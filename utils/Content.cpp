@@ -11,7 +11,7 @@ using namespace ant2d;
 #if BK_PLATFORM_WINDOWS
 Content::Content()
 {
-    _assetPath = fs::current_path().string();
+    asset_path_ = fs::current_path().string();
 }
 #endif
 
@@ -19,22 +19,22 @@ Content::~Content()
 { }
 
 #if BK_PLATFORM_WINDOWS
-bool Content::isFileExist(const std::string& filePath)
+bool Content::IsFileExist(const std::string& file_path)
 {
-    auto strPath = fs::path(filePath);
-    if (!isAbsolutePath(filePath))
+    auto str_path = fs::path(file_path);
+    if (!IsAbsolutePath(file_path))
     {
-        strPath = fs::path(_assetPath) / strPath;
+        str_path = fs::path(asset_path_) / str_path;
     }
-    return fs::exists(strPath);
+    return fs::exists(str_path);
 }
 #endif
 
 
 #if BK_PLATFORM_WINDOWS
-bool Content::isAbsolutePath(const std::string& strPath)
+bool Content::IsAbsolutePath(const std::string& str_path)
 {
-    return fs::path(strPath).is_absolute();
+    return fs::path(str_path).is_absolute();
     //if (strPath.size() > 2
     //    && ((strPath[0] >= 'a' && strPath[0] <= 'z') || (strPath[0] >= 'A' && strPath[0] <= 'Z'))
     //    && strPath[1] == ':')
@@ -46,11 +46,11 @@ bool Content::isAbsolutePath(const std::string& strPath)
 #endif
 
 #if BK_PLATFORM_WINDOWS
-std::string Content::getFullPathForDirectoryAndFilename(const std::string& directory, const std::string& filename)
+std::string Content::GetFullPathForDirectoryAndFilename(const std::string& directory, const std::string& file_name)
 {
-    auto rootPath = fs::path(isAbsolutePath(directory) ? "" : _assetPath);
-    std::string fullPath = (rootPath / directory / filename).string();
-    if (!isFileExist(fullPath))
+    auto rootPath = fs::path(IsAbsolutePath(directory) ? "" : asset_path_);
+    std::string fullPath = (rootPath / directory / file_name).string();
+    if (!IsFileExist(fullPath))
     {
         fullPath.clear();
     }
@@ -58,9 +58,9 @@ std::string Content::getFullPathForDirectoryAndFilename(const std::string& direc
 }
 #endif
 
-std::string Content::getAssetPath()
+std::string Content::GetAssetPath()
 {
-    return _assetPath;
+    return asset_path_;
 }
 
 static std::tuple<std::string, std::string> splitDirectoryAndFilename(const std::string& filePath)
@@ -76,9 +76,9 @@ static std::tuple<std::string, std::string> splitDirectoryAndFilename(const std:
     return std::make_tuple(path, file);
 }
 
-std::string Content::getFullPath(const std::string& filename)
+std::string Content::GetFullPath(const std::string& file_name)
 {
-    Slice targetFile = filename;
+    Slice targetFile = file_name;
     targetFile.trimSpace();
 
     while (targetFile.size() > 1 &&
@@ -87,54 +87,54 @@ std::string Content::getFullPath(const std::string& filename)
         targetFile.skipRight(1);
     }
 
-    if (isAbsolutePath(targetFile))
+    if (IsAbsolutePath(targetFile))
     {
         return targetFile;
     }
 
-    auto it  = _fullPathCache.find(targetFile);
-    if (it != _fullPathCache.end())
+    auto it  = full_path_cache_.find(targetFile);
+    if (it != full_path_cache_.end())
     {
         return it->second;
     }
 
     std::string path, file, fullPath;
     auto fname = fs::path(targetFile.begin(), targetFile.end()).lexically_normal();
-    for (const auto& searchPath : _searchPaths)
+    for (const auto& searchPath : search_paths_)
     {
         std::tie(path, file) = splitDirectoryAndFilename((fs::path(searchPath) / fname).string());
-        fullPath = getFullPathForDirectoryAndFilename(path, file);
+        fullPath = GetFullPathForDirectoryAndFilename(path, file);
         if (!fullPath.empty())
         {
-            _fullPathCache[fname.string()] = fullPath;
+            full_path_cache_[fname.string()] = fullPath;
             return fullPath;
         }
     }
 
     std::tie(path, file) = splitDirectoryAndFilename(targetFile);
-    fullPath = getFullPathForDirectoryAndFilename(path, file);
+    fullPath = GetFullPathForDirectoryAndFilename(path, file);
     if (!fullPath.empty())
     {
-        _fullPathCache[targetFile] = fullPath;
+        full_path_cache_[targetFile] = fullPath;
         return fullPath;
     }
 
     return fullPath;
 }
 
-std::pair<OwnArray<uint8_t>, size_t> Content::loadFile(const std::string& filename)
+std::pair<OwnArray<uint8_t>, size_t> Content::LoadFile(const std::string& file_name)
 {
     int64_t size = 0;
-    uint8_t* data = Content::_loadFileUnsafe(filename, size);
+    uint8_t* data = Content::LoadFileUnsafe(file_name, size);
     return {OwnArray<uint8_t>(data), s_cast<size_t>(size)};
 }
 
-uint8_t* Content::_loadFileUnsafe(const std::string& filename, int64_t& size)
+uint8_t* Content::LoadFileUnsafe(const std::string& file_name, int64_t& size)
 {
-    if (filename.empty()) {
+    if (file_name.empty()) {
         return nullptr;
     }
-    std::string fullPath = Content::getFullPath(filename);
+    std::string fullPath = Content::GetFullPath(file_name);
     auto file_io = xtr::cfile(fullPath.c_str(), xtr::cfile::mode::read | xtr::cfile::mode::binary);
 
     size = fs::file_size(fullPath);

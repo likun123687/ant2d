@@ -2,11 +2,11 @@
 #include <cinttypes>
 #include <iostream>
 #include <filesystem>
-#include <utils/Content.h>
+#include <utils/content.h>
 #include <gfx/bk/buffer.h>
-#include <utils/Debug.h>
+#include <utils/debug.h>
 #include <gfx/bk/shader.h>
-#include <gfx/bk/uniform.h>
+#include <gfx/bk/uniformblock.h>
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
@@ -14,35 +14,34 @@
 #include <tests/mocks/sokol_api.h>
 
 using namespace ant2d;
-using namespace bk;
 
 TEST_CASE("test_content")
 {
     namespace fs = std::filesystem;
-    auto asset_path = SharedContent.getAssetPath();
+    auto asset_path = SharedContent.GetAssetPath();
     std::cout << "asset path "<< asset_path <<std::endl;
 
     auto file_not_exist = "assets/face.png333";
-    REQUIRE( SharedContent.getFullPath(file_not_exist) == std::string() );
+    REQUIRE( SharedContent.GetFullPath(file_not_exist) == std::string() );
 
     auto file_exist = "assets/face.png";
-    auto full_path_file_exist = SharedContent.getFullPath(file_exist);
+    auto full_path_file_exist = SharedContent.GetFullPath(file_exist);
     REQUIRE(!full_path_file_exist.empty());
 
     auto test_path = fs::path(asset_path) / file_exist;
     REQUIRE(fs::path(full_path_file_exist) == test_path);
 
 #ifdef _WIN32
-    REQUIRE(SharedContent.isAbsolutePath("C:\\testfile.txt") == true);
+    REQUIRE(SharedContent.IsAbsolutePath("C:\\testfile.txt") == true);
 #else
-    REQUIRE(SharedContent.isAbsolutePath("/abc/abc.txt") == true);
+    REQUIRE(SharedContent.IsAbsolutePath("/abc/abc.txt") == true);
 #endif
-    REQUIRE(SharedContent.isAbsolutePath("testfile\\aa\\bb.txt") == false);
+    REQUIRE(SharedContent.IsAbsolutePath("testfile\\aa\\bb.txt") == false);
 
-    REQUIRE(SharedContent.isFileExist(file_exist) == true);
-    REQUIRE(SharedContent.isFileExist(file_not_exist) == false);
+    REQUIRE(SharedContent.IsFileExist(file_exist) == true);
+    REQUIRE(SharedContent.IsFileExist(file_not_exist) == false);
 
-    auto file_content = SharedContent.loadFile("assets/file1.txt");
+    auto file_content = SharedContent.LoadFile("assets/file1.txt");
     auto result = std::string(reinterpret_cast<char *>(file_content.first.get()), file_content.second);
     auto expect_result = std::string("111122223333");
     REQUIRE(result == expect_result);
@@ -54,7 +53,7 @@ TEST_CASE("test_buffer")
 
     uint32_t size = 64;
     auto buffer = new uint8_t[static_cast<size_t>(size)];
-    auto index_buffer = bk::IndexBuffer();
+    auto index_buffer = IndexBuffer();
 
     sg_buffer_desc desc = {};
     desc.type = SG_BUFFERTYPE_INDEXBUFFER;
@@ -79,7 +78,7 @@ TEST_CASE("test_texture")
     sg_image image_id;
     image_id.id = 1;
 
-    auto file_content = SharedContent.loadFile("assets/face.png");
+    auto file_content = SharedContent.LoadFile("assets/face.png");
     auto image_data = ImageData(file_content.first.get(), file_content.second);
 
     trompeloeil::sequence seq;
@@ -89,11 +88,11 @@ TEST_CASE("test_texture")
     .RETURN(image_id);
 
     REQUIRE_CALL(sokol_gfx_api_mock, sg_init_image(_, _))
-    .LR_WITH((_1.id == image_id.id && _2->width == image_data.width))
-    .LR_WITH(_2->data.subimage[0][0].size == image_data.width * image_data.height * 4)
+    .LR_WITH((_1.id == image_id.id && _2->width == image_data.width_))
+    .LR_WITH(_2->data.subimage[0][0].size == image_data.width_ * image_data.height_ * 4)
     .IN_SEQUENCE(seq);
 
-    auto texture = bk::Texture2D();
+    auto texture = Texture2D();
     texture.Create(image_data);
 }
 
@@ -107,20 +106,20 @@ TEST_CASE("test_debug")
 
 TEST_CASE("test_image_data")
 {
-    auto file_content = SharedContent.loadFile("assets/face.png");
+    auto file_content = SharedContent.LoadFile("assets/face.png");
     auto image_data = ImageData(file_content.first.get(), file_content.second);
-    REQUIRE((image_data.width == 512 && image_data.height == 512 \
-            && image_data.size == 40855 && image_data.num_channels == 4));
+    REQUIRE((image_data.width_ == 512 && image_data.height_ == 512 \
+            && image_data.size_ == 40855 && image_data.num_channels_ == 4));
 }
 
 TEST_CASE("test_shader")
 {
-    auto shader = bk::Shader();
+    auto shader = Shader();
     shader.Create(kBatch);
 }
 
 TEST_CASE("test_uniform")
 {
-    auto uniformblock = bk::Uniformblock();
+    auto uniformblock = Uniformblock();
     uniformblock.Create(kBatch, SG_SHADERSTAGE_FS, "aaa");
 }

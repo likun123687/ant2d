@@ -1,7 +1,7 @@
 #include <asset/shader_utils.h>
-using namespace bk;
+namespace ant2d {
 
-shader_desc_func bk::GetShaderDescFunc(ShaderType type)
+shader_desc_func GetShaderDescFunc(ShaderType type)
 {
     static shader_desc_func desc_func_list[kMesh+1];
     static bool valid;
@@ -13,7 +13,7 @@ shader_desc_func bk::GetShaderDescFunc(ShaderType type)
     return desc_func_list[type];
 }
 
-attr_slot_func bk::GetAttrSlotFunc(ShaderType type)
+attr_slot_func GetAttrSlotFunc(ShaderType type)
 {
     static attr_slot_func attr_slot_func_list[kMesh+1];
     static bool valid;
@@ -25,7 +25,7 @@ attr_slot_func bk::GetAttrSlotFunc(ShaderType type)
     return attr_slot_func_list[type];
 }
 
-uniformblock_slot_func bk::GetUniformblockSlotFunc(ShaderType type)
+uniformblock_slot_func GetUniformblockSlotFunc(ShaderType type)
 {
     static uniformblock_slot_func uniformblock_slot_func_list[kMesh+1];
     static bool valid;
@@ -37,7 +37,7 @@ uniformblock_slot_func bk::GetUniformblockSlotFunc(ShaderType type)
     return uniformblock_slot_func_list[type];
 }
 
-uniformblock_size_func bk::GetUniformblockSizeFunc(ShaderType type)
+uniformblock_size_func GetUniformblockSizeFunc(ShaderType type)
 {
     static uniformblock_size_func uniformblock_size_func_list[kMesh+1];
     static bool valid;
@@ -47,4 +47,6 @@ uniformblock_size_func bk::GetUniformblockSizeFunc(ShaderType type)
       uniformblock_size_func_list[kMesh] = &mesh_uniformblock_size;
     }
     return uniformblock_size_func_list[type];
+}
+
 }

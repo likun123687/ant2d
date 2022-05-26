@@ -1,3 +1,4 @@
-namespace bk {
+#pragma once
+namespace ant2d {
 
 }

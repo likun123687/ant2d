@@ -1,6 +1,6 @@
-#include <gfx/bk/uniform.h>
+#include <gfx/bk/uniformblock.h>
 
-using namespace bk;
+using namespace ant2d;
 
 uint8_t Uniformblock::Create(ShaderType type, sg_shader_stage stage, const std::string& name)
 {
@@ -68,16 +68,24 @@ void UniformblockBuffer::WriteUInt16(uint16_t value)
     Copy(u16, len);
 }
 
-void UniformblockBuffer::Copy(const void *ptr, uint32_t size)
+void UniformblockBuffer::Copy(const uint8_t *ptr, uint32_t size)
 {
-    const char* d = static_cast<const char*>(ptr);
-    std::copy(d, d+size, &*buffer_.begin() + pos_);
+    //const char* d = static_cast<const char*>(ptr);
+    std::copy(ptr, ptr+size, &*buffer_.begin() + pos_);
     pos_ += size;
 }
 
 void *UniformblockBuffer::ReadPointer(uint32_t size)
 {
-    auto ptr = &buffer_[size];
+    auto ptr = &buffer_[pos_];
     pos_ += size;
     return ptr;
+}
+
+
+uint32_t UniformblockBuffer::ReadUInt32()
+{
+    auto u32 = (uint32_t *)(&buffer_[pos_]);
+    pos_ += 4;
+    return *u32;
 }

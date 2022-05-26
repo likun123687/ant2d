@@ -1,4 +1,6 @@
-namespace bk {
+#pragma once
+
+namespace ant2d {
 
 // format <x,y,u,v rgba>
 sg_vertex_format P4C4[] = {

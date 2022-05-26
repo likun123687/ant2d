@@ -1,7 +1,7 @@
 #include <gfx/bk/shader.h>
 #include <utils/Debug.h>
 
-using namespace bk;
+using namespace ant2d;
 void Shader::Create(ShaderType type)
 {
     auto shader_desc_func = GetShaderDescFunc(type);
@@ -18,11 +18,11 @@ void Shader::AddAttributeBinding(std::string attr,  uint32_t stream,  sg_vertex_
         return;
     }
 
-    auto bind = &AttrBinds_[numAttr_];
-    bind->slot = static_cast<uint16_t>(slot);
-    bind->stream = static_cast<uint16_t>(stream);
-    bind->vertex_format = vertex_format;
-    numAttr_++;
+    auto bind = &attr_binds_[num_attr_];
+    bind->slot_ = static_cast<uint16_t>(slot);
+    bind->stream_ = static_cast<uint16_t>(stream);
+    bind->vertex_format_ = vertex_format;
+    num_attr_++;
 }
 
 ShaderType Shader::GetType()
@@ -35,3 +35,8 @@ void Shader::Destroy()
     sg_destroy_shader(sg_shd_id_);
 }
 
+
+sg_shader Shader::GetShdId()
+{
+    return sg_shd_id_;
+}

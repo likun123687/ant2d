@@ -63,20 +63,24 @@ add_includedirs("$(projectdir)/third_party/cpp-stdio-file-wrapper/include",  {pu
 add_includedirs("$(projectdir)/third_party/sokol", {public = true})
 add_includedirs("$(projectdir)/third_party/trompeloeil/include", {public = true})
 add_includedirs("$(projectdir)/third_party/fmt/include", {public = true})
+add_includedirs("$(projectdir)/third_party/ZipIterator", {public = true})
 
 target("ant2d")
     set_kind("static")
     add_packages("stb") 
     add_files("asset/*.glsl") --最好加在比较前面
-    add_files("utils/Content.cpp")
+    add_files("utils/content.cpp")
     add_files("gfx/bk/buffer.cpp")
     add_files("gfx/bk/texture.cpp")
-    add_files("asset/image.cpp")
+    add_files("asset/image_data.cpp")
     add_files("asset/stb_image.cpp")
     add_files("asset/shader_utils.cpp")
     add_files("gfx/bk/shader.cpp")
-    add_files("gfx/bk/R.cpp")
+    add_files("gfx/bk/res_manager.cpp")
     add_files("gfx/bk/queue.cpp")
+    add_files("gfx/bk/render_context.cpp")
+    add_files("gfx/bk/uniformblock.cpp")
+    add_files("third_party/fmt/src/format.cc")
 
     if (not has_config("with_test")) then
         add_files("asset/shdc.cpp")
@@ -85,8 +89,6 @@ target("ant2d")
         add_files("tests/mocks/*.cpp")
     end
 
-    add_files("gfx/bk/uniform.cpp")
-    add_files("third_party/fmt/src/format.cc")
     if is_plat("windows") then
         add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})
     elseif is_plat("macosx", "iphoneos") then
