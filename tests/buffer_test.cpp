@@ -1,5 +1,5 @@
-#include <gfx/bk/buffer.h>
 #include <cinttypes>
+#include <gfx/bk/buffer.h>
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
@@ -8,7 +8,7 @@
 
 TEST_CASE("testBuffer")
 {
-    using trompeloeil::_;  // wild card for matching any value
+    using trompeloeil::_; // wild card for matching any value
 
     uint32_t size = 64;
     auto buffer = new uint8_t[static_cast<size_t>(size)];
@@ -24,9 +24,8 @@ TEST_CASE("testBuffer")
     buffer_id.id = 1;
 
     REQUIRE_CALL(sokol_gfx_api_mock, sg_make_buffer(_))
-    .WITH(_1->data.ptr == buffer && _1->data.size == size)
-    .RETURN(buffer_id);
+        .WITH(_1->data.ptr == buffer && _1->data.size == size)
+        .RETURN(buffer_id);
 
-    index_buffer.Create(buffer, size,0);
+    index_buffer.Create(buffer, size, 0);
 }
-

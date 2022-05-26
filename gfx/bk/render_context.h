@@ -4,8 +4,7 @@
 
 namespace ant2d {
 
-struct State
-{
+struct State {
     uint64_t rgb_write;
     uint64_t alpha_write;
     uint64_t depth_write;
@@ -35,14 +34,14 @@ struct State
 
 // zero means no depth-test
 struct StateDepth {
-   uint64_t less;
-   uint64_t lequal;
-   uint64_t equal;
-   uint64_t gequal;
-   uint64_t greater;
-   uint64_t not_equal;
-   uint64_t never;
-   uint64_t always;
+    uint64_t less;
+    uint64_t lequal;
+    uint64_t equal;
+    uint64_t gequal;
+    uint64_t greater;
+    uint64_t not_equal;
+    uint64_t never;
+    uint64_t always;
 } kStateDepth = {
     0x0000000000000010,
     0x0000000000000020,
@@ -54,7 +53,7 @@ struct StateDepth {
     0x0000000000000080,
 };
 
-sg_compare_func kCmpFunc[]{
+sg_compare_func kCmpFunc[] {
     SG_COMPAREFUNC_NEVER,
     SG_COMPAREFUNC_LESS,
     SG_COMPAREFUNC_EQUAL,
@@ -68,11 +67,11 @@ sg_compare_func kCmpFunc[]{
 struct {
     sg_blend_factor src;
     sg_blend_factor dst;
-}kBlend[] = {
-    {SG_BLENDFACTOR_ONE, SG_BLENDFACTOR_ZERO},
-    {SG_BLENDFACTOR_ONE, SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA},
-    {SG_BLENDFACTOR_SRC_ALPHA, SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA},
-    {SG_BLENDFACTOR_SRC_ALPHA, SG_BLENDFACTOR_ONE},
+} kBlend[] = {
+    { SG_BLENDFACTOR_ONE, SG_BLENDFACTOR_ZERO },
+    { SG_BLENDFACTOR_ONE, SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA },
+    { SG_BLENDFACTOR_SRC_ALPHA, SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA },
+    { SG_BLENDFACTOR_SRC_ALPHA, SG_BLENDFACTOR_ONE },
 };
 
 sg_primitive_type kPrimInfo[] = {
@@ -83,50 +82,54 @@ sg_primitive_type kPrimInfo[] = {
     SG_PRIMITIVETYPE_POINTS,
 };
 
-struct AppState{
+struct AppState {
     sg_pipeline pip;
     sg_bindings bind;
     sg_pass_action pass_action;
 };
 
-struct Stream
-{
+struct Stream {
     uint16_t vertex_buffer;
 };
 
-class Rect
-{
-    public:
-        uint16_t x_;
-        uint16_t y_;
-        uint16_t w_;
-        uint16_t h_;
+class Rect {
+public:
+    uint16_t x_;
+    uint16_t y_;
+    uint16_t w_;
+    uint16_t h_;
 
-        Rect():x_(0), y_(0), w_(0), h_(0)
-        {
-        }
+    Rect()
+        : x_(0)
+        , y_(0)
+        , w_(0)
+        , h_(0)
+    {
+    }
 
-        Rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h):x_(x), y_(y), w_(w), h_(h)
-        {
-        }
+    Rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h)
+        : x_(x)
+        , y_(y)
+        , w_(w)
+        , h_(h)
+    {
+    }
 
-        void clear()
-        {
-            x_ = 0;
-            y_ = 0;
-            w_ = 0;
-            h_ = 0;
-        }
+    void clear()
+    {
+        x_ = 0;
+        y_ = 0;
+        w_ = 0;
+        h_ = 0;
+    }
 
-        bool isZero()
-        {
-            return x_==0 && y_==0 && w_==0 && h_== 0;
-        }
-
+    bool isZero()
+    {
+        return x_ == 0 && y_ == 0 && w_ == 0 && h_ == 0;
+    }
 };
 
-class RenderDraw
-{
+class RenderDraw {
 public:
     void reset()
     {
@@ -151,38 +154,37 @@ public:
     uint64_t state_;
 };
 
-class RenderContext
-{
-    private:
-        ResManager *res_manager_;
-        UniformblockBuffer *uniformblock_buffer_;
-        Rect w_rect_;
-        float pixel_ratio_;
-        std::vector<Rect> clips_;
-        AppState app_state_;
-        sg_pipeline_desc pipeline_desc_;
+class RenderContext {
+private:
+    ResManager* res_manager_;
+    UniformblockBuffer* uniformblock_buffer_;
+    Rect w_rect_;
+    float pixel_ratio_;
+    std::vector<Rect> clips_;
+    AppState app_state_;
+    sg_pipeline_desc pipeline_desc_;
 
-        void UpdateScissor(RenderDraw &draw, RenderDraw &current_state);
-        void UpdateStencil(RenderDraw &draw, RenderDraw &current_state);
-        void UpdateStateBind(RenderDraw &draw, RenderDraw &current_state);
-        void UpdateProgram(RenderDraw &draw, RenderDraw &current_state, SortKey &sort_key, uint16_t &shader_id, bool &program_changed);
-        void UpdateUniformblockBind(RenderDraw &draw, RenderDraw &current_state);
-        void UpdateTextureBind(RenderDraw &draw, RenderDraw &current_state, bool program_changed);
-        void UpdateBufferBind(RenderDraw &draw, RenderDraw &current_state, uint16_t shader_id);
-        void DoDraw(RenderDraw &draw, RenderDraw &current_state);
+    void UpdateScissor(RenderDraw& draw, RenderDraw& current_state);
+    void UpdateStencil(RenderDraw& draw, RenderDraw& current_state);
+    void UpdateStateBind(RenderDraw& draw, RenderDraw& current_state);
+    void UpdateProgram(RenderDraw& draw, RenderDraw& current_state, SortKey& sort_key, uint16_t& shader_id, bool& program_changed);
+    void UpdateUniformblockBind(RenderDraw& draw, RenderDraw& current_state);
+    void UpdateTextureBind(RenderDraw& draw, RenderDraw& current_state, bool program_changed);
+    void UpdateBufferBind(RenderDraw& draw, RenderDraw& current_state, uint16_t shader_id);
+    void DoDraw(RenderDraw& draw, RenderDraw& current_state);
 
-    public:
-        RenderContext(ResManager *res_manager, UniformblockBuffer *uniformblock_buffer);
-        void Reset();
-        uint16_t AddClipRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h);
+public:
+    RenderContext(ResManager* res_manager, UniformblockBuffer* uniformblock_buffer);
+    void Reset();
+    uint16_t AddClipRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h);
 
-        void Draw(std::vector<uint64_t> sort_keys, std::vector<uint16_t> sort_values,\
-                std::vector<RenderDraw> draw_list);
+    void Draw(std::vector<uint64_t> sort_keys, std::vector<uint16_t> sort_values,
+        std::vector<RenderDraw> draw_list);
 
-        void BindUniformblock(uint32_t begin, uint32_t end);
-        void BindState(uint64_t changed_flags, uint64_t new_flags);
-        void SetwRect(uint16_t w, uint16_t h);
-        void SetPixelRatio(float pixel_ratio);
-        void BindAttributes(Shader *sh, RenderDraw *draw);
+    void BindUniformblock(uint32_t begin, uint32_t end);
+    void BindState(uint64_t changed_flags, uint64_t new_flags);
+    void SetwRect(uint16_t w, uint16_t h);
+    void SetPixelRatio(float pixel_ratio);
+    void BindAttributes(Shader* sh, RenderDraw* draw);
 };
 }

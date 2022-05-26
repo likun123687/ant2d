@@ -17,7 +17,7 @@ void Texture2D::Update(const ImageData& img)
     return sg_update_image(id_, &image_data);
 }
 
-void  Texture2D::Destroy()
+void Texture2D::Destroy()
 {
     return sg_destroy_image(id_);
 }
@@ -41,4 +41,3 @@ sg_image Texture2D::NewTexture(const ImageData& img)
     sg_init_image(image_id, &desc);
     return image_id;
 }
-

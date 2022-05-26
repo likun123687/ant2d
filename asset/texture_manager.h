@@ -1,7 +1,6 @@
 #pragma once
-class TextureManager
-{
-    public:
+class TextureManager {
+public:
     uint16_t loadTexture(std::string file)
     {
         string fullPath = SharedContent.getFullPath(file);
@@ -24,7 +23,8 @@ class TextureManager
             loadTexture(file)
         }
     }
-    private:
-        std::map<std::string, idCount> repo_;
-        std::map<std::string, uint32_t> names_;
+
+private:
+    std::map<std::string, idCount> repo_;
+    std::map<std::string, uint32_t> names_;
 }

@@ -1,17 +1,17 @@
 #pragma once
 
 #if BK_PLATFORM_WINDOWS
-    #define SOKOL_D3D11
+#define SOKOL_D3D11
 #elif BK_PLATFORM_IOS
-    #define SOKOL_METAL
+#define SOKOL_METAL
 #elif BK_PLATFORM_ANDROID
-    #define SOKOL_GLES3
+#define SOKOL_GLES3
 #elif BK_PLATFORM_OSX
-    #define SOKOL_METAL
+#define SOKOL_METAL
 #elif BK_PLATFORM_DUMMY
-    #define SOKOL_DUMMY_BACKEND
+#define SOKOL_DUMMY_BACKEND
 #else
-    #error "not support platform yet"
+#error "not support platform yet"
 #endif
 
 #include "sokol_app.h"

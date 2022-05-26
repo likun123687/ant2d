@@ -1,16 +1,13 @@
 
-namespace ant2d
-{
-    class noncopyable
-    {
-        public:
-            noncopyable(const noncopyable&) = delete;
-            void operator=(const noncopyable&) = delete;
+namespace ant2d {
+class noncopyable {
+public:
+    noncopyable(const noncopyable&) = delete;
+    void operator=(const noncopyable&) = delete;
 
-        protected:
-            noncopyable() = default;
-            ~noncopyable() = default;
-    };
+protected:
+    noncopyable() = default;
+    ~noncopyable() = default;
+};
 
-}  // namespace ant2d
-
+} // namespace ant2d

@@ -1,11 +1,13 @@
-#include <gfx/bk/queue.h>
 #include "ZipIterator.hpp"
 #include <algorithm>
+#include <gfx/bk/queue.h>
 
 using namespace ant2d;
 
-RenderQueue::RenderQueue(ResManager *R):uniformblock_buffer_(new UniformblockBuffer()),
-        ctx_(new RenderContext(R, uniformblock_buffer_.get())), rm_(R)
+RenderQueue::RenderQueue(ResManager* R)
+    : uniformblock_buffer_(new UniformblockBuffer())
+    , ctx_(new RenderContext(R, uniformblock_buffer_.get()))
+    , rm_(R)
 {
 }
 
@@ -34,7 +36,7 @@ void RenderQueue::SetIndexBuffer(uint16_t id, uint16_t first_index, uint16_t num
 void RenderQueue::SetVertexBuffer(uint8_t stream, uint16_t id)
 {
     if (stream < 0 || stream >= 2) {
-        //todo err handle
+        // todo err handle
         return;
     }
     auto vbStream = &draw_call_.vertex_buffers_[stream];
@@ -44,15 +46,15 @@ void RenderQueue::SetVertexBuffer(uint8_t stream, uint16_t id)
 void RenderQueue::SetTexture(uint8_t stage, uint16_t tex_id)
 {
     if (stage < 0 || stage >= 2) {
-        //log.Printf("Not suppor texture location: %d", stage)
-        //todo err handle
+        // log.Printf("Not suppor texture location: %d", stage)
+        // todo err handle
         return;
     }
 
     draw_call_.textures_[stage] = tex_id;
 }
 
-void RenderQueue::SetUniformblock(uint16_t id, uint8_t *ptr)
+void RenderQueue::SetUniformblock(uint16_t id, uint8_t* ptr)
 {
     auto ub = rm_->GetUniformblock(id);
     if (ub) {
@@ -82,26 +84,25 @@ void RenderQueue::SetScissorCached(uint16_t id)
 void RenderQueue::SetViewScissor(uint8_t id, uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 {
     if (id < 0 || id >= 4) {
-        //log.Printf("Not support view id: %d", id)
+        // log.Printf("Not support view id: %d", id)
         return;
     }
-    scissors_[id] = Rect{x, y, width, height};
+    scissors_[id] = Rect { x, y, width, height };
 }
 
 void RenderQueue::SetViewPort(uint8_t id, uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 {
     if (id < 0 || id >= 4) {
-        //log.Printf("Not support view id: %d", id)
+        // log.Printf("Not support view id: %d", id)
         return;
     }
-    viewports_[id] = Rect{x, y, width, height};
+    viewports_[id] = Rect { x, y, width, height };
 }
-
 
 void RenderQueue::SetViewClear(uint8_t id, uint16_t flags, uint32_t rgba, float depth, uint8_t stencil)
 {
     if (id < 0 || id >= 4) {
-        //log.Printf("Not support view id: %d", id)
+        // log.Printf("Not support view id: %d", id)
         return;
     }
 
@@ -116,7 +117,7 @@ uint32_t RenderQueue::Submit(uint8_t id, uint16_t shader, uint64_t depth)
 {
     uniformblock_end_ = static_cast<uint16_t>(uniformblock_buffer_->GetPos());
     sort_key_.layer_ = static_cast<uint16_t>(id);
-    sort_key_.order_ = static_cast<uint16_t>(depth+0xFFFF>>1);
+    sort_key_.order_ = static_cast<uint16_t>(depth + 0xFFFF >> 1);
 
     sort_key_.shader_ = shader;
     sort_key_.blend_ = 0;
@@ -140,22 +141,22 @@ int RenderQueue::Flush()
 {
     auto num = draw_call_num_;
 
-    std::vector<uint64_t> sort_keys = {sort_keys_.begin(), sort_keys_.begin() + num};
-    std::vector<uint16_t> sort_values = {sort_values_.begin(), sort_values_.begin() + num};
-    std::vector<RenderDraw> draw_list = {draw_call_list_.begin(), draw_call_list_.begin() + num};
+    std::vector<uint64_t> sort_keys = { sort_keys_.begin(), sort_keys_.begin() + num };
+    std::vector<uint16_t> sort_values = { sort_values_.begin(), sort_values_.begin() + num };
+    std::vector<RenderDraw> draw_list = { draw_call_list_.begin(), draw_call_list_.begin() + num };
 
     auto kv_zip = Zip(sort_keys, sort_values);
     switch (sort_mode_) {
-        case SortMode::kAscending:
-            std::sort(kv_zip.begin(), kv_zip.end(), [](const auto &x, const auto &y) {
-                return std::get<0>(x) > std::get<0>(y);
-            });
-            break;
-        case SortMode::kDescending:
-            std::sort(kv_zip.begin(), kv_zip.end(), [](const auto &x, const auto &y) {
-                return std::get<0>(x) < std::get<0>(y);
-            });
-            break;
+    case SortMode::kAscending:
+        std::sort(kv_zip.begin(), kv_zip.end(), [](const auto& x, const auto& y) {
+            return std::get<0>(x) > std::get<0>(y);
+        });
+        break;
+    case SortMode::kDescending:
+        std::sort(kv_zip.begin(), kv_zip.end(), [](const auto& x, const auto& y) {
+            return std::get<0>(x) < std::get<0>(y);
+        });
+        break;
     }
 
     ctx_->Draw(std::move(sort_keys), std::move(sort_values), std::move(draw_list));

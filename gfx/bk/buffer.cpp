@@ -1,9 +1,9 @@
-#include <gfx/bk/buffer.h>
 #include <cassert>
+#include <gfx/bk/buffer.h>
 
 using namespace ant2d;
 
-void IndexBuffer::Create(const uint8_t *data, size_t size, uint16_t flags)
+void IndexBuffer::Create(const uint8_t* data, size_t size, uint16_t flags)
 {
     size_ = size;
     flags_ = flags;
@@ -22,16 +22,16 @@ void IndexBuffer::Create(const uint8_t *data, size_t size, uint16_t flags)
     assert(id_.id != SG_INVALID_ID);
 }
 
-void IndexBuffer::Update(const uint8_t *data, size_t size, size_t offset, bool discard)
+void IndexBuffer::Update(const uint8_t* data, size_t size, size_t offset, bool discard)
 {
     assert(id_.id != SG_INVALID_ID);
     if (discard) {
         Destroy();
         Create(nullptr, size, flags_);
     }
-    sg_range ran = {data, size};
-    //ran.ptr = data;
-    //ran.size = size;
+    sg_range ran = { data, size };
+    // ran.ptr = data;
+    // ran.size = size;
     sg_update_buffer(id_, &ran);
 }
 
@@ -46,7 +46,7 @@ sg_buffer IndexBuffer::GetId() const
     return id_;
 }
 
-void VertexBuffer::Create(const uint8_t *data, size_t size, uint16_t layout, uint16_t flags)
+void VertexBuffer::Create(const uint8_t* data, size_t size, uint16_t layout, uint16_t flags)
 {
     size_ = size;
     layout_ = layout;
@@ -64,7 +64,7 @@ void VertexBuffer::Create(const uint8_t *data, size_t size, uint16_t layout, uin
     assert(id_.id != SG_INVALID_ID);
 }
 
-void VertexBuffer::Update(const uint8_t *data, size_t size, size_t offset, bool discard)
+void VertexBuffer::Update(const uint8_t* data, size_t size, size_t offset, bool discard)
 {
     assert(id_.id != SG_INVALID_ID);
     if (discard) {

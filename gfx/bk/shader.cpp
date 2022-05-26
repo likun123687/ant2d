@@ -9,7 +9,7 @@ void Shader::Create(ShaderType type)
     type_ = type;
 }
 
-void Shader::AddAttributeBinding(std::string attr,  uint32_t stream,  sg_vertex_format vertex_format)
+void Shader::AddAttributeBinding(std::string attr, uint32_t stream, sg_vertex_format vertex_format)
 {
     auto func = GetAttrSlotFunc(type_);
     int slot = func(attr.c_str());
@@ -34,7 +34,6 @@ void Shader::Destroy()
 {
     sg_destroy_shader(sg_shd_id_);
 }
-
 
 sg_shader Shader::GetShdId()
 {
