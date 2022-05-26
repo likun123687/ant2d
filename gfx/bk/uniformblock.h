@@ -57,7 +57,7 @@ namespace ant2d {
             bool IsEmpty();
             void WriteUInt32(uint32_t value);
             void WriteUInt16(uint16_t value);
-            void Copy(const uint8_t *ptr, uint32_t size);
+            void Copy(const void *ptr, uint32_t size);
             void *ReadPointer(uint32_t size);
             uint32_t ReadUInt32();
 

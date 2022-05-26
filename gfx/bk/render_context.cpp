@@ -1,5 +1,4 @@
 #include <gfx/bk/render_context.h>
-#include <gfx/bk/sort_key.h>
 
 using namespace ant2d;
 
@@ -26,6 +25,106 @@ uint16_t RenderContext::AddClipRect(uint16_t x, uint16_t y, uint16_t w, uint16_t
     return index;
 }
 
+void RenderContext::UpdateScissor(RenderDraw &draw, RenderDraw &current_state)
+{
+    if (draw.scissor_ != current_state.scissor_) {
+        current_state.scissor_ = draw.scissor_;
+        auto clip = clips_[draw.scissor_];
+
+        if (!clip.isZero()) {
+            sg_apply_viewport(clip.x_, clip.y_, clip.w_, clip.h_, false);
+        }
+    }
+}
+
+
+void RenderContext::UpdateStencil(RenderDraw &draw, RenderDraw &current_state)
+{
+    auto new_stencil = draw.stencil_;
+    auto changed_stencil = current_state.stencil_ ^ draw.stencil_;
+    current_state.stencil_ = new_stencil;
+
+    if (changed_stencil != 0) {
+        if (new_stencil != 0) {
+            pipeline_desc_.stencil.enabled = true;
+        } else {
+            pipeline_desc_.stencil.enabled = false;
+        }
+    }
+}
+
+void RenderContext::UpdateStateBind(RenderDraw &draw, RenderDraw &current_state)
+{
+    uint64_t state_bits = kState.depth_write | kState.depth_test_mask | kState.rgb_write | kState.alpha_write | kState.blend_mask | kState.pt_mask;
+
+    auto new_flags = draw.state_;
+    auto changed_flags = current_state.state_ ^ draw.state_;
+    current_state.state_ = new_flags;
+
+    if ((state_bits & changed_flags) != 0) {
+        BindState(changed_flags, new_flags);
+        auto pt = new_flags & kState.pt_mask;
+        auto prim_index = static_cast<uint8_t>(pt >> kState.pt_shift);
+        //auto prim = g_PrimInfo[prim_index];
+        pipeline_desc_.primitive_type = kPrimInfo[prim_index];
+    }
+}
+
+void RenderContext::UpdateProgram(RenderDraw &draw, RenderDraw &current_state, SortKey& sort_key, uint16_t &shader_id, bool &program_changed)
+{
+    if (sort_key.shader_ != shader_id) {
+        shader_id = sort_key.shader_;
+        pipeline_desc_.shader = res_manager_->GetShader(shader_id)->GetShdId();
+        program_changed = true;
+    }
+}
+
+void RenderContext::UpdateUniformblockBind(RenderDraw &draw, RenderDraw &current_state)
+{
+    if (draw.uniformblock_begin_ < draw.uniformblock_end_) {
+        BindUniformblock(static_cast<uint32_t>(draw.uniformblock_begin_), static_cast<uint32_t>(draw.uniformblock_end_));
+    }
+}
+
+void RenderContext::UpdateTextureBind(RenderDraw &draw, RenderDraw &current_state, bool program_changed)
+{
+    for (int stage = 0; stage < 2; stage++){
+        auto bind = draw.textures_[stage];
+        auto current = current_state.textures_[stage];
+        if (kInvalidId != bind) {
+            if (current != bind || program_changed) {
+                auto texture = res_manager_->GetTexture(bind);
+                app_state_.bind.fs_images[stage] = texture->GetId();
+            }
+        }
+        current_state.textures_[stage] = bind;
+    }
+}
+
+
+void RenderContext::UpdateBufferBind(RenderDraw &draw, RenderDraw &current_state, uint16_t shader_id)
+{
+    auto shader = res_manager_->GetShader(shader_id);
+    BindAttributes(shader, &draw);
+
+    auto ib = draw.index_buffer_;
+    if (ib != kInvalidId && ib != current_state.index_buffer_) {
+        app_state_.bind.index_buffer = res_manager_->GetIndexBuffer(ib)->GetId();
+        current_state.index_buffer_ = ib;
+    }
+}
+
+void RenderContext::DoDraw(RenderDraw &draw, RenderDraw &current_state)
+{
+    pipeline_desc_.index_type = SG_INDEXTYPE_UINT16;
+    if (draw.index_buffer_ != kInvalidId) {
+        auto offset = int(draw.first_index_) * 2; // 2 = sizeOf(unsigned_short)
+        sg_draw(offset, draw.num_, 1);
+    } else {
+        sg_draw(draw.first_index_, draw.num_, 1);
+    }
+}
+
 void RenderContext::Draw(std::vector<uint64_t> sort_keys, std::vector<uint16_t> sort_values,
         std::vector<RenderDraw> draw_list)
 {
@@ -34,7 +133,6 @@ void RenderContext::Draw(std::vector<uint64_t> sort_keys, std::vector<uint16_t> 
     auto sort_key = SortKey{};
     uint8_t prim_index = static_cast<uint8_t>(static_cast<uint64_t>(0) >> kState.pt_shift);
     //uint64_t state_bits = State.kDepthWrite | ST.DEPTH_TEST_MASK | ST.RGB_WRITE | ST.ALPHA_WRITE | ST.BLEND_MASK | ST.PT_MASK;
-    uint64_t state_bits = kState.depth_write | kState.depth_test_mask | kState.rgb_write | kState.alpha_write | kState.blend_mask | kState.pt_mask;
 
     for (int i = 0; i < sort_keys.size(); i++) {
         auto encoded_key = sort_keys[i];
@@ -43,87 +141,30 @@ void RenderContext::Draw(std::vector<uint64_t> sort_keys, std::vector<uint16_t> 
 
         auto draw = draw_list[item_id];
 
-        auto newFlags = draw.state_;
-        auto changedFlags = current_state.state_ ^ draw.state_;
-        current_state.state_ = newFlags;
-
-        auto newStencil = draw.stencil_;
-        auto changedStencil = current_state.stencil_ ^ draw.stencil_;
-        current_state.stencil_ = newStencil;
-
         //scissor
-        if (draw.scissor_ != current_state.scissor_) {
-            current_state.scissor_ = draw.scissor_;
-            auto clip = clips_[draw.scissor_];
-
-            if (!clip.isZero()) {
-                sg_apply_viewport(clip.x_, clip.y_, clip.w_, clip.h_, false);
-            }
-        }
+        UpdateScissor(draw, current_state);
 
         //stencil
-        if (changedStencil != 0) {
-            if (newStencil != 0) {
-                pipeline_desc_.stencil.enabled = true;
-            } else {
-                pipeline_desc_.stencil.enabled = false;
-            }
-        }
+        UpdateStencil(draw, current_state);
 
         // 4. state binding
-        if ((state_bits & changedFlags) != 0) {
-            BindState(changedFlags, newFlags);
-            auto pt = newFlags & kState.pt_mask;
-            auto prim_index = static_cast<uint8_t>(pt >> kState.pt_shift);
-            //auto prim = g_PrimInfo[prim_index];
-            pipeline_desc_.primitive_type = kPrimInfo[prim_index];
-        }
+        UpdateStateBind(draw, current_state);
 
-        bool programChanged;
         // 5. Update program
-        if (sort_key.shader_ != shader_id) {
-            shader_id = sort_key.shader_;
-            pipeline_desc_.shader = res_manager_->GetShader(shader_id)->GetShdId();
-            programChanged = true;
-        }
+        bool program_changed;
+        UpdateProgram(draw, current_state, sort_key, shader_id ,program_changed);
 
         // 6. uniform binding
-        if (draw.uniformblock_begin_ < draw.uniformblock_end_) {
-            BindUniformblock(static_cast<uint32_t>(draw.uniformblock_begin_), static_cast<uint32_t>(draw.uniformblock_end_));
-        }
+        UpdateUniformblockBind(draw, current_state);
 
         //7 .texture bind
-        for (int stage = 0; stage < 2; stage++){
-            auto bind = draw.textures_[stage];
-            auto current = current_state.textures_[stage];
-            if (kInvalidId != bind) {
-                if (current != bind || programChanged) {
-                    auto texture = res_manager_->GetTexture(bind);
-                    app_state_.bind.fs_images[stage] = texture->GetId();
-                }
-            }
-            current_state.textures_[stage] = bind;
-        }
+        UpdateTextureBind(draw, current_state, program_changed);
 
         // 8. index & vertex binding TODO 优化 attribute 绑定
-        //auto shader = res_manager_.shaders[shader_id];
-        auto shader = res_manager_->GetShader(shader_id);
-        BindAttributes(shader, &draw);
-
-        auto ib = draw.index_buffer_;
-        if (ib != kInvalidId && ib != current_state.index_buffer_) {
-            app_state_.bind.index_buffer = res_manager_->GetIndexBuffer(ib)->GetId();
-            current_state.index_buffer_ = ib;
-        }
+        UpdateBufferBind(draw, current_state, shader_id);
 
         // 9. draw
-        pipeline_desc_.index_type = SG_INDEXTYPE_UINT16;
-        if (draw.index_buffer_ != kInvalidId) {
-            auto offset = int(draw.first_index_) * 2; // 2 = sizeOf(unsigned_short)
-            sg_draw(offset, draw.num_, 1);
-        } else {
-            sg_draw(draw.first_index_, draw.num_, 1);
-        }
+        DoDraw(draw, current_state);
     }
 }
 

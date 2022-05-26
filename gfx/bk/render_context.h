@@ -1,5 +1,6 @@
 #pragma once
 #include <gfx/bk/res_manager.h>
+#include <gfx/bk/sort_key.h>
 
 namespace ant2d {
 
@@ -160,6 +161,15 @@ class RenderContext
         std::vector<Rect> clips_;
         AppState app_state_;
         sg_pipeline_desc pipeline_desc_;
+
+        void UpdateScissor(RenderDraw &draw, RenderDraw &current_state);
+        void UpdateStencil(RenderDraw &draw, RenderDraw &current_state);
+        void UpdateStateBind(RenderDraw &draw, RenderDraw &current_state);
+        void UpdateProgram(RenderDraw &draw, RenderDraw &current_state, SortKey &sort_key, uint16_t &shader_id, bool &program_changed);
+        void UpdateUniformblockBind(RenderDraw &draw, RenderDraw &current_state);
+        void UpdateTextureBind(RenderDraw &draw, RenderDraw &current_state, bool program_changed);
+        void UpdateBufferBind(RenderDraw &draw, RenderDraw &current_state, uint16_t shader_id);
+        void DoDraw(RenderDraw &draw, RenderDraw &current_state);
 
     public:
         RenderContext(ResManager *res_manager, UniformblockBuffer *ubb);

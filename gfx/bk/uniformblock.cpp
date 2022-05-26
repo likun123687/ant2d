@@ -56,22 +56,21 @@ bool UniformblockBuffer::IsEmpty()
 
 void UniformblockBuffer::WriteUInt32(uint32_t value)
 {
-    auto u32 = reinterpret_cast<const uint8_t*>(&value);
-    auto len = sizeof(value);
-    Copy(u32, len);
+    //auto u32 = reinterpret_cast<const uint8_t*>(&value);
+    Copy(&value, sizeof(value));
 }
 
 void UniformblockBuffer::WriteUInt16(uint16_t value)
 {
-    auto u16 = reinterpret_cast<const uint8_t*>(&value);
-    auto len = sizeof(value);
-    Copy(u16, len);
+    //auto u16 = reinterpret_cast<const uint8_t*>(&value);
+    Copy(&value, sizeof(value));
 }
 
-void UniformblockBuffer::Copy(const uint8_t *ptr, uint32_t size)
+void UniformblockBuffer::Copy(const void *ptr, uint32_t size)
 {
-    //const char* d = static_cast<const char*>(ptr);
-    std::copy(ptr, ptr+size, &*buffer_.begin() + pos_);
+    const char* d = static_cast<const char*>(ptr);
+    //std::copy(ptr, ptr+size, &*buffer_.begin() + pos_);
+    std::copy(d, d+size, &*buffer_.begin() + pos_);
     pos_ += size;
 }
 
