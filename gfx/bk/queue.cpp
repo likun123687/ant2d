@@ -146,12 +146,12 @@ int RenderQueue::Flush()
 
     auto kv_zip = Zip(sort_keys, sort_values);
     switch (sort_mode_) {
-        case kAscending:
+        case SortMode::kAscending:
             std::sort(kv_zip.begin(), kv_zip.end(), [](const auto &x, const auto &y) {
                 return std::get<0>(x) > std::get<0>(y);
             });
             break;
-        case kDescending:
+        case SortMode::kDescending:
             std::sort(kv_zip.begin(), kv_zip.end(), [](const auto &x, const auto &y) {
                 return std::get<0>(x) < std::get<0>(y);
             });

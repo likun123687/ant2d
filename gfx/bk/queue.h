@@ -9,7 +9,7 @@
 
 namespace ant2d {
 
-enum SortMode {
+enum class SortMode {
     kSequential,
     kAscending,
     kDescending,

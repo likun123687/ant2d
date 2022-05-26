@@ -63,7 +63,7 @@ std::string Content::GetAssetPath()
     return asset_path_;
 }
 
-static std::tuple<std::string, std::string> splitDirectoryAndFilename(const std::string& filePath)
+static std::tuple<std::string, std::string> SplitDirectoryAndFilename(const std::string& filePath)
 {
     std::string file = filePath;
     std::string path;
@@ -102,7 +102,7 @@ std::string Content::GetFullPath(const std::string& file_name)
     auto fname = fs::path(targetFile.begin(), targetFile.end()).lexically_normal();
     for (const auto& searchPath : search_paths_)
     {
-        std::tie(path, file) = splitDirectoryAndFilename((fs::path(searchPath) / fname).string());
+        std::tie(path, file) = SplitDirectoryAndFilename((fs::path(searchPath) / fname).string());
         fullPath = GetFullPathForDirectoryAndFilename(path, file);
         if (!fullPath.empty())
         {
@@ -111,7 +111,7 @@ std::string Content::GetFullPath(const std::string& file_name)
         }
     }
 
-    std::tie(path, file) = splitDirectoryAndFilename(targetFile);
+    std::tie(path, file) = SplitDirectoryAndFilename(targetFile);
     fullPath = GetFullPathForDirectoryAndFilename(path, file);
     if (!fullPath.empty())
     {
