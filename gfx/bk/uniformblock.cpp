@@ -29,7 +29,7 @@ uint32_t Uniformblock::Encode(uint8_t stage, uint8_t slot, uint8_t size)
 }
 
 UniformblockBuffer::UniformblockBuffer()
-    : buffer_()
+    : buffer_(), size_(0), pos_(0)
 {
 }
 

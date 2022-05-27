@@ -184,8 +184,33 @@ TEST_CASE("test_uniform")
     REQUIRE(uniformblock.GetStage() == SG_SHADERSTAGE_FS);
     REQUIRE(uniformblock.GetShaderType() == kBatch);
 
+    uint32_t code = Uniformblock::Encode(1, 2, 3);
+    uint8_t stage = 0;
+    uint8_t slot = 0;
+    uint8_t size = 0;
+    Uniformblock::Decode(code, &stage, &slot, &size);
+    REQUIRE((stage == 1 && slot == 2 && size == 3));
 
+    UniformblockBuffer ubb = UniformblockBuffer();
+    REQUIRE(ubb.IsEmpty());
+    ubb.WriteUInt32(16);
+    ubb.WriteUInt32(32);
+    ubb.WriteUInt32(64);
+    ubb.Seek(0);
+    REQUIRE(16 == ubb.ReadUInt32());
+    REQUIRE(32 == ubb.ReadUInt32());
+    REQUIRE(64 == ubb.ReadUInt32());
+    REQUIRE(12 == ubb.GetPos());
 
+    ubb.Seek(0);
+    void *data = ubb.ReadPointer(4);
+    REQUIRE(*(static_cast<uint16_t *>(data)) == 16);
+
+    ubb.Seek(0);
+    uint8_t *data_ptr = new uint8_t[10];
+    ubb.Copy(data_ptr, 10);
+    delete[] data_ptr;
+    REQUIRE(10 == ubb.GetPos());
 
 }
 
@@ -230,11 +255,35 @@ TEST_CASE("test_sort_key")
 
 TEST_CASE("test_res_manager")
 {
+    using trompeloeil::_; // wild card for matching any value
+    trompeloeil::sequence seq;
+
+    ResManager res_manager = ResManager();
+
+    auto data = new uint8_t[64];
+    sg_buffer buffer_id;
+    buffer_id.id = 1;
+
+    REQUIRE_CALL(sokol_gfx_api_mock, sg_make_buffer(_))
+        .WITH(_1->data.ptr == data && _1->data.size == 64)
+        .IN_SEQUENCE(seq)
+        .TIMES(AT_LEAST(1))
+        .RETURN(buffer_id);
+
+    uint16_t index_id = 0;
+    IndexBuffer* ib = nullptr;
+    std::tie(index_id, ib) = res_manager.AllocIndexBuffer(data, 64);
+    IndexBuffer *ib1 = res_manager.GetIndexBuffer(index_id);
+    REQUIRE(ib == ib1);
+
+    std::tie(index_id, ib) = res_manager.AllocIndexBuffer(data, 64);
+    REQUIRE(ib == res_manager.GetIndexBuffer(index_id));
 }
+
 
 TEST_CASE("test_free_list")
 {
-    FreeList free_list =  FreeList();
+    FreeList free_list = FreeList();
     REQUIRE(free_list.Pop() == 0);
 
     free_list.Push(1);
