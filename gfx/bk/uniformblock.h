@@ -16,8 +16,8 @@ private:
 
 public:
     uint8_t Create(ShaderType type, sg_shader_stage stage, const std::string& name);
-    static void decode(uint32_t code, uint8_t* stage, uint8_t* slot, uint8_t* size);
-    static uint32_t encode(uint8_t stage, uint8_t slot, uint8_t size);
+    static void Decode(uint32_t code, uint8_t* stage, uint8_t* slot, uint8_t* size);
+    static uint32_t Encode(uint8_t stage, uint8_t slot, uint8_t size);
 
     uint8_t GetSlot() const
     {

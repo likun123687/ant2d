@@ -58,7 +58,7 @@ void RenderQueue::SetUniformblock(uint16_t id, uint8_t* ptr)
 {
     auto ub = rm_->GetUniformblock(id);
     if (ub) {
-        uint32_t opcode = Uniformblock::encode(ub->GetStage(), ub->GetSlot(), ub->GetSize());
+        uint32_t opcode = Uniformblock::Encode(ub->GetStage(), ub->GetSlot(), ub->GetSize());
         uniformblock_buffer_->WriteUInt32(opcode);
         uniformblock_buffer_->Copy(ptr, static_cast<uint32_t>(ub->GetSize()));
     }
@@ -132,7 +132,7 @@ uint32_t RenderQueue::Submit(uint8_t id, uint16_t shader, uint64_t depth)
     draw_call_list_[draw_call_num_] = draw_call_;
     draw_call_num_++;
 
-    draw_call_.reset();
+    draw_call_.Reset();
     uniformblock_begin_ = static_cast<uint16_t>(uniformblock_buffer_->GetPos());
     return 0;
 }

@@ -30,6 +30,10 @@ const uint16_t kMaxShader = 32;
 
 class FreeList {
 public:
+    FreeList():slots_()
+    {
+    }
+
     uint16_t Pop()
     {
         uint16_t slot = 0;

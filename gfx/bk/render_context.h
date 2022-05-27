@@ -131,7 +131,7 @@ public:
 
 class RenderDraw {
 public:
-    void reset()
+    void Reset()
     {
         index_buffer_ = 0;
         first_index_ = 0;

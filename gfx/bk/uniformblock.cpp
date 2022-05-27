@@ -16,14 +16,14 @@ uint8_t Uniformblock::Create(ShaderType type, sg_shader_stage stage, const std::
     return slot_;
 }
 
-void Uniformblock::decode(uint32_t code, uint8_t* stage, uint8_t* slot, uint8_t* size)
+void Uniformblock::Decode(uint32_t code, uint8_t* stage, uint8_t* slot, uint8_t* size)
 {
     *stage = static_cast<uint8_t>((code >> 16) & 0xFF);
     *slot = static_cast<uint8_t>((code >> 8) & 0xFF);
     *size = static_cast<uint8_t>((code >> 0) & 0xFF);
 }
 
-uint32_t Uniformblock::encode(uint8_t stage, uint8_t slot, uint8_t size)
+uint32_t Uniformblock::Encode(uint8_t stage, uint8_t slot, uint8_t size)
 {
     return static_cast<uint32_t>(stage) << 16 | static_cast<uint32_t>(slot) << 8 | static_cast<uint32_t>(size) << 0;
 }

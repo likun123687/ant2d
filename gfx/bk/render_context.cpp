@@ -175,7 +175,7 @@ void RenderContext::BindUniformblock(uint32_t begin, uint32_t end)
         auto opcode = uniformblock_buffer_->ReadUInt32();
 
         uint8_t stage, slot, size;
-        Uniformblock::decode(opcode, &stage, &slot, &size);
+        Uniformblock::Decode(opcode, &stage, &slot, &size);
         auto data = uniformblock_buffer_->ReadPointer(size);
 
         sg_apply_uniforms(static_cast<sg_shader_stage>(stage), static_cast<int>(slot),
@@ -242,8 +242,8 @@ void RenderContext::BindState(uint64_t changed_flags, uint64_t new_flags)
 
 void RenderContext::BindAttributes(Shader* sh, RenderDraw* draw)
 {
-    uint16_t bindStream = kUInt16Max;
-    uint16_t bindStride = 0;
+    uint16_t bind_stream = kUInt16Max;
+    uint16_t bind_stride = 0;
     auto streams = draw->vertex_buffers_;
 
     uint16_t numAttr = sh->GetNumAttr();
@@ -252,11 +252,11 @@ void RenderContext::BindAttributes(Shader* sh, RenderDraw* draw)
         auto bind = sh->GetAttribBind(i);
         auto stream = streams[bind.stream_];
 
-        if (bind.stream_ != bindStream) {
+        if (bind.stream_ != bind_stream) {
             auto buffer = res_manager_->GetVertexBuffer(stream.vertex_buffer);
             app_state_.bind.vertex_buffers[0] = buffer->GetId();
 
-            bindStream = bind.stream_;
+            bind_stream = bind.stream_;
         }
 
         pipeline_desc_.layout.attrs[bind.slot_].format = bind.vertex_format_;

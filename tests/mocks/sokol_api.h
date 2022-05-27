@@ -15,7 +15,7 @@ public:
 
     MAKE_MOCK1(sg_make_shader, sg_shader(const sg_shader_desc* desc));
     MAKE_MOCK0(sg_query_backend, sg_backend (void));
-    MAKE_MOCK1(sg_destroy_shader, void(sg_shader buf));
+    MAKE_MOCK1(sg_destroy_shader, void(sg_shader shd));
 
     //shader
     MAKE_MOCK1(batch_shader_desc, const sg_shader_desc*(sg_backend backend));

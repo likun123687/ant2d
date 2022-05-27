@@ -7,6 +7,8 @@
 #include <iostream>
 #include <utils/content.h>
 #include <utils/debug.h>
+#include <gfx/bk/sort_key.h>
+#include <gfx/bk/res_manager.h>
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
@@ -114,12 +116,142 @@ TEST_CASE("test_image_data")
 
 TEST_CASE("test_shader")
 {
+    using trompeloeil::_; // wild card for matching any value
+    trompeloeil::sequence seq;
+
     auto shader = Shader();
-    shader.Create(kBatch);
+    sg_shader shid = sg_shader{1};
+    sg_shader_desc sh_desc = {};
+    sh_desc.label = "batch_shader_unique";
+
+    {
+        REQUIRE_CALL(sokol_gfx_api_mock, sg_query_backend())
+            .IN_SEQUENCE(seq)
+            .RETURN(SG_BACKEND_D3D11);
+
+        REQUIRE_CALL(sokol_gfx_api_mock, batch_shader_desc(_))
+            .IN_SEQUENCE(seq)
+            .LR_WITH((_1 == SG_BACKEND_D3D11))
+            .RETURN(&sh_desc);
+
+        REQUIRE_CALL(sokol_gfx_api_mock, sg_make_shader(_))
+            .IN_SEQUENCE(seq)
+            .LR_WITH((std::string(_1->label) == std::string(sh_desc.label)))
+            .RETURN(shid);
+        shader.Create(kBatch);
+        REQUIRE(shader.GetType() == kBatch);
+        REQUIRE(shader.GetShdId().id == shid.id);
+    }
+
+    {
+        REQUIRE_CALL(sokol_gfx_api_mock, batch_attr_slot(_))
+            .IN_SEQUENCE(seq)
+            .LR_WITH(std::string(_1) == std::string("aaa"))
+            .RETURN(1);
+        shader.AddAttributeBinding("aaa", 0, SG_VERTEXFORMAT_FLOAT3);
+    }
+
+    {
+        REQUIRE_CALL(sokol_gfx_api_mock, sg_destroy_shader(_))
+            .IN_SEQUENCE(seq)
+            .LR_WITH(_1.id == shid.id);
+
+        shader.Destroy();
+    }
+
 }
 
 TEST_CASE("test_uniform")
 {
+    using trompeloeil::_; // wild card for matching any value
+    trompeloeil::sequence seq;
+
     auto uniformblock = Uniformblock();
+
+    REQUIRE_CALL(sokol_gfx_api_mock, batch_uniformblock_slot(_,_))
+        .IN_SEQUENCE(seq)
+        .LR_WITH(_1 == SG_SHADERSTAGE_FS && std::string(_2) == std::string("aaa"))
+        .RETURN(1);
+
+    REQUIRE_CALL(sokol_gfx_api_mock, batch_uniformblock_size(_,_))
+        .IN_SEQUENCE(seq)
+        .LR_WITH(_1 == SG_SHADERSTAGE_FS && std::string(_2) == std::string("aaa"))
+        .RETURN(22);
+
     uniformblock.Create(kBatch, SG_SHADERSTAGE_FS, "aaa");
+    REQUIRE(uniformblock.GetSlot() == 1);
+    REQUIRE(uniformblock.GetSize() == 22);
+    REQUIRE(uniformblock.GetStage() == SG_SHADERSTAGE_FS);
+    REQUIRE(uniformblock.GetShaderType() == kBatch);
+
+
+
+
+}
+
+TEST_CASE("test_sort_key")
+{
+    SortKey sort_key =  SortKey();
+    sort_key.layer_ = 1;
+    sort_key.order_ = 2;
+    sort_key.shader_ = 3;
+    sort_key.blend_ = 4;
+    sort_key.texture_ = 5;
+
+    auto key = sort_key.Encode();
+    REQUIRE(key == 0x10087005);
+
+    auto sort_key1 = SortKey();
+    sort_key1.Decode(key);
+
+    bool ret = sort_key1.layer_ == 1 && \
+    sort_key1.order_ == 2 && \
+    sort_key1.shader_ == 3 && \
+    sort_key1.blend_ == 4 && \
+    sort_key1.texture_ == 5;
+
+    REQUIRE(ret);
+
+    sort_key.layer_ = 9;
+    sort_key.order_ = 8;
+    sort_key.shader_ = 7;
+    sort_key.blend_ = 1;
+    sort_key.texture_ = 5;
+    sort_key1.Decode(sort_key.Encode());
+
+    bool ret1 = sort_key1.layer_ == sort_key.layer_  && \
+    sort_key1.order_ == sort_key.order_ &&  \
+    sort_key1.shader_ == sort_key.shader_ && \
+    sort_key1.blend_ == sort_key.blend_ && \
+    sort_key1.texture_ == sort_key.texture_ ;
+
+    REQUIRE(ret1);
+}
+
+TEST_CASE("test_res_manager")
+{
+}
+
+TEST_CASE("test_free_list")
+{
+    FreeList free_list =  FreeList();
+    REQUIRE(free_list.Pop() == 0);
+
+    free_list.Push(1);
+    REQUIRE(free_list.Pop() == 1);
+
+    free_list.Push(2);
+    free_list.Push(3);
+    free_list.Push(4);
+    free_list.Push(5);
+
+    REQUIRE(free_list.Pop() == 5);
+}
+
+TEST_CASE("test_res_Rect")
+{
+}
+
+TEST_CASE("test_res_Render_Draw")
+{
 }
