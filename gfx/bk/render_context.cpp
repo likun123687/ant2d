@@ -177,9 +177,10 @@ void RenderContext::BindUniformblock(uint32_t begin, uint32_t end)
         uint8_t stage, slot, size;
         Uniformblock::Decode(opcode, &stage, &slot, &size);
         auto data = uniformblock_buffer_->ReadPointer(size);
+        auto sg_data = sg_range { data, size };
 
         sg_apply_uniforms(static_cast<sg_shader_stage>(stage), static_cast<int>(slot),
-            &sg_range { data, size });
+            &sg_data);
     }
 }
 
