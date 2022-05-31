@@ -1,5 +1,5 @@
 #include <asset/image_data.h>
-#include <utils/Debug.h>
+#include <utils/debug.h>
 
 using namespace ant2d;
 

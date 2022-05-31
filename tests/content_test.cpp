@@ -1,7 +1,7 @@
 #include <filesystem>
 #include <iostream>
 #include <string>
-#include <utils/Content.h>
+#include <utils/content.h>
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>

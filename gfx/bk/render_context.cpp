@@ -1,4 +1,5 @@
 #include <gfx/bk/render_context.h>
+#include <gfx/bk/global_state.h>
 
 using namespace ant2d;
 
@@ -32,7 +33,7 @@ void RenderContext::UpdateScissor(RenderDraw& draw, RenderDraw& current_state)
         current_state.scissor_ = draw.scissor_;
         auto clip = clips_[draw.scissor_];
 
-        if (!clip.isZero()) {
+        if (!clip.IsZero()) {
             sg_apply_viewport(clip.x_, clip.y_, clip.w_, clip.h_, false);
         }
     }
@@ -130,7 +131,7 @@ void RenderContext::Draw(std::vector<uint64_t> sort_keys, std::vector<uint16_t> 
     auto current_state = RenderDraw {};
     auto shader_id = kInvalidId;
     auto sort_key = SortKey {};
-    uint8_t prim_index = static_cast<uint8_t>(static_cast<uint64_t>(0) >> kState.pt_shift);
+    //uint8_t prim_index = static_cast<uint8_t>(static_cast<uint64_t>(0) >> kState.pt_shift);
     // uint64_t state_bits = State.kDepthWrite | ST.DEPTH_TEST_MASK | ST.RGB_WRITE | ST.ALPHA_WRITE | ST.BLEND_MASK | ST.PT_MASK;
 
     for (int i = 0; i < sort_keys.size(); i++) {
@@ -186,12 +187,12 @@ void RenderContext::BindUniformblock(uint32_t begin, uint32_t end)
 
 void RenderContext::BindState(uint64_t changed_flags, uint64_t new_flags)
 {
-    if (changed_flags & kState.depth_write != 0) {
-        pipeline_desc_.depth.write_enabled = (new_flags & kState.depth_write != 0);
+    if ((changed_flags & kState.depth_write) != 0) {
+        pipeline_desc_.depth.write_enabled = ((new_flags & kState.depth_write) != 0);
         // gl.DepthMask(new_flags&ST.DEPTH_WRITE != 0)
     }
 
-    if (changed_flags & (kState.alpha_write | kState.rgb_write) != 0) {
+    if ((changed_flags & (kState.alpha_write | kState.rgb_write)) != 0) {
         auto alpha = (new_flags & kState.alpha_write) != 0;
         auto rgb = (new_flags & kState.rgb_write) != 0;
         sg_color_mask color_mask = SG_COLORMASK_RGBA;
@@ -208,13 +209,13 @@ void RenderContext::BindState(uint64_t changed_flags, uint64_t new_flags)
         pipeline_desc_.colors[0].write_mask = color_mask;
     }
 
-    if (changed_flags & kState.depth_test_mask != 0) {
+    if ((changed_flags & kState.depth_test_mask) != 0) {
         auto _func = (new_flags & kState.depth_test_mask) >> kState.depth_test_shift;
 
         if (_func != 0) {
             pipeline_desc_.depth.compare = kCmpFunc[_func];
         } else {
-            if (new_flags & kState.depth_write != 0) {
+            if ((new_flags & kState.depth_write) != 0) {
                 pipeline_desc_.depth.compare = SG_COMPAREFUNC_ALWAYS;
             }
         }
@@ -222,7 +223,7 @@ void RenderContext::BindState(uint64_t changed_flags, uint64_t new_flags)
 
     /// 所谓 blend independent 可以实现顺序无关的 alpha 混合
     /// http://www.openglsuperbible.com/2013/08/20/is-order-independent-transparency-really-necessary/
-    if (changed_flags & kState.blend_mask != 0) {
+    if ((changed_flags & kState.blend_mask) != 0) {
         auto blend = static_cast<uint16_t>(new_flags & kState.blend_mask) >> kState.blend_shift;
         if (blend != 0) {
             // gl.Enable(gl.BLEND)
@@ -244,7 +245,7 @@ void RenderContext::BindState(uint64_t changed_flags, uint64_t new_flags)
 void RenderContext::BindAttributes(Shader* sh, RenderDraw* draw)
 {
     uint16_t bind_stream = kUInt16Max;
-    uint16_t bind_stride = 0;
+    //uint16_t bind_stride = 0;
     auto streams = draw->vertex_buffers_;
 
     uint16_t numAttr = sh->GetNumAttr();

@@ -1,5 +1,5 @@
 #include <gfx/bk/shader.h>
-#include <utils/Debug.h>
+#include <utils/debug.h>
 
 using namespace ant2d;
 void Shader::Create(ShaderType type)

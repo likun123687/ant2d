@@ -1,7 +1,7 @@
 #include <cfile.hpp>
 #include <filesystem>
-#include <utils/Content.h>
-#include <utils/Utils.h>
+#include <utils/content.h>
+#include <utils/utils.h>
 #include <utils/silly/Slice.h>
 
 using namespace silly::slice;

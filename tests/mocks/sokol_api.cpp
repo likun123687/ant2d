@@ -124,3 +124,19 @@ sg_shader_uniform_desc mesh_uniform_desc(sg_shader_stage stage, const char* ub_n
 {
     return sokol_gfx_api_mock.mesh_uniform_desc(stage, ub_name, u_name);
 }
+
+
+void sg_apply_uniforms(sg_shader_stage stage, int ub_index, const sg_range* data)
+{
+    return sokol_gfx_api_mock.sg_apply_uniforms(stage, ub_index, data);
+}
+
+void sg_apply_viewport(int x, int y, int width, int height, bool origin_top_left)
+{
+    return sokol_gfx_api_mock.sg_apply_viewport(x, y, width, height, origin_top_left);
+}
+
+void sg_draw(int base_element, int num_elements, int num_instances)
+{
+    return sokol_gfx_api_mock.sg_draw(base_element, num_elements, num_instances);
+}

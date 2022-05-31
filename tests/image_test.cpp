@@ -1,5 +1,5 @@
 #include <asset/image.h>
-#include <utils/Content.h>
+#include <utils/content.h>
 #include <utils/debug.h>
 
 #define CATCH_CONFIG_MAIN

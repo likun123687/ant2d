@@ -1,4 +1,4 @@
-#include <utils/Debug.h>
+#include <utils/debug.h>
 int main()
 {
     Info("i ame a info message {}--{}", "message1", "message2");

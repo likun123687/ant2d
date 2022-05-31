@@ -60,7 +60,7 @@ public:
 
 private:
     std::array<uint8_t, kUniformblockBufferSize> buffer_;
-    uint32_t size_;
+    //uint32_t size_;
     uint32_t pos_;
 };
 }

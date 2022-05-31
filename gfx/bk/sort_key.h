@@ -25,11 +25,11 @@ public:
 
     void Decode(uint64_t key)
     {
-        texture_ = static_cast<uint16_t>((key >> 00) & (0xFFFF >> 16 - 10));
-        blend_ = static_cast<uint16_t>((key >> 10) & (0xFFFF >> 16 - 3));
-        shader_ = static_cast<uint16_t>((key >> 13) & (0xFFFF >> 16 - 5));
-        order_ = static_cast<uint16_t>((key >> 18) & (0xFFFF >> 16 - 10));
-        layer_ = static_cast<uint16_t>((key >> 28) & (0xFFFF >> 16 - 4));
+        texture_ = static_cast<uint16_t>((key >> 00) & (0xFFFF >> (16 - 10)));
+        blend_ = static_cast<uint16_t>((key >> 10) & (0xFFFF >> (16 - 3)));
+        shader_ = static_cast<uint16_t>((key >> 13) & (0xFFFF >> (16 - 5)));
+        order_ = static_cast<uint16_t>((key >> 18) & (0xFFFF >> (16 - 10)));
+        layer_ = static_cast<uint16_t>((key >> 28) & (0xFFFF >> (16 - 4)));
     }
 
 public:

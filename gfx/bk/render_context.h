@@ -4,84 +4,6 @@
 
 namespace ant2d {
 
-struct State {
-    uint64_t rgb_write;
-    uint64_t alpha_write;
-    uint64_t depth_write;
-
-    uint64_t depth_test_mask;
-    uint64_t depth_test_shift;
-
-    uint64_t blend_mask;
-    uint64_t blend_shift;
-
-    uint64_t pt_mask;
-    uint64_t pt_shift;
-} kState = {
-    0x0000000000000001,
-    0x0000000000000002,
-    0x0000000000000004,
-
-    0x00000000000000F0,
-    4,
-
-    0x0000000000000F00,
-    8,
-
-    0x000000000000F000,
-    12,
-};
-
-// zero means no depth-test
-struct StateDepth {
-    uint64_t less;
-    uint64_t lequal;
-    uint64_t equal;
-    uint64_t gequal;
-    uint64_t greater;
-    uint64_t not_equal;
-    uint64_t never;
-    uint64_t always;
-} kStateDepth = {
-    0x0000000000000010,
-    0x0000000000000020,
-    0x0000000000000030,
-    0x0000000000000040,
-    0x0000000000000050,
-    0x0000000000000060,
-    0x0000000000000070,
-    0x0000000000000080,
-};
-
-sg_compare_func kCmpFunc[] {
-    SG_COMPAREFUNC_NEVER,
-    SG_COMPAREFUNC_LESS,
-    SG_COMPAREFUNC_EQUAL,
-    SG_COMPAREFUNC_LESS_EQUAL,
-    SG_COMPAREFUNC_GREATER,
-    SG_COMPAREFUNC_NOT_EQUAL,
-    SG_COMPAREFUNC_GREATER_EQUAL,
-    SG_COMPAREFUNC_ALWAYS,
-};
-
-struct {
-    sg_blend_factor src;
-    sg_blend_factor dst;
-} kBlend[] = {
-    { SG_BLENDFACTOR_ONE, SG_BLENDFACTOR_ZERO },
-    { SG_BLENDFACTOR_ONE, SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA },
-    { SG_BLENDFACTOR_SRC_ALPHA, SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA },
-    { SG_BLENDFACTOR_SRC_ALPHA, SG_BLENDFACTOR_ONE },
-};
-
-sg_primitive_type kPrimInfo[] = {
-    SG_PRIMITIVETYPE_TRIANGLES,
-    SG_PRIMITIVETYPE_TRIANGLE_STRIP,
-    SG_PRIMITIVETYPE_LINES,
-    SG_PRIMITIVETYPE_LINE_STRIP,
-    SG_PRIMITIVETYPE_POINTS,
-};
-
 struct AppState {
     sg_pipeline pip;
     sg_bindings bind;
@@ -115,7 +37,7 @@ public:
     {
     }
 
-    void clear()
+    void Clear()
     {
         x_ = 0;
         y_ = 0;
@@ -123,7 +45,7 @@ public:
         h_ = 0;
     }
 
-    bool isZero()
+    bool IsZero()
     {
         return x_ == 0 && y_ == 0 && w_ == 0 && h_ == 0;
     }

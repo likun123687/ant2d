@@ -1,6 +1,6 @@
 #include <cinttypes>
 #include <gfx/bk/texture.h>
-#include <utils/Content.h>
+#include <utils/content.h>
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>

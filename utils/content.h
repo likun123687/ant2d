@@ -4,8 +4,8 @@
 #include <cstddef>
 #include <string>
 #include <unordered_map>
-#include <utils/Own.h>
-#include <utils/Singleton.h>
+#include <utils/own.h>
+#include <utils/singleton.h>
 #include <vector>
 
 namespace ant2d {

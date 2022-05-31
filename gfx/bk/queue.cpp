@@ -4,10 +4,10 @@
 
 using namespace ant2d;
 
-RenderQueue::RenderQueue(ResManager* R)
-    : uniformblock_buffer_(new UniformblockBuffer())
-    , ctx_(new RenderContext(R, uniformblock_buffer_.get()))
-    , rm_(R)
+RenderQueue::RenderQueue(ResManager* res_manager)
+    : rm_(res_manager)
+    , uniformblock_buffer_(new UniformblockBuffer())
+    , ctx_(new RenderContext(res_manager, uniformblock_buffer_.get()))
 {
 }
 
@@ -117,7 +117,7 @@ uint32_t RenderQueue::Submit(uint8_t id, uint16_t shader, uint64_t depth)
 {
     uniformblock_end_ = static_cast<uint16_t>(uniformblock_buffer_->GetPos());
     sort_key_.layer_ = static_cast<uint16_t>(id);
-    sort_key_.order_ = static_cast<uint16_t>(depth + 0xFFFF >> 1);
+    sort_key_.order_ = static_cast<uint16_t>(depth + (0xFFFF >> 1));
 
     sort_key_.shader_ = shader;
     sort_key_.blend_ = 0;
@@ -156,6 +156,8 @@ int RenderQueue::Flush()
         std::sort(kv_zip.begin(), kv_zip.end(), [](const auto& x, const auto& y) {
             return std::get<0>(x) < std::get<0>(y);
         });
+        break;
+    case SortMode::kSequential:
         break;
     }
 

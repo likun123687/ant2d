@@ -9,6 +9,8 @@
 #include <utils/debug.h>
 #include <gfx/bk/sort_key.h>
 #include <gfx/bk/res_manager.h>
+#include <gfx/bk/global_state.h>
+#include <gfx/bk/render_context.h>
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
@@ -297,10 +299,24 @@ TEST_CASE("test_free_list")
     REQUIRE(free_list.Pop() == 5);
 }
 
-TEST_CASE("test_res_Rect")
+TEST_CASE("test_render_context_rect")
 {
+    Rect rect = Rect();
+    REQUIRE(rect.IsZero());
 }
 
-TEST_CASE("test_res_Render_Draw")
+TEST_CASE("test_res_render_draw")
 {
+    RenderDraw render_draw =  RenderDraw();
+    render_draw.Reset();
+}
+
+
+TEST_CASE("test_render_context")
+{
+    ResManager res_manager = ResManager();
+    UniformblockBuffer ubb = UniformblockBuffer();
+
+    RenderContext ctx = RenderContext(&res_manager, &ubb);
+    ctx.Reset();
 }

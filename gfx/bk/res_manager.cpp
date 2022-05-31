@@ -1,5 +1,5 @@
 #include <gfx/bk/res_manager.h>
-#include <utils/Debug.h>
+#include <utils/debug.h>
 
 using namespace ant2d;
 

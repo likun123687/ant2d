@@ -1,5 +1,7 @@
+#pragma once
 #include <gfx/bk/sokol_gfx_bk.h>
 #include <trompeloeil.hpp>
+
 
 class sokol_gfx_api
 {
@@ -33,6 +35,10 @@ public:
     MAKE_MOCK2(mesh_uniformblock_size, size_t (sg_shader_stage stage, const char* ub_name));
     MAKE_MOCK3(mesh_uniform_offset, int (sg_shader_stage stage, const char* ub_name, const char* u_name));
     MAKE_MOCK3(mesh_uniform_desc, sg_shader_uniform_desc (sg_shader_stage stage, const char* ub_name, const char* u_name));
+    MAKE_MOCK3(sg_apply_uniforms, void (sg_shader_stage stage, int ub_index, const sg_range* data));
+    MAKE_MOCK5(sg_apply_viewport, void (int x, int y, int width, int height, bool origin_top_left));
+    MAKE_MOCK3(sg_draw, void (int base_element, int num_elements, int num_instances));
+
 };
 
 

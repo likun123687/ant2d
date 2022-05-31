@@ -4,6 +4,8 @@ set_project("ant2d")
 --最小版本
 set_xmakever("2.3.1")
 set_languages("cxx17")
+set_warnings("all")
+--set_warnings("all", "error")
 
 add_requires("stb")
 
@@ -80,6 +82,7 @@ target("ant2d")
     add_files("gfx/bk/queue.cpp")
     add_files("gfx/bk/render_context.cpp")
     add_files("gfx/bk/uniformblock.cpp")
+    add_files("gfx/bk/global_state.cpp")
     add_files("third_party/fmt/src/format.cc")
 
     if (not has_config("with_test")) then
@@ -93,7 +96,7 @@ target("ant2d")
         add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})
     elseif is_plat("macosx", "iphoneos") then
         add_rules("sokol-shdc", {slang = "metal_macos", plat = "macosx"})
-        add_files("utils/Content.mm")
+        add_files("utils/content.mm")
 
         if (not has_config("with_test")) then
             del_files("gfx/bk/sokol_gfx.cpp")
