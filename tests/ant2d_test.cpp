@@ -9,7 +9,7 @@
 #include <utils/debug.h>
 #include <gfx/bk/sort_key.h>
 #include <gfx/bk/res_manager.h>
-#include <gfx/bk/global_state.h>
+//#include <gfx/bk/global_state.h>
 #include <gfx/bk/render_context.h>
 
 #define CATCH_CONFIG_MAIN

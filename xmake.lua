@@ -82,7 +82,6 @@ target("ant2d")
     add_files("gfx/bk/queue.cpp")
     add_files("gfx/bk/render_context.cpp")
     add_files("gfx/bk/uniformblock.cpp")
-    add_files("gfx/bk/global_state.cpp")
     add_files("third_party/fmt/src/format.cc")
 
     if (not has_config("with_test")) then
