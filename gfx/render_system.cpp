@@ -99,4 +99,14 @@ Camera* RenderSystem::GetMainCamera()
     return main_camera_.get();
 }
 
+RenderSystem::RenderList& RenderSystem::GetRenderList()
+{
+    return render_list_;
+}
+
+TableList* RenderSystem::GetTableList()
+{
+    return table_list_;
+}
+
 } // namespace ant2d

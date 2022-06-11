@@ -38,30 +38,10 @@ private:
     uint16_t padding_;
 
 public:
-    BkTexture(uint16_t id)
-        : texture_id_(id)
-    {
-    }
-    uint16_t GetTextureId()
-    {
-        return static_cast<uint16_t>(texture_id_);
-    }
-
-    Region GetRegion()
-    {
-        return Region { 0, 0, 1, 1, false };
-    }
-
-    Size GetSize()
-    {
-        Size size = Size();
-        Texture2D* t = SharedResManager.GetTexture(texture_id_);
-        if (t) {
-            size.width = t->GetWidth();
-            size.height = t->GetHeight();
-        }
-        return size;
-    }
+    BkTexture(uint16_t id);
+    uint16_t GetTextureId();
+    Region GetRegion();
+    Size GetSize();
 };
 
 class SubTexture : public ITexture2D {
@@ -98,18 +78,9 @@ public:
     Region GetSubTexRegionByIndex(int index);
     Size GetSubTexSizeByIndex(int index);
     void SetTexId(uint16_t id);
-    uint16_t GetTextureId()
-    {
-        return texture_id_;
-    }
-    void SetWidth(float width)
-    {
-        width_ = width;
-    }
-    void SetHeight(float height)
-    {
-        height_ = height;
-    }
+    uint16_t GetTextureId();
+    void SetWidth(float width);
+    void SetHeight(float height);
 };
 
 class AtlasManager {

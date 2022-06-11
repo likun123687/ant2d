@@ -1,6 +1,33 @@
 #include <gfx/bk_texture.h>
 
 namespace ant2d {
+
+BkTexture::BkTexture(uint16_t id)
+    : texture_id_(id)
+{
+}
+
+uint16_t BkTexture::GetTextureId()
+{
+    return static_cast<uint16_t>(texture_id_);
+}
+
+Region BkTexture::GetRegion()
+{
+    return Region { 0, 0, 1, 1, false };
+}
+
+Size BkTexture::GetSize()
+{
+    Size size = Size();
+    Texture2D* t = SharedResManager.GetTexture(texture_id_);
+    if (t) {
+        size.width = t->GetWidth();
+        size.height = t->GetHeight();
+    }
+    return size;
+}
+
 Atlas::Atlas(uint16_t aid)
 {
     aid_ = aid;
@@ -73,6 +100,21 @@ Size Atlas::GetSubTexSizeByIndex(int index)
 void Atlas::SetTexId(uint16_t id)
 {
     texture_id_ = id;
+}
+
+uint16_t Atlas::GetTextureId()
+{
+    return texture_id_;
+}
+
+void Atlas::SetWidth(float width)
+{
+    width_ = width;
+}
+
+void Atlas::SetHeight(float height)
+{
+    height_ = height;
 }
 
 Atlas* AtlasManager::NewAtlas(uint16_t id, int size, const std::string& name)

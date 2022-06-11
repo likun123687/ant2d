@@ -8,13 +8,14 @@
 namespace ant2d {
 class RenderSystem {
     using RenderList = std::vector<std::unique_ptr<IRender>>;
+    using RenderFeatureList = std::vector<std::unique_ptr<IRenderFeature>>;
 private:
     std::unique_ptr<Camera> main_camera_;
     View view_;
     TransformTable* transform_table_;
     TableList* table_list_;
     RenderList render_list_;
-    std::vector<std::unique_ptr<IRenderFeature>> feature_list_;
+    RenderFeatureList feature_list_;
 
 public:
     RenderSystem();
@@ -24,14 +25,7 @@ public:
     void Update(float dt);
     void Destroy();
     Camera *GetMainCamera();
-    RenderList& GetRenderList()
-    {
-        return render_list_;
-    }
-
-    TableList* GetTableList()
-    {
-        return table_list_;
-    }
+    RenderList& GetRenderList();
+    TableList* GetTableList();
 };
 } //namespace ant2d
