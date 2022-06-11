@@ -1,7 +1,6 @@
 #pragma once
 #include <asset/res.h>
-#define JSON_NOEXCEPTION 1
-#include <third_party/nlohmann/json.hpp>
+#include <utils/json.h>
 
 namespace ant2d {
 class TextureManager {
