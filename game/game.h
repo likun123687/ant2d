@@ -1,80 +1,97 @@
-#include <FPS.h>
+#pragma once
 
-namespace game {
-const int32_t MaxScriptSize = 1024;
-const int32_t MaxSpriteSize = 64 << 10;
-const int32_t MaxTransformSize = 64 << 10;
-const int32_t MaxTextSize = 64 << 10;
-const int32_t MaxMeshSize = 64 << 10;
-const int32_t MaxParticleSize = 1024;
+#include <engi/entity.h>
+#include <game/fps.h>
+#include <engi/base_table.h>
+#include <game/scene.h>
+#include <gfx/render_system.h>
+
+namespace ant2d {
+const int32_t kMaxScriptSize = 1024;
+const int32_t kMaxSpriteSize = 64 << 10;
+const int32_t kMaxTransformSize = 64 << 10;
+const int32_t kMaxTextSize = 64 << 10;
+const int32_t kMaxMeshSize = 64 << 10;
+const int32_t kMaxParticleSize = 1024;
 
 struct Options {
-    int32_t W;
-    int32_t H;
-}
+    int32_t width;
+    int32_t height;
+};
 
 class DB {
 private:
-    EntityManager entityM_;
-    std::vector<std::unique_ptr<Table>> tables_;
+    std::unique_ptr<EntityManager> entity_manager_;
+    TableList tables_;
+public:
+    void AddTable(IBase *table)
+    {
+        tables_.emplace_back(table);
+    }
+
+    TableList& GetTableList()
+    {
+        return tables_;
+    }
+
+    EntityManager* GetEntityManager()
+    {
+        return entity_manager_.get();
+    }
+
+    void SetEntityManager(EntityManager *entity_manager)
+    {
+        entity_manager_.reset(entity_manager);
+    }
 };
 
-class AppState
-{
-public:
-    typedef std::function<void(bool)> StateChangeCallback;
-    StateChangeCallback pauseCallback_;
-    StateChangeCallback focusCallback_;
+class AppState {
+using StateChangeCallback = std::function<void(bool)>;
 
 private:
-    class State
-    {
-    public:
-        bool paused_;
-        bool lostFocus_;
+    StateChangeCallback pause_callback_;
+    StateChangeCallback focus_callback_;
+    struct State {
+        bool paused;
+        bool lost_focus;
     };
 
     State old_;
     State now_;
-}
 
-void AppState::setPaused(bool paused)
-{
-    old_.paused_ = now_.paused_;
-    now_.paused_ = paused_;
-}
-
-void AppState::setFocused(bool focused)
-{
-    old_.lostFocus_ = now_.lostFocus_;
-    now_.lostFocus_ = !focused_;
-}
-
-type Game struct {
-	Options; FPS; DB
-
-	// scene manager
-	SceneManager
-
-	// system
-	*gfx.RenderSystem
-	*input.InputSystem
-	*effect.ParticleSimulateSystem
-	*ScriptSystem
-	*anim.AnimationSystem
-
-	// game state
-	appState
-}
+public:
+    void SetPaused(bool paused);
+    void SetFocused(bool focused);
+    StateChangeCallback GetPauseCallback();
+    StateChangeCallback GetFocusCallback();
+};
 
 class Game {
 
 private:
     Options options_;
-    FPS fps_;
-    DB db_;
-    SceneManager scenemanager_;
-}
+    std::unique_ptr<FPS> fps_;
+    std::unique_ptr<DB> db_;
+    std::unique_ptr<SceneManager> scene_manager_;
+    std::unique_ptr<RenderSystem> render_system_;
+    std::unique_ptr<AppState> app_state_;
 
-
-}
+public:
+    Camera* Camera();
+    void OnCreate(float w, float h, float ratio);
+    void OnLoop();
+    void OnDestroy();
+    void OnPause();
+    void OnResume();
+    void OnFocusChanged(bool focused);
+    void OnResize(int32_t w, int32_t h);
+    void SetGameSize(float w, float h);
+    void Create(float w, float h, float ratio);
+    void Destroy();
+    void NotifyPause();
+    void NotifyResume();
+    void Init();
+    void LoadTables();
+    void Update();
+};
+} // namespace ant2d

@@ -4,10 +4,10 @@
 
 using namespace ant2d;
 
-RenderQueue::RenderQueue(ResManager* res_manager)
-    : rm_(res_manager)
+RenderQueue::RenderQueue()
+    : rm_(&SharedResManager)
     , uniformblock_buffer_(new UniformblockBuffer())
-    , ctx_(new RenderContext(res_manager, uniformblock_buffer_.get()))
+    , ctx_(new RenderContext(&SharedResManager, uniformblock_buffer_.get()))
 {
 }
 

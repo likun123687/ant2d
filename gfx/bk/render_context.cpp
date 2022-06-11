@@ -39,6 +39,16 @@ sg_compare_func kCmpFunc[] {
     SG_COMPAREFUNC_ALWAYS,
 };
 
+
+
+StateBlend kStateBlend = {
+    0x0000000000000000,
+    0x0000000000000100,
+    0x0000000000000200,
+    0x0000000000000300,
+    0x0000000000000400,
+};
+
 BlendFactor kBlend[] = {
     { SG_BLENDFACTOR_ONE, SG_BLENDFACTOR_ZERO },
     { SG_BLENDFACTOR_ONE, SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA },
@@ -167,6 +177,13 @@ void RenderContext::UpdateBufferBind(RenderDraw& draw, RenderDraw& current_state
 
 void RenderContext::DoDraw(RenderDraw& draw, RenderDraw& current_state)
 {
+    //sg_begin_default_pass(&state.pass_action, sapp_width(), sapp_height());
+    //sg_apply_pipeline(state.pip);
+    //sg_apply_bindings(&state.bind);
+    //sg_draw(0, 6, 1);
+    //sg_end_pass();
+    //sg_commit();
+
     pipeline_desc_.index_type = SG_INDEXTYPE_UINT16;
     if (draw.index_buffer_ != kInvalidId) {
         auto offset = int(draw.first_index_) * 2; // 2 = sizeOf(unsigned_short)

@@ -1,58 +1,46 @@
-namespace engi {
+#pragma once
+#include <vector>
+#include <deque>
 
-const int32_t IndexBits = 24;
-const int32_t IndexMask = (1<< IndexBits)-1;
-const uint8_t GenerationBits = 8;
-const uint8_t GenerationMask = (1<< GenerationBits)-1;
+namespace ant2d {
+
+const int32_t kIndexBits = 24;
+const int32_t kIndexMask = (1<< kIndexBits)-1;
+const uint8_t kGenerationBits = 8;
+const uint8_t kGenerationMask = (1<< kGenerationBits)-1;
 
 class Entity {
 public:
     Entity(uint32_t idx) {
         idx_ = idx;
     }
-   uint32 Index() {
-    return this->idx_ & IndexMask;
-   }
+    uint32_t Index() {
+        return idx_ & kIndexMask;
+    }
 
-    uint8 Gene()  {
-        return (idx_ >>IndexBits) & GenerationMask
+    uint8_t Gene()  {
+        return (idx_ >>kIndexBits) & kGenerationMask;
+    }
+
+    bool IsGhost()
+    {
+        return idx_ == 0xFFFFFFFF;
     }
 private:
     uint32_t idx_;
-}
+};
 
 const Entity Ghost = Entity(0xFFFFFFFF);
 
-
 class EntityManager {
-    private:
+public:
+    Entity New();
+    bool Alive(Entity e);
+    void Destroy(Entity e);
+
+private:
     std::vector<uint8_t> generation_;
     std::deque<uint32_t> freelist_;
-    Entity id_;
 };
 
-Entity EntityManager::New() {
-    uint32_t ei;
-    uint8_t eg;
-
-    if (!freelist_.empty()) {
-        ei = freelist_.front();freelist_.pop_front();
-        eg = generation_[ei];
-    } else {
-        ei = static_cast<uint32_t>(generation_.size());
-        generation_.push_back(0);
-    }
-    return Entity((static_cast<uint32_t>(eg) << IndexBits) | ei);
-}
-
-bool EntityManager::Alive(Entity e)
-{
-    return generation_[e.Index()] == e.Gene()
-}
-
-void EntityManager::Destroy(Entity e)
-{
-    auto ei = e.Index();
-    generation_[ei] ++;
-    freelist_.push_back(ei);
-}
+} //namespace ant2d

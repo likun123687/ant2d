@@ -9,6 +9,8 @@ public:
     void Update(const ImageData& img);
     void Destroy();
     sg_image GetId() const;
+    float GetWidth();
+    float GetHeight();
 
 private:
     sg_image NewTexture(const ImageData& img);

@@ -35,6 +35,17 @@ struct StateDepth {
 
 extern StateDepth kStateDepth;
 
+// zero means no blend
+struct StateBlend {
+   uint64_t default_s;
+   uint64_t isable;
+   uint64_t alpha_premultiplied;
+   uint64_t alpha_non_premultiplied;
+   uint64_t additive;
+};
+
+extern StateBlend kStateBlend;
+
 struct BlendFactor {
     sg_blend_factor src;
     sg_blend_factor dst;

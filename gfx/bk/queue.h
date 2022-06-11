@@ -4,6 +4,7 @@
 #include <gfx/bk/res_manager.h>
 #include <gfx/bk/sort_key.h>
 #include <gfx/bk/uniformblock.h>
+#include <utils/singleton.h>
 
 #include <array>
 #include <cstdint>
@@ -48,7 +49,7 @@ private:
     std::unique_ptr<RenderContext> ctx_;
 
 public:
-    RenderQueue(ResManager* res_manager);
+    RenderQueue();
     void Init();
     void Reset(uint16_t w, uint16_t h, float pr);
     void SetState(uint64_t state, uint32_t rgba);
@@ -69,3 +70,5 @@ public:
     int Flush();
 };
 } // namespace ant2d
+#define SharedRenderQueue \
+    ::ant2d::Singleton<::ant2d::RenderQueue>()

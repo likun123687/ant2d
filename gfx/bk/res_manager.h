@@ -5,6 +5,7 @@
 #include <gfx/bk/uniformblock.h>
 #include <tuple>
 #include <vector>
+#include <utils/singleton.h>
 
 namespace ant2d {
 const uint16_t kInvalidId = 0x0000;
@@ -90,3 +91,6 @@ public:
     Shader* GetShader(uint16_t id);
 };
 }
+
+#define SharedResManager \
+    ::ant2d::Singleton<::ant2d::ResManager>()

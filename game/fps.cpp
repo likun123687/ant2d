@@ -1,8 +1,9 @@
-#include <fps.h>
-using namespace game;
+#include <game/fps.h>
 
-void FPS::initialize() {
-    startTime_ = time.Now();
+namespace ant2d {
+
+void FPS::Init() {
+    start_time_ = std::chrono::system_clock::now();
 }
 
 void FPS::SetScale(float factor) {
@@ -11,8 +12,8 @@ void FPS::SetScale(float factor) {
 
 float FPS::Step() {
     auto now = std::chrono::system_clock::now();
-    std::chrono::duration<float> dt = now - preTime_;
-    preTime_ = now;
+    std::chrono::duration<float> dt = now - pre_time_;
+    pre_time_ = now;
     dt_ = dt.count();
     fps_ = static_cast<int32_t>(1/dt);
 }
@@ -20,8 +21,8 @@ float FPS::Step() {
 float FPS::Smooth()
 {
     auto now = std::chrono::system_clock::now();
-    auto du = now - preTime_;
-    preTime_ = now;
+    auto du = now - pre_time_;
+    pre_time_ = now;
 
     float dt = 1.0/60;
     chrono::seconds cmp_s(3);
@@ -49,3 +50,4 @@ void FPS::Resume()
     pause_ = false;
 }
 
+}

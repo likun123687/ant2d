@@ -41,3 +41,13 @@ sg_image Texture2D::NewTexture(const ImageData& img)
     sg_init_image(image_id, &desc);
     return image_id;
 }
+
+float Texture2D::GetWidth()
+{
+    return width_;
+}
+
+float Texture2D::GetHeight()
+{
+    return height_;
+}

@@ -1,30 +1,23 @@
 #pragma once
+#include <asset/res.h>
+#define JSON_NOEXCEPTION 1
+#include <third_party/nlohmann/json.hpp>
+
+namespace ant2d {
 class TextureManager {
+    using json = nlohmann::json;
+
 public:
-    uint16_t loadTexture(std::string file)
-    {
-        string fullPath = SharedContent.getFullPath(file);
-        auto data = SharedContent.loadFile(file);
-
-        auto image_data = ImageData(data.first.get(), data.second);
-        return update(filename, data.first.get(), data.second);
-    }
-
-    void Load(std::string file)
-    {
-        uint16_t rid;
-        uint16_t cnt;
-
-        auto it = repo_.find(file);
-        if (it != repo_.end()) {
-            cnt = it->second.cnt;
-            rid = it->second.rid;
-        } else {
-            loadTexture(file)
-        }
-    }
+    void Load(const std::string& file);
+    void Unload(const std::string& file);
+    void LoadAtlas(const std::string& file, const std::string& desc);
+    void LoadAtlasIndexed(const std::string& file, float width, float height, int row, int col);
 
 private:
-    std::map<std::string, idCount> repo_;
-    std::map<std::string, uint32_t> names_;
+    std::unordered_map<std::string, IdCount> repo_;
+    std::unordered_map<std::string, uint32_t> names_;
+
+    uint16_t CreateTextureByImageFile(const std::string& image);
+    std::tuple<uint16_t, json> CreateTextureByAtlasFile(const std::string& image, const std::string& desc);
+};
 }

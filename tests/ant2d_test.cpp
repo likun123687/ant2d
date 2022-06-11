@@ -9,8 +9,8 @@
 #include <utils/debug.h>
 #include <gfx/bk/sort_key.h>
 #include <gfx/bk/res_manager.h>
-//#include <gfx/bk/global_state.h>
 #include <gfx/bk/render_context.h>
+#include <engi/entity.h>
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
@@ -140,8 +140,8 @@ TEST_CASE("test_shader")
             .IN_SEQUENCE(seq)
             .LR_WITH((std::string(_1->label) == std::string(sh_desc.label)))
             .RETURN(shid);
-        shader.Create(kBatch);
-        REQUIRE(shader.GetType() == kBatch);
+        shader.Create(kBatchShader);
+        REQUIRE(shader.GetType() == kBatchShader);
         REQUIRE(shader.GetShdId().id == shid.id);
     }
 
@@ -180,11 +180,11 @@ TEST_CASE("test_uniform")
         .LR_WITH(_1 == SG_SHADERSTAGE_FS && std::string(_2) == std::string("aaa"))
         .RETURN(22);
 
-    uniformblock.Create(kBatch, SG_SHADERSTAGE_FS, "aaa");
+    uniformblock.Create(kBatchShader, SG_SHADERSTAGE_FS, "aaa");
     REQUIRE(uniformblock.GetSlot() == 1);
     REQUIRE(uniformblock.GetSize() == 22);
     REQUIRE(uniformblock.GetStage() == SG_SHADERSTAGE_FS);
-    REQUIRE(uniformblock.GetShaderType() == kBatch);
+    REQUIRE(uniformblock.GetShaderType() == kBatchShader);
 
     uint32_t code = Uniformblock::Encode(1, 2, 3);
     uint8_t stage = 0;
@@ -319,4 +319,17 @@ TEST_CASE("test_render_context")
 
     RenderContext ctx = RenderContext(&res_manager, &ubb);
     ctx.Reset();
+}
+
+TEST_CASE("test_entity")
+{
+    EntityManager em = EntityManager();
+    Entity e = em.New();
+    REQUIRE(em.Alive(e));
+    em.Destroy(e);
+    REQUIRE(!em.Alive(e));
+
+    Entity e1 = em.New();
+    REQUIRE(e.Index() == e1.Index());
+    REQUIRE(e1.Gene() == (e.Gene() + 1));
 }

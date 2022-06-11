@@ -10,8 +10,8 @@ using uniformblock_slot_func = int (*)(sg_shader_stage stage, const char* ub_nam
 using uniformblock_size_func = size_t (*)(sg_shader_stage stage, const char* ub_name);
 
 enum ShaderType {
-    kBatch,
-    kMesh,
+    kBatchShader = 0,
+    kMeshShader,
 };
 
 shader_desc_func GetShaderDescFunc(ShaderType type);
