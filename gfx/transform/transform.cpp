@@ -1,5 +1,5 @@
-#include <gfx/Transform/transform.h>
-#include <gfx/Transform/transform_table.h>
+#include <gfx/transform/transform.h>
+#include <gfx/transform/transform_table.h>
 
 namespace ant2d {
 
@@ -88,7 +88,8 @@ void Transform::SetPosition(math::Vec2 position)
     if (parent_ == 0) {
         SetPosition(nullptr, position);
     } else {
-        SetPosition(&(transform_table_->GetComp(parent_)->GetWorld()), position);
+        auto world = transform_table_->GetComp(parent_)->GetWorld();
+        SetPosition(&world, position);
     }
 }
 
@@ -126,8 +127,8 @@ void Transform::SetScale(math::Vec2 scale)
     if (parent_ == 0) {
         SetScale(nullptr, scale);
     } else {
-        //SetScale(&transform_table.comps[parent_].world, scale);
-        SetScale(&(transform_table_->GetComp(parent_)->GetWorld()), scale);
+        auto world = transform_table_->GetComp(parent_)->GetWorld();
+        SetScale(&world, scale);
     }
 }
 
@@ -163,8 +164,8 @@ void Transform::SetRotation(float rotation)
     if (parent_ == 0) {
         SetRotation(nullptr, rotation);
     } else {
-        //SetRotation(&transform_table_.comps[parent_].world, rotation);
-        SetRotation(&(transform_table_->GetComp(parent_)->GetWorld()), rotation);
+        auto world = transform_table_->GetComp(parent_)->GetWorld();
+        SetRotation(&world, rotation);
     }
 }
 

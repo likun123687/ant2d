@@ -70,7 +70,7 @@ void TextureManager::LoadAtlasIndexed(const std::string& file, float width, floa
         auto size = row * col;
         auto atlas = SharedAtlasManager.NewAtlas(tex_id, size, file);
         for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; i++) {
+            for (int j = 0; j < col; j++) {
                 atlas->AddItem(j * width, i * height, width, height, "", false);
             }
         }

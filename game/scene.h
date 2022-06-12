@@ -22,6 +22,7 @@ public:
     virtual void SetOnLoadCallback(Callback callback) = 0;
     virtual Callback GetUnLoadCallback() = 0;
     virtual void SetUnLoadCallback(Callback callback) = 0;
+    virtual ~Scene() = default;
 };
 
 class SceneManager {

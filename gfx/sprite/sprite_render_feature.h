@@ -43,6 +43,6 @@ public:
     void SetTable(SpriteTable* sprite_table, TransformTable* transform_table);
     void Register(RenderSystem* rs);
     void Extract(View* v);
-    void Draw(std::vector<SortObject>& nodes);
+    void Draw(const std::vector<SortObject>& nodes);
 };
 }

@@ -125,7 +125,7 @@ void SpriteRenderFeature::Extract(View* v)
     }
 }
 
-void SpriteRenderFeature::Draw(std::vector<SortObject>& nodes)
+void SpriteRenderFeature::Draw(const std::vector<SortObject>& nodes)
 {
     uint32_t sort_id = 0xFFFFFFFF;
     bool begin = false;

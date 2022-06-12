@@ -27,6 +27,7 @@ public:
     {
         shader_type_ = type;
     }
+    virtual ~IRender() = default;
 };
 
 struct Batch {
@@ -67,6 +68,7 @@ public:
     virtual void Extract(View* v) = 0;
     virtual void Draw(const std::vector<SortObject>& nodes) = 0;
     virtual void Flush() = 0;
+    virtual ~IRenderFeature() = default;
 };
 
 class ZOrder {
