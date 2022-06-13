@@ -24,25 +24,10 @@ private:
     std::unique_ptr<EntityManager> entity_manager_;
     TableList tables_;
 public:
-    void AddTable(IBase *table)
-    {
-        tables_.emplace_back(table);
-    }
-
-    TableList& GetTableList()
-    {
-        return tables_;
-    }
-
-    EntityManager* GetEntityManager()
-    {
-        return entity_manager_.get();
-    }
-
-    void SetEntityManager(EntityManager *entity_manager)
-    {
-        entity_manager_.reset(entity_manager);
-    }
+    void AddTable(IBase *table);
+    TableList& GetTableList();
+    EntityManager* GetEntityManager();
+    void SetEntityManager(EntityManager *entity_manager);
 };
 
 class AppState {

@@ -2,8 +2,32 @@
 #include <gfx/gctx.h>
 #include <gfx/sprite/sprite_table.h>
 #include <gfx/transform/transform_table.h>
+#include <gfx/batch_render.h>
+#include <asset/shader_utils.h>
+#include <gfx/sprite/sprite_render_feature.h>
 
 namespace ant2d {
+
+void DB::AddTable(IBase *table)
+{
+    tables_.emplace_back(table);
+}
+
+TableList& DB::GetTableList()
+{
+    return tables_;
+}
+
+EntityManager* DB::GetEntityManager()
+{
+    return entity_manager_.get();
+}
+
+void DB::SetEntityManager(EntityManager *entity_manager)
+{
+    entity_manager_.reset(entity_manager);
+}
+
 void AppState::SetPaused(bool paused)
 {
     old_.paused = now_.paused;
@@ -84,18 +108,15 @@ void Game::Create(float w, float h, float ratio)
     render_system_.reset(new RenderSystem());
     SetGameSize(w, h);
     render_system_->GetMainCamera()->MoveTo(w / 2, h / 2);
-
     render_system_->RequireTable(db_->GetTableList());
-    /*
-    render_system_->RegisterRender(new BatchRender(ShaderType::BatchRender));
+    render_system_->RegisterRender(new BatchRender(ShaderType::kBatchShader));
 
     // set feature
-    auto srf = SpriteRenderFeature {};
-    srf.Register(rs);
+    auto srf = new SpriteRenderFeature {};
+    srf->Register(render_system_.get());
 
     /// setup scene manager
-    sceneManager.Setup(g)
-    */
+    scene_manager_->Setup(this);
 }
 
 void Game::Destroy()

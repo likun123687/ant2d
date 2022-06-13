@@ -48,6 +48,7 @@ class IBatchObject {
 public:
     virtual void Fill(std::vector<PosTexColorVertex>& vertex) = 0;
     virtual int Size() = 0;
+    virtual ~IBatchObject() = default;
 };
 
 struct SortObject {

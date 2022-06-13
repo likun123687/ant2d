@@ -73,6 +73,27 @@ int SpriteBatchObject::Size()
     return 4;
 }
 
+
+SpriteComp* SpriteBatchObject::GetSpriteComp()
+{
+    return sprite_comp_;
+}
+
+void SpriteBatchObject::SetSpriteComp(SpriteComp* s)
+{
+    sprite_comp_ = s;
+}
+
+Transform* SpriteBatchObject::GetTransform()
+{
+    return transform_;
+}
+
+void SpriteBatchObject::SetTransform(Transform* t)
+{
+    transform_ = t;
+}
+
 void SpriteRenderFeature::SetRender(BatchRender* render)
 {
     batch_render_ = render;
@@ -160,4 +181,9 @@ void SpriteRenderFeature::Draw(const std::vector<SortObject>& nodes)
 
     batch_render_->Flush();
 }
+
+void Flush()
+{
+}
+
 }

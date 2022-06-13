@@ -13,22 +13,10 @@ private:
 public:
     void Fill(std::vector<PosTexColorVertex>& buf);
     int Size();
-    SpriteComp* GetSpriteComp()
-    {
-        return sprite_comp_;
-    }
-    void SetSpriteComp(SpriteComp* s)
-    {
-        sprite_comp_ = s;
-    }
-    Transform* GetTransform()
-    {
-        return transform_;
-    }
-    void SetTransform(Transform* t)
-    {
-        transform_ = t;
-    }
+    SpriteComp* GetSpriteComp();
+    void SetSpriteComp(SpriteComp* s);
+    Transform* GetTransform();
+    void SetTransform(Transform* t);
 };
 
 class SpriteRenderFeature : public IRenderFeature {
@@ -44,5 +32,6 @@ public:
     void Register(RenderSystem* rs);
     void Extract(View* v);
     void Draw(const std::vector<SortObject>& nodes);
+    void Flush();
 };
 }
