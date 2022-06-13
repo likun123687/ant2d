@@ -1,6 +1,5 @@
 #include <asset/texture_manager.h>
 #include <gfx/bk/res_manager.h>
-#include <gfx/bk_texture.h>
 #include <utils/content.h>
 #include <utils/debug.h>
 
@@ -78,6 +77,37 @@ void TextureManager::LoadAtlasIndexed(const std::string& file, float width, floa
         rid = tex_id;
     }
     repo_[file] = IdCount { rid, static_cast<uint16_t>(cnt + 1) };
+}
+
+BkTexture* TextureManager::Get(const std::string& file)
+{
+    auto it = repo_.find(file);
+    if (it != repo_.end()) {
+        auto rid = it->second.rid;
+        return new BkTexture{rid};
+    }
+    return nullptr;
+}
+
+std::tuple<uint16_t, Texture2D*> TextureManager::GetRaw(const std::string &file)
+{
+    uint16_t tex_id = 0;
+    Texture2D* tex = nullptr;
+    auto it = repo_.find(file);
+    if (it != repo_.end()) {
+        tex_id = it->second.rid;
+        tex = SharedResManager.GetTexture(tex_id);
+    }
+    return std::make_tuple(tex_id, tex);
+}
+
+Atlas *TextureManager::GetAtlas(const std::string &file)
+{
+    auto it = repo_.find(file);
+    if (it != repo_.end()) {
+        return SharedAtlasManager.GetAtlasByName(file);
+    }
+    return nullptr;
 }
 
 uint16_t TextureManager::CreateTextureByImageFile(const std::string& image)

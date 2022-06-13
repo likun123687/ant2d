@@ -1,6 +1,7 @@
 #pragma once
 #include <asset/res.h>
 #include <utils/json.h>
+#include <gfx/bk_texture.h>
 
 namespace ant2d {
 class TextureManager {
@@ -11,6 +12,10 @@ public:
     void Unload(const std::string& file);
     void LoadAtlas(const std::string& file, const std::string& desc);
     void LoadAtlasIndexed(const std::string& file, float width, float height, int row, int col);
+    // Get returns the low-level Texture.
+    BkTexture* Get(const std::string& file);
+    std::tuple<uint16_t, Texture2D*> GetRaw(const std::string &file);
+    Atlas *GetAtlas(const std::string &file);
 
 private:
     std::unordered_map<std::string, IdCount> repo_;
