@@ -22,6 +22,7 @@ public:
     virtual uint16_t GetTextureId() = 0;
     virtual Region GetRegion() = 0;
     virtual Size GetSize() = 0;
+    virtual ~ITexture2D() = default;
 };
 
 enum class AnchorType {
