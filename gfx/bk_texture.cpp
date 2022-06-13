@@ -37,8 +37,8 @@ void Atlas::Init(int size)
 {
     index_ = 0;
     size_ = size;
-    regions_.reserve(size);
-    sizes_.reserve(size);
+    regions_.resize(size);
+    sizes_.resize(size);
     names_.reserve(size);
 }
 

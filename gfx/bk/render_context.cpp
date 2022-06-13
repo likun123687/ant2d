@@ -68,7 +68,7 @@ RenderContext::RenderContext(ResManager* res_manager, UniformblockBuffer* unifor
     : res_manager_(res_manager)
     , uniformblock_buffer_(uniformblock_buffer)
 {
-    clips_.reserve(1);
+    clips_.resize(1);
 }
 
 void RenderContext::Reset()

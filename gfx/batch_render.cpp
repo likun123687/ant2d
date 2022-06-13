@@ -89,7 +89,7 @@ int BatchRender::Flush()
 
 BatchContext::BatchContext()
 {
-    vertex_.reserve(kMaxBatchVertexSize);
+    vertex_.resize(kMaxBatchVertexSize);
 }
 
 void BatchContext::Begin(uint16_t tex_id, int16_t depth)

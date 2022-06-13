@@ -108,7 +108,7 @@ std::tuple<uint16_t, int> Context::SharedIndexBuffer()
 
 void Context::InitIndexBuffer()
 {
-    shared_.index.reserve(kSharedIndexBufferSize);
+    shared_.index.resize(kSharedIndexBufferSize);
     uint16_t i_format[6] = {3, 0, 1, 3, 1, 2};
     for (int i = 0; i < kSharedIndexBufferSize; i+=6) {
         std::copy(i_format, i_format + 6, shared_.index.begin() + i);
