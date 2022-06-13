@@ -33,9 +33,10 @@ public:
     {
         //resize
         if (index_>=comps_.size()) {
-            for (int i=0; i<kStep; i++) {
-              comps_.emplace_back(new T());
-            }
+            comps_.reserve(comps_.size()+kStep);
+        //    for (int i=0; i<kStep; i++) {
+        //      comps_.emplace_back(new T());
+        //    }
         }
 
         auto ei = entity.Index();
