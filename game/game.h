@@ -32,15 +32,14 @@ public:
 
 class AppState {
 using StateChangeCallback = std::function<void(bool)>;
+struct State {
+    bool paused;
+    bool lost_focus;
+};
 
 private:
     StateChangeCallback pause_callback_;
     StateChangeCallback focus_callback_;
-    struct State {
-        bool paused;
-        bool lost_focus;
-    };
-
     State old_;
     State now_;
 
