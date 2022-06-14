@@ -39,3 +39,13 @@ sg_shader Shader::GetShdId()
 {
     return sg_shd_id_;
 }
+
+uint32_t Shader::GetNumAttr() const
+{
+    return num_attr_;
+}
+
+AttribBind Shader::GetAttribBind(int i) const
+{
+    return attr_binds_[i];
+}

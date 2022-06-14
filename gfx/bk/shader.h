@@ -26,16 +26,8 @@ public:
     ShaderType GetType();
     sg_shader GetShdId();
     void Destroy();
-
-    uint32_t GetNumAttr() const
-    {
-        return num_attr_;
-    }
-
-    AttribBind GetAttribBind(int i) const
-    {
-        return attr_binds_[i];
-    }
+    uint32_t GetNumAttr() const;
+    AttribBind GetAttribBind(int i) const;
 };
 
 }
