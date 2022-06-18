@@ -11,6 +11,12 @@
 #include <gfx/bk/res_manager.h>
 #include <gfx/bk/render_context.h>
 #include <engi/entity.h>
+#include <gfx/sprite/sprite.h>
+#include <gfx/sprite/sprite_table.h>
+#include <gfx/transform/transform_table.h>
+#include <math/vector.h>
+#include <math/matrix.h>
+#include <game/fps.h>
 
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
@@ -332,4 +338,324 @@ TEST_CASE("test_entity")
     Entity e1 = em.New();
     REQUIRE(e.Index() == e1.Index());
     REQUIRE(e1.Gene() == (e.Gene() + 1));
+}
+
+TEST_CASE("test_comp")
+{
+    auto sprite_comp = SpriteComp();
+    REQUIRE(sprite_comp.GetEntity().IsGhost());
+}
+
+TEST_CASE("test_sprite_table")
+{
+    auto sprite_table = SpriteTable();
+    EntityManager em = EntityManager();
+
+    Entity e = em.New();
+    auto sprite_comp = sprite_table.NewComp(e);
+    REQUIRE(sprite_comp->GetEntity().Index() == e.Index());
+
+    Entity e1 = em.New();
+    auto sprite_comp1 = sprite_table.NewComp(e1);
+    REQUIRE(sprite_comp1->GetEntity().Index() == e1.Index());
+
+    REQUIRE(sprite_table.GetComp(e) == sprite_comp);
+    REQUIRE(sprite_table.GetComp(e1) == sprite_comp1);
+    REQUIRE(sprite_table.GetComp(e1) != sprite_comp);
+
+    uint32_t idx = sprite_table.GetCompIdx(e);
+    uint32_t idx1 = sprite_table.GetCompIdx(e1);
+    REQUIRE(idx != idx1);
+
+    REQUIRE(sprite_table.GetComp(idx) == sprite_comp);
+    REQUIRE(sprite_table.GetComp(idx1) == sprite_comp1);
+
+    sprite_table.Delete(e);
+    REQUIRE(sprite_table.GetComp(e) == nullptr);
+    REQUIRE(sprite_table.GetSize() == 1);
+
+    auto entity_list = std::vector<Entity>();
+    auto sprite_comp_list = std::vector<SpriteComp*>();
+    for (int i = 0; i<1000; i++) {
+        Entity entity = em.New();
+        auto sprite_comp_new = sprite_table.NewComp(entity);
+        entity_list.push_back(entity);
+        sprite_comp_list.push_back(sprite_comp_new);
+    }
+
+    REQUIRE(sprite_table.GetSize() == 1001);
+    REQUIRE(sprite_comp_list[50] == sprite_table.GetComp(entity_list[50]));
+
+    sprite_table.Destroy();
+    REQUIRE(sprite_table.GetComp(e1) == nullptr);
+    REQUIRE(sprite_table.GetSize() == 0);
+}
+
+TEST_CASE("test_transform_table")
+{
+    auto transform_table = TransformTable();
+    EntityManager em = EntityManager();
+
+    Entity e = em.New();
+    Entity e1 = em.New();
+    Entity e2 = em.New();
+
+    auto transform = transform_table.NewComp(e);
+    transform->SetPosition(math::Vec2{100, 100});
+    auto pos = transform->GetPosition();
+    REQUIRE((pos[0] == 100 && pos[1] == 100));
+    REQUIRE(transform->GetLocal().position[0] == 100);
+    REQUIRE(transform->GetWorld().position[0] == 100);
+
+    auto transform1 = transform_table.NewComp(e1);
+    auto transform2 = transform_table.NewComp(e2);
+
+    transform->LinkChild(transform1);
+    transform->LinkChild(transform2);
+
+    transform1->SetPosition(math::Vec2{50, 50});
+    transform2->SetPosition(math::Vec2{-50, -50});
+
+    auto pos1 = transform1->GetWorld().position;
+    REQUIRE(pos1[0] == 150);
+
+    auto pos2 = transform2->GetWorld().position;
+    REQUIRE((pos2[0] == 50 && pos2[1] == 50));
+
+    transform->SetPosition(math::Vec2{200, 200});
+    pos1 = transform1->GetWorld().position;
+    REQUIRE((pos1[0] == 250 && pos1[1] == 250));
+
+    pos2 = transform2->GetWorld().position;
+    REQUIRE((pos2[0] == 150 && pos2[1] == 150));
+
+    //test node link
+    Entity car_e = em.New();
+    auto car_comp = transform_table.NewComp(car_e);
+
+    Entity wheel1_e = em.New();
+    Entity wheel2_e = em.New();
+    Entity wheel3_e = em.New();
+    Entity wheel4_e = em.New();
+    auto wheel1_comp = transform_table.NewComp(wheel1_e);
+    auto wheel2_comp = transform_table.NewComp(wheel2_e);
+    auto wheel3_comp = transform_table.NewComp(wheel3_e);
+    auto wheel4_comp = transform_table.NewComp(wheel4_e);
+
+    std::vector<Transform*> wheel_list = {wheel1_comp, wheel2_comp, wheel3_comp, wheel4_comp};
+    car_comp->LinkChildren(wheel_list);
+    for (auto &w:wheel_list) {
+        auto parent_tran = w->Parent();
+        REQUIRE(parent_tran->GetEntity() == car_e);
+    }
+
+    REQUIRE(car_comp->FirstChild()->GetEntity() == wheel1_e);
+
+    for (int i = 0; i< 3; i++) {
+        Transform *next_sibling = nullptr;
+        std::tie(std::ignore, next_sibling) = wheel_list[i]->Sibling();
+        REQUIRE(next_sibling->GetEntity() == wheel_list[i+1]->GetEntity());
+    }
+
+    for (int i = 3; i>0; i--) {
+        Transform *prev_sibling = nullptr;
+        std::tie(prev_sibling, std::ignore) = wheel_list[i]->Sibling();
+        REQUIRE(prev_sibling->GetEntity() == wheel_list[i-1]->GetEntity());
+    }
+
+    Transform *prev_sibling = nullptr;
+    Transform *next_sibling = nullptr;
+    std::tie(prev_sibling, next_sibling) = wheel1_comp->Sibling();
+    REQUIRE(prev_sibling == nullptr);
+    REQUIRE(next_sibling == wheel2_comp);
+    //car_comp->dump();
+    //Info("====================");
+    //wheel2_comp->dump();
+    //wheel4_comp->dump();
+    //wheel1_comp->dump();
+    //wheel3_comp->dump();
+    //wheel1_sub_comp->dump();
+    //wheel1_sub_comp1->dump();
+
+    //REQUIRE(transform_table.GetSize() == 7);
+
+    //transform_table.Delete(wheel1_e);
+    ////transform_table.Delete(wheel3_e);
+
+    //wheel1_comp = transform_table.GetComp(wheel1_e);
+    //REQUIRE(wheel1_comp == nullptr);
+    //wheel2_comp = transform_table.GetComp(wheel2_e);
+    //wheel4_comp = transform_table.GetComp(wheel4_e);
+    //wheel3_comp = transform_table.GetComp(wheel3_e);
+
+    //REQUIRE(wheel2_comp->GetNxtSiblingIdx() == transform_table.GetCompIdx(wheel4_e));
+    //REQUIRE(wheel4_comp->GetNxtSiblingIdx() == transform_table.GetCompIdx(wheel3_e));
+
+    //Info("====================");
+
+    //wheel2_comp->dump();
+    //wheel4_comp->dump();
+    //wheel3_comp->dump();
+
+    ////wheel3_comp->dump();
+    //transform_table.Delete(wheel3_e);
+    //wheel2_comp = transform_table.GetComp(wheel2_e);
+    //wheel4_comp = transform_table.GetComp(wheel4_e);
+    //Info("====================");
+    //wheel2_comp->dump();
+    //wheel4_comp->dump();
+
+    //REQUIRE(transform_table.GetComp(wheel1_e) == nullptr);
+    //REQUIRE(transform_table.GetComp(wheel3_e) == nullptr);
+    //REQUIRE(transform_table.GetSize() == 3);
+}
+
+/***
+0
+|
+1-2-3
+|
+4 -5- 6-13-15
+|     |
+7     8-9-14
+|     |
+11-17 10-12
+|  |  |
+16 18 19
+***/
+TEST_CASE("test_transform_table_more")
+{
+    auto transform_table = TransformTable();
+    EntityManager em = EntityManager();
+
+    std::vector<Entity> entity_list;
+    std::vector<Transform*> comp_list;
+    for (int i = 0; i < 20; i++) {
+        Entity e = em.New();
+        auto comp = transform_table.NewComp(e);
+        entity_list.push_back(e);
+        comp_list.push_back(comp);
+    }
+
+    comp_list[0]->LinkChildren({comp_list[1],comp_list[2], comp_list[3]});
+    comp_list[1]->LinkChildren({comp_list[4],comp_list[5], comp_list[6], comp_list[13], comp_list[15]});
+    comp_list[4]->LinkChild(comp_list[7]);
+
+    comp_list[7]->LinkChildren({comp_list[11],comp_list[17]});
+
+    comp_list[11]->LinkChild(comp_list[16]);
+    comp_list[17]->LinkChild(comp_list[18]);
+
+    comp_list[6]->LinkChildren({comp_list[8],comp_list[9],comp_list[14]});
+    comp_list[8]->LinkChildren({comp_list[10],comp_list[12]});
+    comp_list[12]->LinkChildren({comp_list[19]});
+
+    REQUIRE(transform_table.GetComp(entity_list[19]) == comp_list[19]);
+    REQUIRE(transform_table.GetSize() == 20);
+
+    REQUIRE(comp_list[8]->GetParentIdx() == transform_table.GetCompIdx(entity_list[6]));
+
+    /////
+    comp_list[0]->LinkChild(comp_list[11]);
+    REQUIRE(comp_list[3]->GetNxtSiblingIdx() == transform_table.GetCompIdx(entity_list[11]));
+    REQUIRE(comp_list[7]->GetFirstChildIdx() == transform_table.GetCompIdx(entity_list[17]));
+    ////
+
+    REQUIRE(comp_list[5]->GetNxtSiblingIdx() == transform_table.GetCompIdx(entity_list[6]));
+    comp_list[15]->LinkChild(comp_list[6]);
+    REQUIRE(comp_list[5]->GetNxtSiblingIdx() == transform_table.GetCompIdx(entity_list[13]));
+    REQUIRE(comp_list[15]->GetFirstChildIdx() == transform_table.GetCompIdx(entity_list[6]));
+}
+
+
+TEST_CASE("test_transform_table_delete")
+{
+    auto transform_table = TransformTable();
+    EntityManager em = EntityManager();
+
+    std::vector<Entity> entity_list;
+    std::vector<Transform*> comp_list;
+    for (int i = 0; i < 20; i++) {
+        Entity e = em.New();
+        auto comp = transform_table.NewComp(e);
+        entity_list.push_back(e);
+        comp_list.push_back(comp);
+    }
+
+    comp_list[0]->LinkChildren({comp_list[1],comp_list[2], comp_list[3]});
+    comp_list[1]->LinkChildren({comp_list[4],comp_list[5], comp_list[6], comp_list[13], comp_list[15]});
+    comp_list[4]->LinkChild(comp_list[7]);
+
+    comp_list[7]->LinkChildren({comp_list[11],comp_list[17]});
+
+    comp_list[11]->LinkChild(comp_list[16]);
+    comp_list[17]->LinkChild(comp_list[18]);
+
+    comp_list[6]->LinkChildren({comp_list[8],comp_list[9],comp_list[14]});
+    comp_list[8]->LinkChildren({comp_list[10],comp_list[12]});
+    comp_list[12]->LinkChildren({comp_list[19]});
+
+    REQUIRE(transform_table.GetComp(entity_list[19]) == comp_list[19]);
+    REQUIRE(transform_table.GetSize() == 20);
+
+    transform_table.Delete(entity_list[4]);
+    REQUIRE(transform_table.GetSize() == 14);
+
+    REQUIRE(comp_list[1]->GetFirstChildIdx() == transform_table.GetCompIdx(entity_list[5]));
+    REQUIRE(transform_table.GetComp(entity_list[11]) == nullptr);
+}
+
+TEST_CASE("test_math")
+{
+    auto vec2_1 = math::Vec2{1,1};
+    REQUIRE(vec2_1[0] == 1);
+    REQUIRE(vec2_1[1] == 1);
+
+    auto vec2_2 = math::Vec2{1,1};
+    auto vec2_3 = vec2_1.Add(vec2_2);
+    REQUIRE(vec2_3[0] == 2);
+    REQUIRE(vec2_3[1] == 2);
+
+    auto vec2_4 = math::Vec2{3.0,4.0};
+    REQUIRE(vec2_4.Len() == 5);
+
+    auto vec3 = math::Vec3{};
+    REQUIRE(vec3[0] == 0);
+    REQUIRE(vec3[1] == 0);
+    REQUIRE(vec3[2] == 0);
+
+    auto vec3_1 = math::Vec3{1, 1, 1};
+    REQUIRE(vec3_1[0] == 1);
+    REQUIRE(vec3_1[1] == 1);
+    REQUIRE(vec3_1[2] == 1);
+    auto vec3_2 = vec3.Add(vec3_1);
+
+    REQUIRE(vec3_2[0] == 1);
+    REQUIRE(vec3_2[1] == 1);
+    REQUIRE(vec3_2[2] == 1);
+
+    auto vec4_1 = math::Vec4{1, 1, 1, 1};
+    auto vec4_2 = math::Vec4{2, 2, 2, 2};
+
+    REQUIRE(vec4_1[0] == 1);
+    REQUIRE(vec4_1[1] == 1);
+    REQUIRE(vec4_1[2] == 1);
+    REQUIRE(vec4_1[3] == 1);
+
+    REQUIRE(vec4_2[0] == 2);
+    REQUIRE(vec4_2[1] == 2);
+    REQUIRE(vec4_2[2] == 2);
+    REQUIRE(vec4_2[3] == 2);
+
+    auto ident3 = math::Mat3::Ident3();
+    auto diag = ident3.Diag();
+    REQUIRE(diag[0] == 1);
+    REQUIRE(diag[1] == 1);
+    REQUIRE(diag[2] == 1);
+}
+
+TEST_CASE("test_fps")
+{
+    auto fps = FPS();
+    fps.Init();
 }

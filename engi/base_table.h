@@ -52,15 +52,15 @@ public:
         return comp.get();
     }
 
-    bool IsAlive(Entity entity)
-    {
-        auto ei = entity.Index();
-        auto iter = map_.find(ei);
-        if (iter != map_.end()) {
-            return comps_[iter->second]->Entity != 0;
-        }
-        return false;
-    }
+    //bool IsAlive(Entity entity)
+    //{
+    //    auto ei = entity.Index();
+    //    auto iter = map_.find(ei);
+    //    if (iter != map_.end()) {
+    //        return comps_[iter->second]->GetEntity() != 0;
+    //    }
+    //    return false;
+    //}
 
     T *GetComp(Entity entity)
     {
@@ -88,7 +88,7 @@ public:
         if (iter != map_.end()) {
             return iter->second;
         }
-        return 0;
+        return kInvalidIdx;
     }
 
     virtual void Delete(Entity entity)
@@ -138,7 +138,7 @@ public:
 protected:
     std::vector<std::unique_ptr<T>> comps_;
     std::unordered_map<uint32_t, int> map_;
-    int index_;
+    int index_; 
     TableType table_type_;
 };
 

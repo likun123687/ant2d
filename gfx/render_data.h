@@ -102,14 +102,14 @@ public:
     }
 };
 
-uint32_t PackSortId(uint16_t z, uint16_t b)
+static uint32_t PackSortId(uint16_t z, uint16_t b)
 {
     uint32_t sid = uint32_t(int32_t(z) + (0xFFFF >> 1));
     sid = (sid << 16) + uint32_t(b);
     return sid;
 }
 
-std::tuple<uint16_t, uint16_t> UnpackSortId(uint32_t sort_id)
+static std::tuple<uint16_t, uint16_t> UnpackSortId(uint32_t sort_id)
 {
     auto b = uint16_t(sort_id & 0xFFFF);
     auto z = uint16_t(int32_t(sort_id >> 16) - (0xFFFF >> 1));

@@ -5,6 +5,7 @@
 #include <engi/base_table.h>
 #include <game/scene.h>
 #include <gfx/render_system.h>
+#include <hid/life_cycle.h>
 
 namespace ant2d {
 const int32_t kMaxScriptSize = 1024;
@@ -50,7 +51,7 @@ public:
     StateChangeCallback GetFocusCallback();
 };
 
-class Game {
+class Game : public WindowCallback {
 
 private:
     Options options_;
@@ -68,7 +69,10 @@ public:
     void OnPause();
     void OnResume();
     void OnFocusChanged(bool focused);
-    void OnResize(int32_t w, int32_t h);
+    void OnResize(float w, float h);
+    void OnKeyEvent(int key, bool pressed);
+    void OnPointEvent(int key, bool pressed, float x, float y);
+
     void SetGameSize(float w, float h);
     void Create(float w, float h, float ratio);
     void Destroy();
@@ -77,5 +81,14 @@ public:
     void Init();
     void LoadTables();
     void Update();
+    DB* GetDB()
+    {
+        return db_.get();
+    }
+
+    SceneManager *GetSceneManager()
+    {
+        return scene_manager_.get();
+    }
 };
 } // namespace ant2d

@@ -7,7 +7,7 @@ void FPS::Init() {
 }
 
 void FPS::SetScale(float factor) {
-    scale_ = factor
+    scale_ = factor;
 }
 
 float FPS::Step() {
@@ -15,7 +15,8 @@ float FPS::Step() {
     std::chrono::duration<float> dt = now - pre_time_;
     pre_time_ = now;
     dt_ = dt.count();
-    fps_ = static_cast<int32_t>(1/dt);
+    fps_ = static_cast<int32_t>(1/dt_);
+    return dt_;
 }
 
 float FPS::Smooth()
@@ -24,8 +25,8 @@ float FPS::Smooth()
     auto du = now - pre_time_;
     pre_time_ = now;
 
-    float dt = 1.0/60;
-    chrono::seconds cmp_s(3);
+    float dt = float(1.0/60);
+    std::chrono::seconds cmp_s(3);
     if (du < cmp_s) {
         typedef std::chrono::duration<float> float_seconds;
         dt = std::chrono::duration_cast<float_seconds>(du).count();
@@ -34,7 +35,7 @@ float FPS::Smooth()
     auto predt = dt_;
     auto sdt = predt * 0.8 + static_cast<float>(dt * 0.2);
 
-    dt_ = sdt;
+    dt_ = float(sdt);
     fps_ = static_cast<int32_t>(1/dt);
     realdt_ = dt;
     return dt_;

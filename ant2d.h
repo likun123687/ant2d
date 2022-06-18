@@ -1,0 +1,18 @@
+#pragma once
+#include <engi/entity.h>
+#include <game/game.h>
+#include <game/scene.h>
+#include <gfx/sprite/sprite_table.h>
+#include <gfx/transform/transform_table.h>
+#include <hid/config.h>
+
+namespace ant2d {
+extern Game* SharedGame;
+extern SceneManager* SharedSceneManager;
+extern EntityManager* SharedEntityManager;
+extern SpriteTable* SharedSpriteTable;
+extern TransformTable* SharedTransformTable;
+// extern InputSystem* SharedInputSystem;
+
+void Run(WindowOptions options, Scene* sn);
+}

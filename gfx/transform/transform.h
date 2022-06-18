@@ -11,6 +11,7 @@ struct SRT
     float rotation;
     math::Vec2 position;
 };
+const uint16_t kInvalidIdx = 0xFFFF;
 
 class Transform : public IComp
 {
@@ -55,11 +56,17 @@ public:
     void RotateBy(float d);
     void LinkChildren(std::vector<Transform *> child_list);
     void LinkChild(Transform *c);
-    void RemoveChild(Transform *c);
+    //void RemoveChild(Transform *c);
+    //void MoveChild(Transform *c, Transform *new_parent);
     Transform *FirstChild();
     Transform *Parent();
     std::tuple<Transform *, Transform *> Sibling();
     void Reset();
     void SetTransformTable(TransformTable *t);
+    void dump();
+    void CollectSubCompIdx(std::vector<int>& idx_list);
+    void BreakLink();
+    void ResetIdx();
+    void Relink(uint16_t old_idx, uint16_t new_idx);
 };
 } //namespace ant2d

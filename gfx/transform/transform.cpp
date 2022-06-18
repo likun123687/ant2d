@@ -1,9 +1,11 @@
 #include <gfx/transform/transform.h>
 #include <gfx/transform/transform_table.h>
+#include <utils/debug.h>
 
 namespace ant2d {
 
-Transform::Transform():transform_table_(nullptr)
+Transform::Transform():world_{},local_{},
+    parent_{kInvalidIdx}, first_child_{kInvalidIdx}, pre_sibling_{kInvalidIdx}, nxt_sibling_{kInvalidIdx},transform_table_(nullptr)
 {
 }
 
@@ -85,7 +87,7 @@ void Transform::SetWorld(SRT world)
 void Transform::SetPosition(math::Vec2 position)
 {
     local_.position = position;
-    if (parent_ == 0) {
+    if (parent_ == kInvalidIdx) {
         SetPosition(nullptr, position);
     } else {
         auto world = transform_table_->GetComp(parent_)->GetWorld();
@@ -114,7 +116,7 @@ void Transform::SetPosition(const SRT *parent, math::Vec2 local)
 
     // all child
     auto child = first_child_;
-    while (child != 0) {
+    while (child != kInvalidIdx) {
         auto node = transform_table_->GetComp(child);
         node->SetPosition(&world_, node->GetLocal().position);
         child = node->GetNxtSiblingIdx();
@@ -124,7 +126,7 @@ void Transform::SetPosition(const SRT *parent, math::Vec2 local)
 void Transform::SetScale(math::Vec2 scale)
 {
     local_.scale = scale;
-    if (parent_ == 0) {
+    if (parent_ == kInvalidIdx) {
         SetScale(nullptr, scale);
     } else {
         auto world = transform_table_->GetComp(parent_)->GetWorld();
@@ -142,7 +144,7 @@ void Transform::SetScale(const SRT *parent, math::Vec2 scale)
     world_.scale[1] = s[1] * scale[1];
 
     auto child = first_child_;
-    while (child != 0) {
+    while (child != kInvalidIdx) {
         auto node = transform_table_->GetComp(child);
         node->SetScale(&world_, node->GetLocal().scale);
         child = node->GetNxtSiblingIdx();
@@ -161,7 +163,7 @@ void Transform::SetRotation(float rotation)
 {
     local_.rotation = rotation;
     // compute world rotation
-    if (parent_ == 0) {
+    if (parent_ == kInvalidIdx) {
         SetRotation(nullptr, rotation);
     } else {
         auto world = transform_table_->GetComp(parent_)->GetWorld();
@@ -178,7 +180,7 @@ void Transform::SetRotation(const SRT *parent, float rotation)
     world_.rotation = r + rotation;
 
     auto child = first_child_;
-    while (child != 0) {
+    while (child != kInvalidIdx) {
         auto node = transform_table_->GetComp(child);
         node->SetRotation(&world_, node->GetLocal().rotation);
         child = node->GetNxtSiblingIdx();
@@ -204,14 +206,22 @@ void Transform::LinkChild(Transform *c)
     auto pi = transform_table_->GetCompIdx(entity_);
     auto ci = transform_table_->GetCompIdx(c->GetEntity());
 
-    if (first_child_ == 0) {
+    //已经是了
+    if (c->GetParentIdx() == pi) {
+        return;
+    }
+
+    //要打乱link
+    c->BreakLink();
+
+    if (first_child_ == kInvalidIdx) {
         first_child_ = ci;
         c->SetParentIdx(pi);
     } else {
-        uint16_t prev = 0;
-        for (uint16_t next = first_child_; next != 0; 
-            next = transform_table_->GetComp(next)->GetNxtSiblingIdx()) {
+        uint16_t prev = kInvalidIdx;
+        for (uint16_t next = first_child_; next != kInvalidIdx; ) {
             prev = next;
+            next = transform_table_->GetComp(next)->GetNxtSiblingIdx();
         }
 
         transform_table_->GetComp(prev)->SetNxtSiblingIdx(ci);
@@ -220,35 +230,98 @@ void Transform::LinkChild(Transform *c)
     }
 }
 
-void Transform::RemoveChild(Transform *c)
+//断开链接,所有他指向的,和指向他的
+//uint16_t parent_;
+//uint16_t pre_sibling_;
+//uint16_t nxt_sibling_;
+void Transform::BreakLink()
 {
-    auto pi = transform_table_->GetCompIdx(entity_);
-    auto ci = transform_table_->GetCompIdx(c->GetEntity());
-
-    if (c->GetParentIdx() != pi) {
-        return;
+    auto self_idx = transform_table_->GetCompIdx(entity_);
+    if (parent_ != kInvalidIdx) {
+        auto parent_comp = transform_table_->GetComp(parent_);
+        if (parent_comp->GetFirstChildIdx() == self_idx) {
+            parent_comp->SetFirstChildIdx(nxt_sibling_);
+        }
     }
 
-    if (first_child_ == ci) {
-        first_child_ = nxt_sibling_;
-    } else {
-        transform_table_->GetComp(c->GetPreSiblingIdx())\
-            ->SetNxtSiblingIdx(c->GetNxtSiblingIdx());
+    if (pre_sibling_ != kInvalidIdx) {
+        auto pre_sibling_comp = transform_table_->GetComp(pre_sibling_);
+        pre_sibling_comp->SetNxtSiblingIdx(nxt_sibling_);
     }
 
-    auto nxt = c->GetNxtSiblingIdx();
-    if (nxt != 0) {
-        transform_table_->GetComp(nxt)\
-            ->SetPreSiblingIdx(c->GetPreSiblingIdx());
+    if (nxt_sibling_ != kInvalidIdx) {
+        auto nxt_sibling_comp = transform_table_->GetComp(nxt_sibling_);
+        nxt_sibling_comp->SetPreSiblingIdx(pre_sibling_);
     }
-    c->SetParentIdx(0);
-    c->SetPreSiblingIdx(0);
-    c->SetNxtSiblingIdx(0);
 }
+
+void Transform::ResetIdx()
+{
+    SetParentIdx(kInvalidIdx);
+    SetPreSiblingIdx(kInvalidIdx);
+    SetNxtSiblingIdx(kInvalidIdx);
+    SetFirstChildIdx(kInvalidIdx);
+}
+
+void Transform::Relink(uint16_t old_idx, uint16_t new_idx)
+{
+    //uint16_t parent_;
+    //uint16_t pre_sibling_;
+    //uint16_t nxt_sibling_;
+    //first_child_
+    if (parent_ != kInvalidIdx) {
+        auto parent_comp = transform_table_->GetComp(parent_);
+        if (parent_comp->GetFirstChildIdx() == old_idx) {
+            parent_comp->SetFirstChildIdx(new_idx);
+        }
+    }
+
+    if (pre_sibling_ != kInvalidIdx) {
+        auto pre_sibling_comp = transform_table_->GetComp(pre_sibling_);
+        pre_sibling_comp->SetNxtSiblingIdx(new_idx);
+    }
+
+    if (nxt_sibling_ != kInvalidIdx) {
+        auto nxt_sibling_comp = transform_table_->GetComp(nxt_sibling_);
+        nxt_sibling_comp->SetPreSiblingIdx(new_idx);
+    }
+
+    if (first_child_ != kInvalidIdx) {
+        auto first_child_comp = transform_table_->GetComp(first_child_);
+        first_child_comp->SetParentIdx(new_idx);
+    }
+}
+
+//void Transform::RemoveChild(Transform *c)
+//{
+//    auto pi = transform_table_->GetCompIdx(entity_);
+//    auto ci = transform_table_->GetCompIdx(c->GetEntity());
+//
+//    if (c->GetParentIdx() != pi) {
+//        return;
+//    }
+//    Info("nxt {}", c->GetNxtSiblingIdx());
+//    if (first_child_ == ci) {
+//        first_child_ = c->GetNxtSiblingIdx();
+//    } else {
+//        transform_table_->GetComp(c->GetPreSiblingIdx())\
+//            ->SetNxtSiblingIdx(c->GetNxtSiblingIdx());
+//    }
+//
+//    Info("nxt {}", c->GetNxtSiblingIdx());
+//    auto nxt = c->GetNxtSiblingIdx();
+//    if (nxt != kInvalidIdx) {
+//        transform_table_->GetComp(nxt)\
+//            ->SetPreSiblingIdx(c->GetPreSiblingIdx());
+//    }
+//    c->SetParentIdx(kInvalidIdx);
+//    c->SetPreSiblingIdx(kInvalidIdx);
+//    c->SetNxtSiblingIdx(kInvalidIdx);
+//}
 
 Transform * Transform::FirstChild()
 {
-    if (first_child_ != 0) {
+    if (first_child_ != kInvalidIdx) {
         return transform_table_->GetComp(first_child_);
     }
     return nullptr;
@@ -256,7 +329,7 @@ Transform * Transform::FirstChild()
 
 Transform * Transform::Parent()
 {
-    if (parent_ != 0) {
+    if (parent_ != kInvalidIdx) {
         return transform_table_->GetComp(parent_);
     }
     return nullptr;
@@ -266,10 +339,10 @@ std::tuple<Transform *, Transform *>  Transform::Sibling()
 {
     Transform *prev = nullptr;
     Transform *next = nullptr;
-    if (pre_sibling_) {
+    if (pre_sibling_ != kInvalidIdx) {
         prev = transform_table_->GetComp(pre_sibling_);
     }
-    if (nxt_sibling_) {
+    if (nxt_sibling_ != kInvalidIdx) {
         next = transform_table_->GetComp(nxt_sibling_);
     }
     return std::make_tuple(prev, next);
@@ -277,18 +350,36 @@ std::tuple<Transform *, Transform *>  Transform::Sibling()
 
 void Transform::Reset()
 {
-    if (parent_) {
-        //transform_table_.comps[p].RemoveChild(this);
-        transform_table_->GetComp(parent_)->RemoveChild(this);
-    }
     entity_ = Ghost;
     world_ = {math::Vec2(0,0), 0.0f, math::Vec2(0,0)};
     local_ = {math::Vec2(0,0), 0.0f, math::Vec2(0,0)};
-    parent_  = 0;
-    first_child_ = 0;
-    pre_sibling_ = 0;
-    nxt_sibling_ = 0;
+    parent_  = kInvalidIdx;
+    first_child_ = kInvalidIdx;
+    pre_sibling_ = kInvalidIdx;
+    nxt_sibling_ = kInvalidIdx;
     transform_table_ = nullptr;
 }
 
+void Transform::SetTransformTable(TransformTable *t)
+{
+    transform_table_ = t;
+}
+
+void Transform::CollectSubCompIdx(std::vector<int>& idx_list)
+{
+    // all child
+    auto child = first_child_;
+    while (child != kInvalidIdx) {
+        idx_list.push_back(child);
+        auto node = transform_table_->GetComp(child);
+        node->CollectSubCompIdx(idx_list);
+        child = node->GetNxtSiblingIdx();
+    }
+}
+
+
+void Transform::dump()
+{
+    Info("entity_idx:{} - this_idx:{}- parent:{}-first_child:{}-pre_slib:{}--nxt:{}", entity_.Index(), transform_table_->GetCompIdx(entity_), parent_, first_child_, pre_sibling_, nxt_sibling_);
+}
 }

@@ -89,9 +89,17 @@ void Game::OnFocusChanged(bool focused)
     }
 }
 
-void Game::OnResize(int32_t w, int32_t h)
+void Game::OnResize(float w, float h)
 {
-    SetGameSize(float(w), float(h));
+    SetGameSize(w, h);
+}
+
+void OnKeyEvent(int key, bool pressed)
+{
+}
+
+void OnPointEvent(int key, bool pressed, float x, float y)
+{
 }
 
 void Game::SetGameSize(float w, float h)

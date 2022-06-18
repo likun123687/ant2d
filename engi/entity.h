@@ -26,6 +26,8 @@ public:
     {
         return idx_ == 0xFFFFFFFF;
     }
+    friend bool operator==(const Entity &e1, const Entity &e2);
+    friend bool operator!=(const Entity &e1, const Entity &e2);
 private:
     uint32_t idx_;
 };

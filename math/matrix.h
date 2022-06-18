@@ -9,26 +9,13 @@ namespace math {
         std::array<float, 9> data_;
 
         // SetCol sets a Column within the Matrix, so it mutates the calling matrix.
-        void SetCol(int col, Vec3 v)
-        {
-            data_[col * 3 + 0] = v[0];
-            data_[col * 3 + 1] = v[1];
-            data_[col * 3 + 2] = v[2];
-        }
+        void SetCol(int col, Vec3 v);
 
         // SetRow sets a Row within the Matrix, so it mutates the calling matrix.
-        void SetRow(int row, Vec3 v)
-        {
-            data_[row + 0] = v[0];
-            data_[row + 3] = v[1];
-            data_[row + 6] = v[2];
-        }
+        void SetRow(int row, Vec3 v);
 
         // Diag returns main diagonal (meaning all elements such that row==col).
-        Vec3 Diag()
-        {
-            return Vec3 { data_[0], data_[4], data_[8] };
-        }
+        Vec3 Diag();
 
         // Transform transforms (x, y) to (x1, y).
         //
@@ -37,12 +24,7 @@ namespace math {
         // |  1  y| |s  c  | |   sy  | |kx  1  | |  1 -oy|
         // |     1| |     1| |      1| |      1| |     1 |
         //   move    rotate    scale     skew      origin
-        std::tuple<float, float> Transform(float x, float y)
-        {
-            auto x1 = data_[0] * x + data_[3] * y + data_[6];
-            auto y1 = data_[1] * x + data_[4] * y + data_[7];
-            return std::make_tuple(x1, y1);
-        }
+        std::tuple<float, float> Transform(float x, float y);
 
         // Initialize defines a 3-D Matrix.
         //            | x |
@@ -53,41 +35,12 @@ namespace math {
         // | e2 e5 e8 |
         void Initialize(float x, float y, float angle,
             float sx, float sy, float ox,
-            float oy, float kx, float ky)
-        {
-            auto c = std::cos(angle);
-            auto s = std::sin(angle);
-            data_[0] = c * sx - ky * s * sy; // = a
-            data_[1] = s * sx + ky * c * sy; // = b
-            data_[3] = kx * c * sx - s * sy; // = c
-            data_[4] = kx * s * sx + c * sy; // = d
-            data_[6] = x - ox * data_[0] - oy * data_[3];
-            data_[7] = y - ox * data_[1] - oy * data_[4];
-            data_[2] = 0;
-            data_[5] = 0;
-            data_[8] = 1.0;
-        }
+            float oy, float kx, float ky);
 
-        void InitializeScale1(float x, float y, float angle, float ox, float oy)
-        {
-            auto c = std::cos(angle);
-            auto s = std::sin(angle);
-            data_[0] = c; // = a
-            data_[1] = s; // = b
-            data_[3] = -s; // = c
-            data_[4] = +c; // = d
-            data_[6] = x - ox * data_[0] - oy * data_[3];
-            data_[7] = y - ox * data_[1] - oy * data_[4];
-            data_[2] = 0;
-            data_[5] = 0;
-            data_[8] = 1.0;
-        }
+        void InitializeScale1(float x, float y, float angle, float ox, float oy);
 
         // Ident3 returns the 3x3 identity matrix.
-        static Mat3 Ident3()
-        {
-            return Mat3 { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
-        }
+        static Mat3 Ident3();
     };
 
     class Mat4 {
@@ -95,46 +48,20 @@ namespace math {
         std::array<float, 16> data_;
 
         // SetCol sets a Column within the Matrix.
-        void SetCol(int col, Vec4 v)
-        {
-            data_[col * 4 + 0] = v[0];
-            data_[col * 4 + 1] = v[1];
-            data_[col * 4 + 2] = v[2];
-            data_[col * 4 + 3] = v[3];
-        }
-
+        void SetCol(int col, Vec4 v);
         // SetRow sets a Row within the Matrix.
-        void SetRow(int row, Vec4 v)
-        {
-            data_[row + 0] = v[0];
-            data_[row + 4] = v[1];
-            data_[row + 8] = v[2];
-            data_[row + 12] = v[3];
-        }
-
+        void SetRow(int row, Vec4 v);
         // Diag returns main diagonal (meaning all elements such that row==col).
-        Vec4 Diag()
-        {
-            return Vec4 { data_[0], data_[5], data_[10], data_[15] };
-        }
+        Vec4 Diag();
 
         // Ident4 returns the 4x4 identity matrix.
-        static Mat4 Ident4()
-        {
-            return Mat4 { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
-        }
+        static Mat4 Ident4();
 
         // At returns the matrix element at the given row and column.
-        float At(int row, int col)
-        {
-            return data_[col * 4 + row];
-        }
+        float At(int row, int col);
 
         // Set sets the corresponding matrix element at the given row and column.
-        void Set(int row, int col, float value)
-        {
-            data_[col * 4 + row] = value;
-        }
+        void Set(int row, int col, float value);
     };
 } // namespace math
 } // namespace ant2d

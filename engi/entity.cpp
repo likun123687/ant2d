@@ -28,4 +28,15 @@ void EntityManager::Destroy(Entity e)
     generation_[ei] ++;
     freelist_.push_back(ei);
 }
+
+bool operator==(const Entity &e1, const Entity &e2)
+{
+    return e1.idx_ == e2.idx_;
+}
+
+bool operator!=(const Entity &e1, const Entity &e2)
+{
+    return e1.idx_ != e2.idx_;
+}
+
 }
