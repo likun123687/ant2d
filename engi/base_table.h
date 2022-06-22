@@ -20,11 +20,13 @@ public:
     virtual ~IBase() = default;
 };
 
+static const int kStep = 64;
+static const uint16_t kInvalidIdx = 0xFFFF;
+
 template<typename T>
 class BaseTable:public IBase
 {
 public:
-    const int kStep = 64;
     BaseTable():comps_(), map_(), index_(0)
     {
     }

@@ -11,7 +11,6 @@ struct SRT
     float rotation;
     math::Vec2 position;
 };
-const uint16_t kInvalidIdx = 0xFFFF;
 
 class Transform : public IComp
 {
