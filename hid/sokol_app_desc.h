@@ -1,10 +1,5 @@
 #pragma once
 #include <hid/hid_manager.h>
-
-
-#define SOKOL_IMPL
-#include "sokol_app.h"
-#include "sokol_glue.h"
 #include <utils/debug.h>
 
 namespace ant2d {

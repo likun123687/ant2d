@@ -201,3 +201,8 @@ void sg_setup(const sg_desc* desc)
 {
     return sokol_gfx_api_mock.sg_setup(desc);
 }
+
+void sg_destroy_pipeline(sg_pipeline pip)
+{
+    return sokol_gfx_api_mock.sg_destroy_pipeline(pip);
+}

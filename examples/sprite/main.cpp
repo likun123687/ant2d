@@ -1,6 +1,9 @@
 #include <ant2d.h>
 #include <hid/sokol_app_desc.h>
 #include <utils/debug.h>
+#define SOKOL_IMPL
+#include "sokol_app.h"
+#include "sokol_glue.h"
 
 class MainScene:public ant2d::Scene
 {
@@ -24,7 +27,7 @@ class MainScene:public ant2d::Scene
         auto entity2 = ant2d::SharedEntityManager->New();
         ant2d::SharedSpriteTable->NewCompX(entity2, tex)->SetSize(80, 80);
         auto xf2 = ant2d::SharedTransformTable->NewComp(entity2);
-        xf2->SetPosition(ant2d::math::Vec2{300, 50});
+        xf2->SetPosition(ant2d::math::Vec2{60, 60});
     }
 
     void Update(float dt)
@@ -51,7 +54,7 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
     };
     auto main_scene = new MainScene();
     main_scene->SetOnLoadCallback(on_load_callback);
-    auto options = ant2d::WindowOptions{"sprite test", 480, 320};
+    auto options = ant2d::WindowOptions{"sprite test", 800, 600};
     ant2d::Run(options, main_scene);
     Info("ant2d main end");
     return options;

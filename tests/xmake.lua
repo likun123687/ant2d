@@ -1,6 +1,6 @@
 target("ant2d_test")
     set_kind("binary")
-    add_deps("ant2d_mock")
+    add_deps("ant2d_common", "mock")
     add_packages("catch2") 
     add_packages("stb") 
     add_files("ant2d_test.cpp")

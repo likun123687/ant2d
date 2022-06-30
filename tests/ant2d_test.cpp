@@ -151,6 +151,7 @@ TEST_CASE("test_shader")
         REQUIRE(shader.GetShdId().id == shid.id);
     }
 
+    /*
     {
         REQUIRE_CALL(sokol_gfx_api_mock, batch_attr_slot(_))
             .IN_SEQUENCE(seq)
@@ -158,6 +159,7 @@ TEST_CASE("test_shader")
             .RETURN(1);
         shader.AddAttributeBinding("aaa", 0, SG_VERTEXFORMAT_FLOAT3);
     }
+    */
 
     {
         REQUIRE_CALL(sokol_gfx_api_mock, sg_destroy_shader(_))
@@ -227,7 +229,7 @@ TEST_CASE("test_sort_key")
     SortKey sort_key =  SortKey();
     sort_key.layer_ = 1;
     sort_key.order_ = 2;
-    sort_key.shader_ = 3;
+    sort_key.pipeline_ = 3;
     sort_key.blend_ = 4;
     sort_key.texture_ = 5;
 
@@ -239,7 +241,7 @@ TEST_CASE("test_sort_key")
 
     bool ret = sort_key1.layer_ == 1 && \
     sort_key1.order_ == 2 && \
-    sort_key1.shader_ == 3 && \
+    sort_key1.pipeline_ == 3 && \
     sort_key1.blend_ == 4 && \
     sort_key1.texture_ == 5;
 
@@ -247,14 +249,14 @@ TEST_CASE("test_sort_key")
 
     sort_key.layer_ = 9;
     sort_key.order_ = 8;
-    sort_key.shader_ = 7;
+    sort_key.pipeline_ = 7;
     sort_key.blend_ = 1;
     sort_key.texture_ = 5;
     sort_key1.Decode(sort_key.Encode());
 
     bool ret1 = sort_key1.layer_ == sort_key.layer_  && \
     sort_key1.order_ == sort_key.order_ &&  \
-    sort_key1.shader_ == sort_key.shader_ && \
+    sort_key1.pipeline_ == sort_key.pipeline_ && \
     sort_key1.blend_ == sort_key.blend_ && \
     sort_key1.texture_ == sort_key.texture_ ;
 

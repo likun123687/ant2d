@@ -53,6 +53,7 @@ public:
     MAKE_MOCK0(sapp_heightf, float (void));
     MAKE_MOCK0(sapp_sgcontext, sg_context_desc (void));
     MAKE_MOCK1(sg_setup, void (const sg_desc* desc));
+    MAKE_MOCK1(sg_destroy_pipeline, void(sg_pipeline pip));
 };
 
 

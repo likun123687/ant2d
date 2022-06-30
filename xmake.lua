@@ -73,7 +73,7 @@ add_includedirs("$(projectdir)/third_party/trompeloeil/include", {public = true}
 add_includedirs("$(projectdir)/third_party/fmt/include", {public = true})
 add_includedirs("$(projectdir)/third_party/ZipIterator", {public = true})
 
-target("ant2d")
+target("ant2d_common")
     set_kind("static")
     add_packages("stb") 
     add_files("asset/*.glsl") --最好加在比较前面
@@ -111,77 +111,47 @@ target("ant2d")
     add_files("gfx/bk/pipeline.cpp")
     add_files("ant2d.cpp")
     add_files("third_party/fmt/src/format.cc")
-    add_files("asset/shdc.cpp")
-    add_files("gfx/bk/sokol_gfx.cpp")
 
     if is_plat("windows") then
         add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})
     elseif is_plat("macosx", "iphoneos") then
         add_rules("sokol-shdc", {slang = "metal_macos", plat = "macosx"})
         add_files("utils/content.mm")
+    end
+target_end()
+
+target("mock")
+    set_kind("static")
+    add_files("tests/mocks/*.cpp")
+target_end()
+
+target("bk")
+    set_kind("static")
+    add_files("asset/shdc.cpp")
+    add_files("gfx/bk/sokol_gfx.cpp")
+
+    if is_plat("windows") then
+    elseif is_plat("macosx", "iphoneos") then
         del_files("gfx/bk/sokol_gfx.cpp")
         add_files("gfx/bk/sokol_gfx.mm")
     end
+target_end()
+
+target("ant2d")
+    set_kind("static")
+    add_deps("ant2d_common", "bk")
 target_end()
 
 if has_config("with_example") then
     includes("examples")
 end
 
---[[
-target("ant2d_mock")
-    set_kind("static")
-    add_packages("stb") 
-    add_files("asset/*.glsl") --最好加在比较前面
-    add_files("utils/content.cpp")
-    add_files("gfx/bk/buffer.cpp")
-    add_files("gfx/bk/texture.cpp")
-    add_files("asset/image_data.cpp")
-    add_files("asset/stb_image.cpp")
-    add_files("asset/shader_utils.cpp")
-    add_files("gfx/bk/shader.cpp")
-    add_files("gfx/bk/res_manager.cpp")
-    add_files("gfx/bk/queue.cpp")
-    add_files("gfx/bk/render_context.cpp")
-    add_files("gfx/bk/uniformblock.cpp")
-    add_files("engi/entity.cpp")
-    add_files("gfx/transform/transform.cpp")
-    add_files("gfx/transform/transform_table.cpp")
-    add_files("gfx/camera.cpp")
-    add_files("game/scene.cpp")
-    add_files("gfx/bk/bk.cpp")
-    add_files("game/game.cpp")
-    add_files("game/fps.cpp")
-    add_files("gfx/render_system.cpp")
-    add_files("gfx/gctx.cpp")
-    add_files("gfx/batch_render.cpp")
-    add_files("gfx/sprite/sprite.cpp")
-    add_files("gfx/sprite/sprite_table.cpp")
-    add_files("gfx/sprite/sprite_render_feature.cpp")
-    add_files("gfx/bk_texture.cpp")
-    add_files("asset/texture_manager.cpp")
-    add_files("hid/hid_manager.cpp")
-    add_files("math/vector.cpp")
-    add_files("math/project.cpp")
-    add_files("math/matrix.cpp")
-    add_files("ant2d.cpp")
-    add_files("third_party/fmt/src/format.cc")
-    add_files("tests/mocks/*.cpp")
-
-    if is_plat("windows") then
-        add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})
-    elseif is_plat("macosx", "iphoneos") then
-        add_rules("sokol-shdc", {slang = "metal_macos", plat = "macosx"})
-        add_files("utils/content.mm")
-    end
-target_end()
-
-
 if has_config("with_test") then
     add_requires("catch2")
     includes("tests")
 end
---]]
+
+
 
 --includes("ant2dnet/base")
 --includes("ant2dnet/net")
