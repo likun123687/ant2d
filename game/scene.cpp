@@ -1,5 +1,6 @@
 #include <game/scene.h>
 #include <game/game.h>
+#include <utils/debug.h>
 
 namespace ant2d {
 
@@ -21,6 +22,7 @@ void SceneManager::UnLoad(Scene *sn)
 
 void SceneManager::Setup(Game *g)
 {
+    Info("g {}", static_cast<void *>(g));
     g_ = g;
     if (h_scene_) {
         auto callback = h_scene_->GetOnLoadCallback();

@@ -9,6 +9,10 @@ public:
     IComp():entity_(Ghost)
     {
     }
+
+    IComp(Entity e):entity_(e)
+    {
+    }
     void SetEntity(Entity entity)
     {
         entity_ = entity;

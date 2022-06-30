@@ -266,8 +266,6 @@ TEST_CASE("test_res_manager")
     using trompeloeil::_; // wild card for matching any value
     trompeloeil::sequence seq;
 
-    ResManager res_manager = ResManager();
-
     auto data = new uint8_t[64];
     sg_buffer buffer_id;
     buffer_id.id = 1;
@@ -280,12 +278,38 @@ TEST_CASE("test_res_manager")
 
     uint16_t index_id = 0;
     IndexBuffer* ib = nullptr;
-    std::tie(index_id, ib) = res_manager.AllocIndexBuffer(data, 64);
-    IndexBuffer *ib1 = res_manager.GetIndexBuffer(index_id);
+    std::tie(index_id, ib) = SharedResManager.AllocIndexBuffer(data, 64);
+    IndexBuffer *ib1 = SharedResManager.GetIndexBuffer(index_id);
     REQUIRE(ib == ib1);
 
-    std::tie(index_id, ib) = res_manager.AllocIndexBuffer(data, 64);
-    REQUIRE(ib == res_manager.GetIndexBuffer(index_id));
+    std::tie(index_id, ib) = SharedResManager.AllocIndexBuffer(data, 64);
+    REQUIRE(ib == SharedResManager.GetIndexBuffer(index_id));
+
+    //test get shader
+    auto shader = Shader();
+    sg_shader shid = sg_shader{1};
+    sg_shader_desc sh_desc = {};
+    sh_desc.label = "batch_shader_unique";
+
+    REQUIRE_CALL(sokol_gfx_api_mock, sg_query_backend())
+        .IN_SEQUENCE(seq)
+        .RETURN(SG_BACKEND_D3D11);
+
+    REQUIRE_CALL(sokol_gfx_api_mock, batch_shader_desc(_))
+        .IN_SEQUENCE(seq)
+        .LR_WITH((_1 == SG_BACKEND_D3D11))
+        .RETURN(&sh_desc);
+
+    REQUIRE_CALL(sokol_gfx_api_mock, sg_make_shader(_))
+        .IN_SEQUENCE(seq)
+        .LR_WITH((std::string(_1->label) == std::string(sh_desc.label)))
+        .RETURN(shid);
+
+    uint16_t sh_id = kInvalidId;
+    Shader *sh = nullptr;
+    std::tie(sh_id, sh) = SharedResManager.AllocShader(ShaderType::kBatchShader);
+    Info("shader id {} sh {}", sh_id, static_cast<void*>(sh));
+    REQUIRE(sh == SharedResManager.GetShader(sh_id));
 }
 
 

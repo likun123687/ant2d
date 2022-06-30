@@ -1,13 +1,18 @@
 #include <gfx/sprite/sprite.h>
 namespace ant2d {
 
+SpriteComp::SpriteComp():IComp(),sprite_(nullptr), z_order_(), batch_id_(),
+    color_(0), flip_x_(0), flip_y_(0), width_(0), height_(0), gravity_{0, 0}, visible_(false)
+{
+}
+
 void SpriteComp::SetSprite(ITexture2D *spt)
 {
     sprite_ = spt;
     //batch_id_.value = spt->GetTex();
-    batch_id_.SetValue(spt->GetTextureId());
+    batch_id_.SetValue(sprite_->GetTextureId());
     if (width_ == 0 || height_ == 0) {
-        auto size = spt->GetSize();
+        auto size = sprite_->GetSize();
         width_ = size.width;
         height_ = size.height;
     }
@@ -45,6 +50,15 @@ bool SpriteComp::GetVisible()
     return visible_;
 }
 
+
+std::tuple<float, float, float, float> SpriteComp::GetRgbaColor()
+{
+    auto r = static_cast<uint8_t>(color_>>24) / 255.0f;
+    auto g = static_cast<uint8_t>(color_>>16) / 255.0f;
+    auto b = static_cast<uint8_t>(color_>>8) / 255.0f;
+    auto a = static_cast<uint8_t>(color_>>0) / 255.0f;
+    return std::make_tuple(r, g, b, a);
+}
 //sg_color SpriteComp::GetColor()
 //{
 //    sg_color result;
@@ -63,6 +77,7 @@ uint32_t SpriteComp::GetColor()
 void SpriteComp::SetColor(uint32_t color)
 {
     color_ = color;
+    Info("set color {:#x}--{:#x}", color, color_);
 }
 
 //void SpriteComp::SetColor(sg_color color)

@@ -1,4 +1,5 @@
 #include <gfx/camera.h>
+#include <utils/debug.h>
 
 namespace ant2d {
 
@@ -32,7 +33,9 @@ std::tuple<float, float> Mat3::TransformNormal(float x, float y)
     return std::make_tuple(x1, y1);
 }
 
-Camera::Camera():eye_{0, 0, 0},follow_(Ghost)
+Camera::Camera():eye_{0, 0, 0},bound_{0.0f,0.0f,0.0f,0.0f},
+    mat_{0.0f, 0.0f, 0.0f, 0.0f,0.0f},view_{0.0f, 0.0f, 0.0f, {0.0f, 0.0f}, {0.0f, 0.0f}},
+    follow_(Ghost),desire_{0.0f, 0.0f},screen_{0.0f, 0.0f}
 {}
 
 void Camera::Init()
@@ -241,7 +244,12 @@ bool Camera::InView(Transform* xf, math::Vec2 size, math::Vec2 gravity)
     auto w = view_.w * mat_.sx;
     auto h = view_.h * mat_.sy;
 
+    Info("w-h--[{}-{}]--[{}-{}]", view_.w, mat_.sx, view_.h, mat_.sy);
     auto world = xf->GetWorld();
+    Info("world--[{}-{}],{}, [{},{}]", world.scale[0],world.scale[1], world.rotation, world.position[0], world.position[1]);
+    Info("size--[{}-{}]", size[0], size[1]);
+    Info("gravity--[{}-{}]", gravity[0], gravity[1]);
+
     if (world.rotation == 0) { // happy path
         auto p = world.position;
         size[0] = size[0] * world.scale[0];

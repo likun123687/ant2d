@@ -25,7 +25,7 @@ public:
     virtual void OnFocusChanged(bool focused) = 0;
 
     virtual void OnKeyEvent(int key, bool pressed) = 0;
-    virtual void OnPointEvent( int key,  bool pressed, float x, float y) = 0;
+    virtual void OnPointEvent(int key,  bool pressed, float x, float y) = 0;
     virtual ~WindowCallback() = default;
 };
 }

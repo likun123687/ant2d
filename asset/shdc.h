@@ -1,5 +1,6 @@
 #pragma once
 #include <gfx/bk/sokol_gfx_bk.h>
+#include <math/matrix.h>
 
 #if BK_PLATFORM_WINDOWS
 #include <asset/windows/batch_system_shader.h>

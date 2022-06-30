@@ -1,4 +1,5 @@
 #include <gfx/bk/uniformblock.h>
+#include <utils/debug.h>
 
 using namespace ant2d;
 
@@ -8,6 +9,7 @@ uint8_t Uniformblock::Create(ShaderType type, sg_shader_stage stage, const std::
     name_ = name;
     auto slot_func = GetUniformblockSlotFunc(type);
     slot_ = slot_func(stage, name.c_str());
+    Info("ub create slot {}--name {}", slot_, name);
 
     auto size_func = GetUniformblockSizeFunc(type);
     size_ = size_func(stage, name.c_str());

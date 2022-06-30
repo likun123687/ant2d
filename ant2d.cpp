@@ -1,6 +1,7 @@
 
 #include <ant2d.h>
 #include <hid/hid_manager.h>
+#include <utils/debug.h>
 
 namespace ant2d {
 
@@ -9,13 +10,16 @@ SceneManager* SharedSceneManager = nullptr;
 EntityManager* SharedEntityManager = nullptr;
 SpriteTable* SharedSpriteTable = nullptr;
 TransformTable* SharedTransformTable = nullptr;
+TextureManager* SharedTextureManager = nullptr;
 // InputSystem* SharedInputSystem = nullptr;
 
 void Run(WindowOptions options, Scene* sn)
 {
+    Info("start to run, main scene--{}", static_cast<void*>(sn));
     auto g = new Game {};
     g->Init();
     SharedGame = g;
+    SharedTextureManager = new TextureManager();
     SharedEntityManager = g->GetDB()->GetEntityManager();
     SharedSceneManager = g->GetSceneManager();
     SharedSceneManager->SetDefault(sn);
@@ -30,6 +34,7 @@ void Run(WindowOptions options, Scene* sn)
             break;
         }
     }
+
     SharedHidManager.SetWindowCallback(g);
     SharedHidManager.SetOptions(options);
 }

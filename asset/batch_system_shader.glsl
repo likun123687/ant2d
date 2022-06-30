@@ -1,3 +1,4 @@
+@ctype mat4 ::ant2d::math::Mat4
 @vs batch_vs
 uniform batch_vs_params{
     mat4 proj;
@@ -12,7 +13,7 @@ out vec2 outTexCoord;
 void main() {
     outColor = rgba;
     outTexCoord = xyuv.zw;
-    gl_Position = proj * vec4(xyuv.xy, 1, 1);
+    gl_Position = proj * vec4(xyuv.xy, 0, 1);
 }
 @end
 
@@ -26,6 +27,7 @@ in vec2 outTexCoord;
 out vec4 outputColor;
 void main() {
     outputColor = texture(tex, outTexCoord) * outColor;
+    //outputColor = texture(tex, outTexCoord);
 }
 @end
 

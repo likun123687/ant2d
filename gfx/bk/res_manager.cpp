@@ -10,6 +10,7 @@ ResManager::ResManager()
     tt_index_ = 1;
     um_index_ = 1;
     sh_index_ = 1;
+    pipeline_index_ = 1;
 }
 
 std::tuple<uint16_t, IndexBuffer*> ResManager::AllocIndexBuffer(const uint8_t* ptr, size_t size)
@@ -28,6 +29,7 @@ std::tuple<uint16_t, IndexBuffer*> ResManager::AllocIndexBuffer(const uint8_t* p
     }
 
     id = id | (kIdTypeIndex << kIdTypeShift);
+    Info("alloc index id {}", id);
     ib->Create(ptr, size, 0);
 
     return std::make_tuple(id, ib);
@@ -114,7 +116,27 @@ std::tuple<uint16_t, Shader*> ResManager::AllocShader(ShaderType type)
     }
     id = id | (kIdTypeShader << kIdTypeShift);
     shader->Create(type);
+
     return std::make_tuple(id, shader);
+}
+
+std::tuple<uint16_t, Pipeline*> ResManager::AllocPipeline(const sg_pipeline_desc *desc)
+{
+    uint16_t id = 0;
+    Pipeline* pipeline = nullptr;
+
+    auto index = pipeline_frees_.Pop();
+    if (index) {
+        id = index;
+        pipeline = &pipelines_[index];
+    } else {
+        id = pipeline_index_;
+        pipeline = &pipelines_[pipeline_index_];
+        pipeline_index_++;
+    }
+    id = id | (kIdTypePipeline << kIdTypeShift);
+    pipeline->Create(desc);
+    return std::make_tuple(id, pipeline);
 }
 
 void ResManager::Free(uint16_t id)
@@ -142,11 +164,19 @@ void ResManager::Free(uint16_t id)
         shaders_[v].Destroy();
         sh_frees_.Push(v);
         break;
+    case kIdTypePipeline:
+        pipelines_[v].Destroy();
+        pipeline_frees_.Push(v);
+        break;
     }
 }
 
-IndexBuffer* ResManager::GetIndexBuffer(uint16_t id)
+IndexBuffer* ResManager::GetIndexBuffer(uint16_t id, bool had_trip_type)
 {
+    if (had_trip_type) {
+        return &index_buffers_[id];
+    }
+
     auto t = id >> kIdTypeShift;
     auto v = id & kIdMask;
     if (t != kIdTypeIndex || v >= kMaxIndex) {
@@ -155,8 +185,11 @@ IndexBuffer* ResManager::GetIndexBuffer(uint16_t id)
     return &index_buffers_[v];
 }
 
-VertexBuffer* ResManager::GetVertexBuffer(uint16_t id)
+VertexBuffer* ResManager::GetVertexBuffer(uint16_t id, bool had_trip_type)
 {
+    if (had_trip_type) {
+        return &vertex_buffers_[id];
+    }
     auto t = id >> kIdTypeShift;
     auto v = id & kIdMask;
     if (t != kIdTypeVertex || v >= kMaxVertex) {
@@ -165,8 +198,11 @@ VertexBuffer* ResManager::GetVertexBuffer(uint16_t id)
     return &vertex_buffers_[v];
 }
 
-Texture2D* ResManager::GetTexture(uint16_t id)
+Texture2D* ResManager::GetTexture(uint16_t id, bool had_trip_type)
 {
+    if (had_trip_type) {
+        return &textures_[id];
+    }
     auto t = id >> kIdTypeShift;
     auto v = id & kIdMask;
     if (t != kIdTypeTexture || v >= kMaxTexture) {
@@ -175,8 +211,11 @@ Texture2D* ResManager::GetTexture(uint16_t id)
     return &textures_[v];
 }
 
-Uniformblock* ResManager::GetUniformblock(uint16_t id)
+Uniformblock* ResManager::GetUniformblock(uint16_t id, bool had_trip_type)
 {
+    if (had_trip_type) {
+        return &uniformsblocks_[id];
+    }
     auto t = id >> kIdTypeShift;
     auto v = id & kIdMask;
     if (t != kIdTypeUniformblock || v >= kMaxUniformblock) {
@@ -185,12 +224,28 @@ Uniformblock* ResManager::GetUniformblock(uint16_t id)
     return &uniformsblocks_[v];
 }
 
-Shader* ResManager::GetShader(uint16_t id)
+Shader* ResManager::GetShader(uint16_t id, bool had_trip_type)
 {
+    if (had_trip_type) {
+        return &shaders_[id];
+    }
     auto t = id >> kIdTypeShift;
     auto v = id & kIdMask;
     if (t != kIdTypeShader || v >= kMaxShader) {
         return nullptr;
     }
     return &shaders_[v];
+}
+
+Pipeline* ResManager::GetPipeline(uint16_t id, bool had_trip_type)
+{
+    if (had_trip_type) {
+        return &pipelines_[id];
+    }
+    auto t = id >> kIdTypeShift;
+    auto v = id & kIdMask;
+    if (t != kIdTypePipeline || v >= kMaxPipeline) {
+        return nullptr;
+    }
+    return &pipelines_[v];
 }

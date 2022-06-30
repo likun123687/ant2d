@@ -9,7 +9,11 @@ struct PosTexColorVertex {
     float y;
     float u;
     float v;
-    uint32_t rgba;
+    float r;
+    float g;
+    float b;
+    float a;
+    //uint32_t rgba;
 };
 
 class Camera;
@@ -46,7 +50,7 @@ struct Batch {
 
 class IBatchObject {
 public:
-    virtual void Fill(std::vector<PosTexColorVertex>& vertex) = 0;
+    virtual void Fill(std::vector<PosTexColorVertex>& vertex, uint32_t vertex_pos) = 0;
     virtual int Size() = 0;
     virtual ~IBatchObject() = default;
 };
@@ -77,6 +81,9 @@ private:
     uint16_t value_;
 
 public:
+    ZOrder():value_(0)
+    {
+    }
     void SetValue(uint16_t z)
     {
         value_ = z;
@@ -90,6 +97,9 @@ public:
 
 class BatchId {
 public:
+    BatchId():value_(0)
+    {
+    }
     uint16_t value_;
     void SetValue(uint16_t id)
     {

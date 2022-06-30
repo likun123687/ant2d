@@ -2,9 +2,10 @@
 #include <gfx/sprite/sprite_render_feature.h>
 #include <gfx/transform/transform_table.h>
 #include <math/matrix.h>
+#include <utils/debug.h>
 
 namespace ant2d {
-void SpriteBatchObject::Fill(std::vector<PosTexColorVertex>& buf)
+void SpriteBatchObject::Fill(std::vector<PosTexColorVertex>& buf, uint32_t vertex_pos)
 {
     auto srt = transform_->GetWorld();
     auto position = srt.position;
@@ -20,14 +21,14 @@ void SpriteBatchObject::Fill(std::vector<PosTexColorVertex>& buf)
         if (sprite_comp_->GetFlipY() == 1) {
             std::swap(rg.x1, rg.x2);
         }
-        buf[1].u = rg.x1;
-        buf[1].v = rg.y2;
-        buf[2].u = rg.x2;
-        buf[2].v = rg.y2;
-        buf[3].u = rg.x2;
-        buf[3].v = rg.y1;
-        buf[0].u = rg.x1;
-        buf[0].v = rg.y1;
+        buf[vertex_pos+1].u = rg.x1;
+        buf[vertex_pos+1].v = rg.y2;
+        buf[vertex_pos+2].u = rg.x2;
+        buf[vertex_pos+2].v = rg.y2;
+        buf[vertex_pos+3].u = rg.x2;
+        buf[vertex_pos+3].v = rg.y1;
+        buf[vertex_pos+0].u = rg.x1;
+        buf[vertex_pos+0].v = rg.y1;
     } else {
         if (sprite_comp_->GetFlipY() == 1) {
             std::swap(rg.y1, rg.y2);
@@ -35,22 +36,26 @@ void SpriteBatchObject::Fill(std::vector<PosTexColorVertex>& buf)
         if (sprite_comp_->GetFlipX() == 1) {
             std::swap(rg.x1, rg.x2);
         }
-        buf[0].u = rg.x1;
-        buf[0].v = rg.y2;
-        buf[1].u = rg.x2;
-        buf[1].v = rg.y2;
-        buf[2].u = rg.x2;
-        buf[2].v = rg.y1;
-        buf[3].u = rg.x1;
-        buf[3].v = rg.y1;
+        buf[vertex_pos+0].u = rg.x1;
+        buf[vertex_pos+0].v = rg.y2;
+        buf[vertex_pos+1].u = rg.x2;
+        buf[vertex_pos+1].v = rg.y2;
+        buf[vertex_pos+2].u = rg.x2;
+        buf[vertex_pos+2].v = rg.y1;
+        buf[vertex_pos+3].u = rg.x1;
+        buf[vertex_pos+3].v = rg.y1;
     }
 
     // Color
-    auto color = sprite_comp_->GetColor();
-    buf[0].rgba = color;
-    buf[1].rgba = color;
-    buf[2].rgba = color;
-    buf[3].rgba = color;
+    //auto color = sprite_comp_->GetColor();
+    //Info("sprite color {:#x}", color);
+    auto rgba_color = sprite_comp_->GetRgbaColor();
+    for (int i = 0; i<4; i++) {
+        buf[vertex_pos+i].r = std::get<0>(rgba_color);
+        buf[vertex_pos+i].g = std::get<1>(rgba_color);
+        buf[vertex_pos+i].b = std::get<2>(rgba_color);
+        buf[vertex_pos+i].a = std::get<3>(rgba_color);
+    }
 
     // Center of model
     auto [g_x, g_y] = sprite_comp_->GetGravity();
@@ -62,10 +67,10 @@ void SpriteBatchObject::Fill(std::vector<PosTexColorVertex>& buf)
     m.Initialize(position[0], position[1], srt.rotation, srt.scale[0], srt.scale[1], ox, oy, 0, 0);
 
     // Let's go!
-    std::tie(buf[0].x, buf[0].y) = m.Transform(0, 0);
-    std::tie(buf[1].x, buf[1].y) = m.Transform(width, 0);
-    std::tie(buf[2].x, buf[2].y) = m.Transform(width, height);
-    std::tie(buf[3].x, buf[3].y) = m.Transform(0, height);
+    std::tie(buf[vertex_pos+0].x, buf[vertex_pos+0].y) = m.Transform(0, 0);
+    std::tie(buf[vertex_pos+1].x, buf[vertex_pos+1].y) = m.Transform(width, 0);
+    std::tie(buf[vertex_pos+2].x, buf[vertex_pos+2].y) = m.Transform(width, height);
+    std::tie(buf[vertex_pos+3].x, buf[vertex_pos+3].y) = m.Transform(0, height);
 }
 
 int SpriteBatchObject::Size()
@@ -126,6 +131,7 @@ void SpriteRenderFeature::Register(RenderSystem* rs)
 
 void SpriteRenderFeature::Extract(View* v)
 {
+    Info("extract sprite table size {}", sprite_table_->GetSize());
     auto camera = v->camera;
     auto fi = uint32_t(id_) << 16;
     for (int i = 0; i < sprite_table_->GetSize(); i++) {
@@ -138,7 +144,7 @@ void SpriteRenderFeature::Extract(View* v)
 
         if (sprite->GetVisible() && camera->InView(transform, sz, g)) {
             auto z_order = sprite->GetZOrder();
-            auto batch_id = sprite->GetBatchId();
+            auto batch_id = sprite->GetBatchId(); //batch_id就是texid
             auto sid = PackSortId(z_order.GetValue(), batch_id.GetValue());
             auto value = fi + uint32_t(i);
             v->render_nodes.push_back(SortObject { sid, value });
@@ -154,8 +160,8 @@ void SpriteRenderFeature::Draw(const std::vector<SortObject>& nodes)
     // batch draw!
     auto sprite_batch_object = SpriteBatchObject {};
     for (auto& b : nodes) {
-        auto ii = b.value & 0xFFFF;
-        auto sid = b.sort_id & 0xFFFF;
+        auto ii = b.value & 0xFFFF; //在sprite_table索引
+        auto sid = b.sort_id & 0xFFFF; //batch_id也就是texid
         if (sort_id != sid) {
             if (begin) {
                 batch_render_->End();
@@ -164,7 +170,7 @@ void SpriteRenderFeature::Draw(const std::vector<SortObject>& nodes)
             sort_id = sid;
             begin = true;
             auto texture_id = sprite_table_->GetComp(ii)->GetTextureId();
-            uint16_t depth = 0;
+            uint16_t depth = 0; //就是z_order
             std::tie(depth, std::ignore) = UnpackSortId(b.sort_id);
             batch_render_->Begin(texture_id, depth);
         }
@@ -182,7 +188,7 @@ void SpriteRenderFeature::Draw(const std::vector<SortObject>& nodes)
     batch_render_->Flush();
 }
 
-void Flush()
+void SpriteRenderFeature::Flush()
 {
 }
 

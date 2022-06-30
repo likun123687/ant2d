@@ -1,5 +1,6 @@
 #pragma once
 #include <gfx/render_data.h>
+#include <gfx/camera.h>
 #include <array>
 #include <memory>
 
@@ -45,14 +46,14 @@ public:
 class BatchRender:public IRender
 {
 private:
-    uint64_t state_flags_;
-    uint32_t rgba_;
-
+    //uint64_t state_flags_;
+    //uint32_t rgba_;
     // shader program
-    uint16_t shader_id_;
+    //uint16_t shader_id_;
+    uint16_t pipeline_id_;
     // uniform handle
     uint16_t umh_projection_;
-    uint16_t umh_sampler0_;
+    //uint16_t umh_sampler0_;
     std::unique_ptr<BatchContext> batch_context_;
 
 public:

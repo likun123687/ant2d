@@ -140,3 +140,64 @@ void sg_draw(int base_element, int num_elements, int num_instances)
 {
     return sokol_gfx_api_mock.sg_draw(base_element, num_elements, num_instances);
 }
+
+sg_pipeline sg_make_pipeline(const sg_pipeline_desc* desc)
+{
+    return sokol_gfx_api_mock.sg_make_pipeline(desc);
+}
+
+void sg_begin_default_pass(const sg_pass_action* pass_action, int width, int height)
+{
+    return sokol_gfx_api_mock.sg_begin_default_pass(pass_action, width, height);
+}
+
+void sg_apply_pipeline(sg_pipeline pip)
+{
+    return sokol_gfx_api_mock.sg_apply_pipeline(pip);
+}
+
+void sg_apply_bindings(const sg_bindings* bindings)
+{
+    return sokol_gfx_api_mock.sg_apply_bindings(bindings);
+}
+
+void sg_end_pass(void)
+{
+    return sokol_gfx_api_mock.sg_end_pass();
+}
+
+
+void sg_commit(void)
+{
+    return sokol_gfx_api_mock.sg_commit();
+}
+
+int sapp_width(void)
+{
+    return sokol_gfx_api_mock.sapp_width();
+}
+
+float sapp_widthf(void)
+{
+    return sokol_gfx_api_mock.sapp_widthf();
+}
+
+int sapp_height(void)
+{
+    return sokol_gfx_api_mock.sapp_height();
+}
+
+float sapp_heightf(void)
+{
+    return sokol_gfx_api_mock.sapp_heightf();
+}
+
+sg_context_desc sapp_sgcontext(void)
+{
+    return sokol_gfx_api_mock.sapp_sgcontext();
+}
+
+void sg_setup(const sg_desc* desc)
+{
+    return sokol_gfx_api_mock.sg_setup(desc);
+}

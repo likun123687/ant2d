@@ -3,6 +3,7 @@
 #include <gfx/bk/shader.h>
 #include <gfx/bk/texture.h>
 #include <gfx/bk/uniformblock.h>
+#include <gfx/bk/pipeline.h>
 #include <tuple>
 #include <vector>
 #include <utils/singleton.h>
@@ -21,6 +22,7 @@ enum IdType {
     kIdTypeLayout,
     kIdTypeUniformblock,
     kIdTypeShader,
+    kIdTypePipeline,
 };
 
 const uint16_t kMaxIndex = 2 << 10;
@@ -28,6 +30,7 @@ const uint16_t kMaxVertex = 2 << 10;
 const uint16_t kMaxTexture = 1 << 10;
 const uint16_t kMaxUniformblock = 32 * 8;
 const uint16_t kMaxShader = 32;
+const uint16_t kMaxPipeline = 32;
 
 class FreeList {
 public:
@@ -62,12 +65,14 @@ private:
 
     std::array<Uniformblock, kMaxUniformblock> uniformsblocks_;
     std::array<Shader, kMaxShader> shaders_;
+    std::array<Pipeline, kMaxPipeline> pipelines_;
 
     uint16_t ib_index_;
     uint16_t vb_index_;
     uint16_t tt_index_;
     uint16_t um_index_;
     uint16_t sh_index_;
+    uint16_t pipeline_index_;
 
     // free list
     FreeList ib_frees_;
@@ -75,6 +80,7 @@ private:
     FreeList tt_frees_;
     FreeList um_frees_;
     FreeList sh_frees_;
+    FreeList pipeline_frees_;
 
 public:
     ResManager();
@@ -83,12 +89,18 @@ public:
     std::tuple<uint16_t, Uniformblock*> AllocUniformblock(uint16_t shId, sg_shader_stage stage, const std::string& name);
     std::tuple<uint16_t, Texture2D*> AllocTexture(const ImageData& data);
     std::tuple<uint16_t, Shader*> AllocShader(ShaderType type);
+    std::tuple<uint16_t, Pipeline*> AllocPipeline(const sg_pipeline_desc *desc);
     void Free(uint16_t id);
-    IndexBuffer* GetIndexBuffer(uint16_t id);
-    VertexBuffer* GetVertexBuffer(uint16_t id);
-    Texture2D* GetTexture(uint16_t id);
-    Uniformblock* GetUniformblock(uint16_t id);
-    Shader* GetShader(uint16_t id);
+    IndexBuffer* GetIndexBuffer(uint16_t id, bool had_trip_type = false);
+    VertexBuffer* GetVertexBuffer(uint16_t id, bool had_trip_type = false);
+    Texture2D* GetTexture(uint16_t id, bool had_trip_type = false);
+    Uniformblock* GetUniformblock(uint16_t id, bool had_trip_type = false);
+    Shader* GetShader(uint16_t id, bool had_trip_type = false);
+    Pipeline* GetPipeline(uint16_t id, bool had_trip_type = false);
+    static uint16_t TripType(uint16_t id)
+    {
+        return id & kIdMask;
+    }
 };
 }
 

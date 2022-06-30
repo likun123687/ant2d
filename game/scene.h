@@ -18,10 +18,26 @@ public:
     virtual void OnEnter(Game *g) = 0;
     virtual void Update(float dt)  = 0;
     virtual void OnExit() = 0;
-    virtual Callback GetOnLoadCallback() = 0;
-    virtual void SetOnLoadCallback(Callback callback) = 0;
-    virtual Callback GetUnLoadCallback() = 0;
-    virtual void SetUnLoadCallback(Callback callback) = 0;
+    Callback GetOnLoadCallback()
+    {
+        return on_load_callback_;
+    }
+
+    void SetOnLoadCallback(Callback callback)
+    {
+        on_load_callback_ = callback;
+    }
+
+    Callback GetUnLoadCallback()
+    {
+        return un_load_callback_;
+    }
+
+    void SetUnLoadCallback(Callback callback)
+    {
+        un_load_callback_ = callback;
+    }
+
     virtual ~Scene() = default;
 };
 

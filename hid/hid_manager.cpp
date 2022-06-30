@@ -1,8 +1,10 @@
 #include <hid/hid_manager.h>
 #include <gfx/bk/sokol_gfx_bk.h>
+#include <utils/debug.h>
 namespace ant2d {
 void HidManager::SetWindowCallback(WindowCallback *callback)
 {
+    Info("set windows callback {}", static_cast<void *>(callback));
     window_callback_ = callback;
 }
 

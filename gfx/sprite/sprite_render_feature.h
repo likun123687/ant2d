@@ -11,7 +11,7 @@ private:
     Transform* transform_;
 
 public:
-    void Fill(std::vector<PosTexColorVertex>& buf);
+    void Fill(std::vector<PosTexColorVertex>& buf, uint32_t vertex_pos);
     int Size();
     SpriteComp* GetSpriteComp();
     void SetSpriteComp(SpriteComp* s);

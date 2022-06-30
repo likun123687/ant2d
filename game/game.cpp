@@ -5,6 +5,7 @@
 #include <gfx/batch_render.h>
 #include <asset/shader_utils.h>
 #include <gfx/sprite/sprite_render_feature.h>
+#include <utils/debug.h>
 
 namespace ant2d {
 
@@ -57,6 +58,7 @@ Camera* Game::Camera()
 
 void Game::OnCreate(float w, float h, float ratio)
 {
+    Info("{}-{}-{}", w, h, ratio);
     Create(w, h, ratio);
 }
 
@@ -91,19 +93,20 @@ void Game::OnFocusChanged(bool focused)
 
 void Game::OnResize(float w, float h)
 {
-    SetGameSize(w, h);
+    //SetGameSize(w, h);
 }
 
-void OnKeyEvent(int key, bool pressed)
+void Game::OnKeyEvent(int key, bool pressed)
 {
 }
 
-void OnPointEvent(int key, bool pressed, float x, float y)
+void Game::OnPointEvent(int key, bool pressed, float x, float y)
 {
 }
 
 void Game::SetGameSize(float w, float h)
 {
+    Info("game set size {}--{}", w, h);
     render_system_->GetMainCamera()->SetViewPort(w, h);
 }
 
@@ -160,8 +163,10 @@ void Game::LoadTables()
 {
     db_->SetEntityManager(new EntityManager());
     auto sprite_table = new SpriteTable();
+    sprite_table->SetTableType(TableType::kSprite);
     db_->AddTable(sprite_table);
     auto transform_table = new TransformTable();
+    transform_table->SetTableType(TableType::kTransform);
     db_->AddTable(transform_table);
 }
 

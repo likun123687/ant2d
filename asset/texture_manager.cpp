@@ -27,6 +27,7 @@ void TextureManager::Unload(const std::string& file)
             it->second.cnt -= 1;
         } else {
             repo_.erase(file);
+            textures_.erase(file);
             SharedResManager.Free(it->second.rid);
             SharedAtlasManager.DeleteAtlasByName(file);
         }
@@ -81,11 +82,19 @@ void TextureManager::LoadAtlasIndexed(const std::string& file, float width, floa
 
 BkTexture* TextureManager::Get(const std::string& file)
 {
+    auto tex_it = textures_.find(file);
+    if (tex_it != textures_.end()) {
+        return tex_it->second.get();
+    }
+
     auto it = repo_.find(file);
     if (it != repo_.end()) {
         auto rid = it->second.rid;
-        return new BkTexture{rid};
+        auto tex = new BkTexture{rid};
+        textures_[file] = std::unique_ptr<BkTexture>(tex);
+        return tex;
     }
+
     return nullptr;
 }
 

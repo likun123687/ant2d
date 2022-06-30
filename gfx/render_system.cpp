@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <gfx/render_system.h>
 #include <gfx/transform/transform_table.h>
+#include <utils/debug.h>
 
 namespace ant2d {
 
@@ -38,6 +39,8 @@ void RenderSystem::RegisterRender(IRender* render)
 
 void RenderSystem::Update(float dt)
 {
+    Info("update {}", dt);
+
     // update camera
     auto follow = main_camera_->GetFollow();
     if (!follow.IsGhost()) {
@@ -70,14 +73,16 @@ void RenderSystem::Update(float dt)
     // draw
     int i = 0;
     int j = 0;
+    Info("before sprite for {}--{}--{}", i , j, n);
     for (; i < n; i = j) {
-        auto fi = (nodes[i].value >> 16);
+        auto fi = (nodes[i].value >> 16); //feature id
         j = i + 1;
         while (j < n && (nodes[j].value >> 16 == fi)) {
             j++;
         }
         auto& f = feature_list_[fi];
         // f.Draw(v.RenderNodes [i:j]);
+        Info("before sprite draw {}--{}", i , j);
         f->Draw({ view_.render_nodes.begin() + i, view_.render_nodes.begin() + j });
     }
 

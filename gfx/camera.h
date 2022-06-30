@@ -33,14 +33,6 @@ class Camera {
         float rt;
     };
 
-    struct View {
-        float w;
-        float h;
-        float ratio;
-        math::Vec2 scale;
-        math::Vec2 inv_scale;
-    };
-
     struct WH {
         float w;
         float h;
@@ -83,7 +75,15 @@ private:
         float bottom;
     } bound_;
     Mat mat_;
-    View view_;
+
+    struct {
+        float w;
+        float h;
+        float ratio;
+        math::Vec2 scale;
+        math::Vec2 inv_scale;
+    } view_;
+    //View view_;
     Entity follow_;
     WH desire_;
     WH screen_;

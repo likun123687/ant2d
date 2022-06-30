@@ -4,31 +4,40 @@
 #include <gfx/bk/bk.h>
 #include <math/project.h>
 #include <gfx/gctx.h>
+#include <utils/debug.h>
 
 namespace ant2d {
 BatchRender::BatchRender(ShaderType shader_type):batch_context_(new BatchContext())
 {
     shader_type_ = shader_type;
     // setup state
-    state_flags_ |= kStateBlend.alpha_premultiplied;
+    //state_flags_ |= kStateBlend.alpha_premultiplied;
     uint16_t sh_id = kInvalidId;
     Shader *sh = nullptr;
     std::tie(sh_id, sh) = SharedResManager.AllocShader(shader_type);
-    if (sh_id != kInvalidId) {
-        shader_id_ = sh_id;
 
-        // setup attribute
-        sh->AddAttributeBinding("xyuv", 0, SG_VERTEXFORMAT_FLOAT4);
-        sh->AddAttributeBinding("rgba", 0, SG_VERTEXFORMAT_BYTE4);
+    sg_pipeline_desc pdesc = {};
+    pdesc.shader = sh->GetShdId();
+    // setup attribute
+    //sh->AddAttributeBinding("xyuv", 0, SG_VERTEXFORMAT_FLOAT4);
+    //sh->AddAttributeBinding("rgba", 0, SG_VERTEXFORMAT_BYTE4);
+    pdesc.layout.attrs[0].format = SG_VERTEXFORMAT_FLOAT4;
+    pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_FLOAT4;
+    pdesc.index_type = SG_INDEXTYPE_UINT16;
 
-        Uniformblock *uniformblock = nullptr;
-        uint16_t uniformblock_id = 0;
-        std::tie(uniformblock_id, uniformblock) = SharedResManager.AllocUniformblock(sh_id,SG_SHADERSTAGE_FS, "batch_vs_params");
-        if (uniformblock_id != kInvalidId) {
-            umh_projection_ = uniformblock_id;
-        }
-        bk::Submit(0, shader_id_, 0);
+    //make pipeline
+    uint16_t pipeline_id = 0;
+    Pipeline *pipeline = nullptr;
+    std::tie(pipeline_id, pipeline) = SharedResManager.AllocPipeline(&pdesc);
+    pipeline_id_ = pipeline_id;
+
+    Uniformblock *uniformblock = nullptr;
+    uint16_t uniformblock_id = 0;
+    std::tie(uniformblock_id, uniformblock) = SharedResManager.AllocUniformblock(sh_id,SG_SHADERSTAGE_VS, "batch_vs_params");
+    if (uniformblock_id != kInvalidId) {
+        umh_projection_ = uniformblock_id;
     }
+    //bk::Submit(0, shader_id_, 0);
 }
 
 void BatchRender::SetCamera(Camera *camera)
@@ -37,30 +46,40 @@ void BatchRender::SetCamera(Camera *camera)
     float right = 0.0f;
     float bottom = 0.0f;
     float top = 0.0f;
+    std::tie(left, right, bottom, top) = camera->P();
     auto p = math::Ortho2D(left, right, bottom, top);
-    bk::SetUniformblock(umh_projection_, (uint8_t*)(&p));
-    bk::Submit(0, shader_id_, 0);
+    for (int i= 0; i<4; i++) {
+        for (int j= 0; j<4; j++) {
+            Info("ortho2d {}", p.At(i, j));
+        }
+    }
+
+    batch_vs_params_t vs_params = {p};
+    bk::SetUniformblock(umh_projection_, (uint8_t*)(&vs_params));
+    bk::Submit(0, pipeline_id_, 0);
 }
 
 // submit all batched group
 void BatchRender::Submit(std::vector<Batch> b_list)
 {
+    Info("submit b list size {}", b_list.size());
     for (auto &b:b_list) {
         // state
-        bk::SetState(state_flags_, rgba_);
         bk::SetTexture(0, b.texture_id);
 
         // set vertex
         bk::SetVertexBuffer(0, b.vertex_id);
         bk::SetIndexBuffer(b.index_id, uint32_t(b.first_index), uint32_t(b.num_index));
+        Info("batch submit {}--{}--{}", b.texture_id, b.vertex_id, b.index_id);
 
         // submit draw-call
-        bk::Submit(0, shader_id_, int32_t(b.depth));
+        bk::Submit(0, pipeline_id_, int32_t(b.depth));
     }
 }
 
 void BatchRender::Begin(uint16_t tex, uint16_t depth)
 {
+    Info("batch render begin text id {}", tex);
     batch_context_->Begin(tex, depth);
 }
 
@@ -76,6 +95,7 @@ void BatchRender::End()
 
 int BatchRender::Flush()
 {
+    Info("batchrender flush");
     auto &bc = batch_context_;
     if (bc->GetVertexPos() > 0) {
         bc->FlushBuffer();
@@ -84,10 +104,11 @@ int BatchRender::Flush()
     auto batch_used = bc->GetBatchUsed();
     std::vector<Batch> submit_list = {b_list.begin(), b_list.begin()+batch_used};
     this->Submit(submit_list);
+    bc->Reset();
     return batch_used;
 }
 
-BatchContext::BatchContext()
+BatchContext::BatchContext():vertex_pos_(0),first_vertex_(0),batch_used_(0), tex_id_(0), depth_(0)
 {
     vertex_.resize(kMaxBatchVertexSize);
 }
@@ -115,9 +136,9 @@ void BatchContext::DrawComp(IBatchObject *bo)
         first_vertex_ = 0;
     }
 
-    std::vector<PosTexColorVertex> buf = {vertex_.begin(), vertex_.begin() + step};
+    //std::vector<PosTexColorVertex> buf = {vertex_.begin(), vertex_.begin() + step};
+    bo->Fill(vertex_, vertex_pos_);
     vertex_pos_ += step;
-    bo->Fill(buf);
 }
 
 // commit a batch
@@ -157,11 +178,21 @@ void BatchContext::FlushBuffer()
 
     uint16_t iid = 0;
     std::tie(iid, std::ignore) = SharedContext.SharedIndexBuffer();
+    Info("try to update index buffer {}", iid);
 
     uint16_t vid = 0;
     VertexBuffer *vb = nullptr;
     std::tie(vid, std::ignore, vb) = SharedContext.TempVertexBuffer(req_size, stride);
+    Info("try to update vertex buffer {}", vid);
+
     vb->Update(reinterpret_cast<uint8_t*>(vertex_.data()), vertex_pos_ * stride, 0, false);
+    for (int i = 0; i < (int)vertex_pos_; i++) {
+        auto v = vertex_[i];
+        Info("vertex data {}--{}--{}--{}--{}", v.x,v.y, v.u, v.v, v.r);
+    }
+    //for (auto v:vertex_) {
+    //    Info("vertex data {}--{}--{}--{}--{}", v.x,v.y, v.u, v.v, v.rgba);
+    //}
 
     for (int i = batch_used_; i >= 0; i--) {
         auto &b = batch_list_[i];

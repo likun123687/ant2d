@@ -1,6 +1,8 @@
 #pragma once
 #include <gfx/bk/sokol_gfx_bk.h>
 #include <trompeloeil.hpp>
+#include "sokol_app.h"
+#include "sokol_glue.h"
 
 
 class sokol_gfx_api
@@ -39,6 +41,18 @@ public:
     MAKE_MOCK5(sg_apply_viewport, void (int x, int y, int width, int height, bool origin_top_left));
     MAKE_MOCK3(sg_draw, void (int base_element, int num_elements, int num_instances));
 
+    MAKE_MOCK1(sg_make_pipeline, sg_pipeline (const sg_pipeline_desc* desc));
+    MAKE_MOCK3(sg_begin_default_pass, void (const sg_pass_action* pass_action, int width, int height));
+    MAKE_MOCK1(sg_apply_pipeline, void (sg_pipeline pip));
+    MAKE_MOCK1(sg_apply_bindings, void (const sg_bindings* bindings));
+    MAKE_MOCK0(sg_end_pass, void (void));
+    MAKE_MOCK0(sg_commit, void (void));
+    MAKE_MOCK0(sapp_width, int (void));
+    MAKE_MOCK0(sapp_widthf, float (void));
+    MAKE_MOCK0(sapp_height, int (void));
+    MAKE_MOCK0(sapp_heightf, float (void));
+    MAKE_MOCK0(sapp_sgcontext, sg_context_desc (void));
+    MAKE_MOCK1(sg_setup, void (const sg_desc* desc));
 };
 
 
