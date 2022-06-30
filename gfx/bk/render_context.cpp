@@ -189,12 +189,12 @@ void RenderContext::BindUniformblock(uint32_t begin, uint32_t end)
         auto data = uniformblock_buffer_->ReadPointer(size);
         auto sg_data = sg_range { data, size };
 
-        batch_vs_params_t* params = reinterpret_cast<batch_vs_params_t*>(data);
-        for (int i= 0; i<4; i++) {
-            for (int j= 0; j<4; j++) {
-                Info("get ortho2d {}", params->proj.At(i, j));
-            }
-        }
+        //batch_vs_params_t* params = reinterpret_cast<batch_vs_params_t*>(data);
+        //for (int i= 0; i<4; i++) {
+        //    for (int j= 0; j<4; j++) {
+        //        Info("get ortho2d {}", params->proj.At(i, j));
+        //    }
+        //}
         //Info("batch_vs_params_t {}", params.proj[0], )
 
         sg_apply_uniforms(static_cast<sg_shader_stage>(stage), static_cast<int>(slot),
