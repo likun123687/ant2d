@@ -77,7 +77,6 @@ uint32_t SpriteComp::GetColor()
 void SpriteComp::SetColor(uint32_t color)
 {
     color_ = color;
-    Info("set color {:#x}--{:#x}", color, color_);
 }
 
 //void SpriteComp::SetColor(sg_color color)

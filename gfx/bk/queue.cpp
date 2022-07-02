@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <gfx/bk/queue.h>
 #include "ZipIterator.hpp"
+#include <utils/debug.h>
 
 using namespace ant2d;
 
@@ -40,6 +41,7 @@ void RenderQueue::Reset(uint16_t w, uint16_t h, float pr)
 
 void RenderQueue::SetIndexBuffer(uint16_t id, uint16_t first_index, uint16_t num)
 {
+    Info("set index buffer {}--{}--{}", id, first_index, num);
     draw_call_.index_buffer_ = ResManager::TripType(id);
     draw_call_.first_index_ = first_index;
     draw_call_.num_ = num;
@@ -48,7 +50,7 @@ void RenderQueue::SetIndexBuffer(uint16_t id, uint16_t first_index, uint16_t num
 void RenderQueue::SetVertexBuffer(uint8_t stream, uint16_t id)
 {
     if (stream < 0 || stream >= 2) {
-        // todo err handle
+        Error("vertex buffer stream can only between 0~2, not {}", stream);
         return;
     }
     draw_call_.vertex_buffers_[stream] = ResManager::TripType(id);
@@ -57,8 +59,7 @@ void RenderQueue::SetVertexBuffer(uint8_t stream, uint16_t id)
 void RenderQueue::SetTexture(uint8_t stage, uint16_t tex_id)
 {
     if (stage < 0 || stage >= 2) {
-        // log.Printf("Not suppor texture location: %d", stage)
-        // todo err handle
+        Error("texture location can only between 0~2, not {}", stage);
         return;
     }
 
@@ -91,7 +92,7 @@ void RenderQueue::SetScissorCached(uint16_t id)
 void RenderQueue::SetViewScissor(uint8_t id, uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 {
     if (id < 0 || id >= 4) {
-        // log.Printf("Not support view id: %d", id)
+        Error("Not support view id {}", id);
         return;
     }
     scissors_[id] = Rect { x, y, width, height };
@@ -100,7 +101,7 @@ void RenderQueue::SetViewScissor(uint8_t id, uint16_t x, uint16_t y, uint16_t wi
 void RenderQueue::SetViewPort(uint8_t id, uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 {
     if (id < 0 || id >= 4) {
-        // log.Printf("Not support view id: %d", id)
+        Error("Not support view id {}", id);
         return;
     }
     viewports_[id] = Rect { x, y, width, height };
@@ -122,7 +123,7 @@ void RenderQueue::SetViewClear(uint8_t id, uint16_t flags, uint32_t rgba, float 
 }
 */
 
-uint32_t RenderQueue::Submit(uint8_t id, uint16_t pipeline, uint64_t depth)
+uint32_t RenderQueue::Submit(uint8_t id, uint16_t pipeline, uint32_t depth)
 {
     Info("RenderQueue submit {}--{}--{}--{}",draw_call_num_ ,id, pipeline, depth);
     uniformblock_end_ = static_cast<uint16_t>(uniformblock_buffer_->GetPos());

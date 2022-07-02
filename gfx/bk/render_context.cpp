@@ -15,7 +15,8 @@ RenderContext::RenderContext(ResManager* res_manager, UniformblockBuffer* unifor
 
 void RenderContext::Reset()
 {
-    clips_ = { clips_.begin(), clips_.begin() + 1 };
+    //clips_ = { clips_.begin(), clips_.begin() + 1 };
+    clips_.erase(clips_.begin()+1, clips_.end());
 }
 
 void RenderContext::Init()
@@ -117,6 +118,7 @@ void RenderContext::DoDraw(RenderDraw& draw, RenderDraw& current_state)
     //sg_end_pass();
     //sg_commit();
     Info("bk_state bind {}--{}--{}", bk_state_.bind.index_buffer.id, bk_state_.bind.vertex_buffers[0].id, bk_state_.bind.fs_images[0].id);
+    //todo 优化判断
     if (bk_state_.bind.index_buffer.id == SG_INVALID_ID || 
             bk_state_.bind.vertex_buffers[0].id == SG_INVALID_ID || 
             bk_state_.bind.fs_images[0].id == SG_INVALID_ID) {

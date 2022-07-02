@@ -17,7 +17,7 @@ void SetViewPort(uint8_t id, uint16_t x, uint16_t y, uint16_t width,
         uint16_t height);
 void SetViewClear(uint8_t id, uint16_t flags, uint32_t rgba, float depth,
     uint8_t stencil);
-uint32_t Submit(uint8_t id, uint16_t pipeline, uint64_t depth);
+uint32_t Submit(uint8_t id, uint16_t pipeline, uint32_t depth);
 int Flush();
 } //namespace ant2d
 } //namespace bk

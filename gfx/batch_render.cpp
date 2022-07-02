@@ -186,14 +186,6 @@ void BatchContext::FlushBuffer()
     Info("try to update vertex buffer {}", vid);
 
     vb->Update(reinterpret_cast<uint8_t*>(vertex_.data()), vertex_pos_ * stride, 0, false);
-    for (int i = 0; i < (int)vertex_pos_; i++) {
-        auto v = vertex_[i];
-        Info("vertex data {}--{}--{}--{}--{}", v.x,v.y, v.u, v.v, v.r);
-    }
-    //for (auto v:vertex_) {
-    //    Info("vertex data {}--{}--{}--{}--{}", v.x,v.y, v.u, v.v, v.rgba);
-    //}
-
     for (int i = batch_used_; i >= 0; i--) {
         auto &b = batch_list_[i];
         if (b.vertex_id == kInvalidId) {

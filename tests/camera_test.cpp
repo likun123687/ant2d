@@ -11,6 +11,7 @@ TEST_CASE("test_camera")
 {
     auto camera = Camera{};
     camera.Init();
+    camera.SetViewPort(800, 600);
     auto size = math::Vec2{20, 20};
     auto gravity = math::Vec2{0.5, 0.5};
 

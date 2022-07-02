@@ -56,8 +56,50 @@ public:
         uint16_t height);
     //void SetViewClear(uint8_t id, uint16_t flags, uint32_t rgba, float depth,
     //    uint8_t stencil);
-    uint32_t Submit(uint8_t id, uint16_t pipeline, uint64_t depth);
+    uint32_t Submit(uint8_t id, uint16_t pipeline, uint32_t depth);
     int Flush();
+
+#ifdef ANT2D_DEBUG
+    auto &GetSortKeys()
+    {
+        return sort_keys_;
+    }
+    auto &GetSortValues()
+    {
+        return sort_values_;
+    }
+    auto &GetDrawCallList()
+    {
+        return draw_call_list_;
+    }
+
+    auto &GetDrawCallNum()
+    {
+        return draw_call_num_;
+    }
+
+    auto &GetSortKey()
+    {
+        return sort_key_;
+    }
+
+    auto &GetDrawCall()
+    {
+        Info("get draw call {}", draw_call_.num_);
+        return draw_call_;
+    }
+
+    auto GetUniformblockBegin()
+    {
+        return uniformblock_begin_;
+    }
+
+    auto GetUniformblockEnd()
+    {
+        return uniformblock_end_;
+    }
+
+#endif
 };
 } // namespace ant2d
 #define SharedRenderQueue \

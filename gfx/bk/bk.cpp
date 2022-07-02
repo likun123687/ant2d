@@ -67,7 +67,7 @@ void SetViewPort(uint8_t id, uint16_t x, uint16_t y, uint16_t width,
 
 // Submit primitive for rendering. Default depth is zero.
 // Returns Number of drawCall calls.
-uint32_t Submit(uint8_t id, uint16_t pipeline, uint64_t depth)
+uint32_t Submit(uint8_t id, uint16_t pipeline, uint32_t depth)
 {
     Info("bk submit {}--{}--{}", id, pipeline, depth);
     return SharedRenderQueue.Submit(id, pipeline, depth);
