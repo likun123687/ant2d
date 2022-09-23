@@ -23,4 +23,3 @@ sg_shader Shader::GetShdId()
 {
     return sg_shd_id_;
 }
-

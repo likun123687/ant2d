@@ -1,23 +1,23 @@
+#include "ZipIterator.hpp"
 #include <algorithm>
 #include <gfx/bk/queue.h>
-#include "ZipIterator.hpp"
 #include <utils/debug.h>
 
 using namespace ant2d;
 
 RenderQueue::RenderQueue()
-    : sort_mode_(SortMode::kSequential),
-    sort_keys_(),
-    sort_values_(),
-    draw_call_list_(),
-    draw_call_num_(0),
-    sort_key_{},
-    draw_call_{},
-    uniformblock_begin_(0),
-    uniformblock_end_(0),
-    viewports_(),
-    scissors_(),
-    rm_(&SharedResManager)
+    : sort_mode_(SortMode::kSequential)
+    , sort_keys_()
+    , sort_values_()
+    , draw_call_list_()
+    , draw_call_num_(0)
+    , sort_key_ {}
+    , draw_call_ {}
+    , uniformblock_begin_(0)
+    , uniformblock_end_(0)
+    , viewports_()
+    , scissors_()
+    , rm_(&SharedResManager)
     , uniformblock_buffer_(new UniformblockBuffer())
     , ctx_(new RenderContext(&SharedResManager, uniformblock_buffer_.get()))
 {
@@ -34,10 +34,10 @@ void RenderQueue::Reset(uint16_t w, uint16_t h, float pr)
     ctx_->SetPixelRatio(pr);
 }
 
-//void RenderQueue::SetState(uint64_t state, uint32_t rgba)
+// void RenderQueue::SetState(uint64_t state, uint32_t rgba)
 //{
-//    draw_call_.state_ = state;
-//}
+//     draw_call_.state_ = state;
+// }
 
 void RenderQueue::SetIndexBuffer(uint16_t id, uint16_t first_index, uint16_t num)
 {
@@ -125,7 +125,7 @@ void RenderQueue::SetViewClear(uint8_t id, uint16_t flags, uint32_t rgba, float 
 
 uint32_t RenderQueue::Submit(uint8_t id, uint16_t pipeline, uint32_t depth)
 {
-    Info("RenderQueue submit {}--{}--{}--{}",draw_call_num_ ,id, pipeline, depth);
+    Info("RenderQueue submit {}--{}--{}--{}", draw_call_num_, id, pipeline, depth);
     uniformblock_end_ = static_cast<uint16_t>(uniformblock_buffer_->GetPos());
     sort_key_.layer_ = static_cast<uint16_t>(id);
     sort_key_.order_ = static_cast<uint16_t>(depth + (0xFFFF >> 1));
@@ -174,15 +174,15 @@ int RenderQueue::Flush()
     }
 
     Info("before draw {}", num);
-    for (auto key:sort_keys) {
+    for (auto key : sort_keys) {
         Info("key item {}", key);
     }
 
-    for (auto value:sort_values) {
+    for (auto value : sort_values) {
         Info("value item {}", value);
     }
 
-    for (auto &draw:draw_list) {
+    for (auto& draw : draw_list) {
         Info("draw item {}", draw.index_buffer_);
     }
     ctx_->Draw(std::move(sort_keys), std::move(sort_values), std::move(draw_list));

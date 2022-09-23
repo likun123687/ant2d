@@ -1,8 +1,8 @@
 #include <cfile.hpp>
 #include <filesystem>
 #include <utils/content.h>
-#include <utils/utils.h>
 #include <utils/silly/Slice.h>
+#include <utils/utils.h>
 
 using namespace silly::slice;
 namespace fs = std::filesystem;

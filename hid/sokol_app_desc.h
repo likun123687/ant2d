@@ -26,8 +26,8 @@ namespace hid {
         Info("EventCallback");
         SharedHidManager.EventCallback(e);
     }
-} //namespace hid
-} //namespace ant2d
+} // namespace hid
+} // namespace ant2d
 
 extern ant2d::WindowOptions ant2d_main(int argc, char* argv[]);
 

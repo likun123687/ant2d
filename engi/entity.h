@@ -2,47 +2,54 @@
 #include <vector>
 #include <deque>
 
-namespace ant2d {
+namespace ant2d
+{
 
-const int32_t kIndexBits = 24;
-const int32_t kIndexMask = (1<< kIndexBits)-1;
-const uint8_t kGenerationBits = 8;
-const uint8_t kGenerationMask = (1<< kGenerationBits)-1;
+    const int32_t kIndexBits = 24;
+    const int32_t kIndexMask = (1 << kIndexBits) - 1;
+    const uint8_t kGenerationBits = 8;
+    const uint8_t kGenerationMask = (1 << kGenerationBits) - 1;
 
-class Entity {
-public:
-    Entity(uint32_t idx) {
-        idx_ = idx;
-    }
-    uint32_t Index() {
-        return idx_ & kIndexMask;
-    }
-
-    uint8_t Gene()  {
-        return (idx_ >>kIndexBits) & kGenerationMask;
-    }
-
-    bool IsGhost()
+    class Entity
     {
-        return idx_ == 0xFFFFFFFF;
-    }
-    friend bool operator==(const Entity &e1, const Entity &e2);
-    friend bool operator!=(const Entity &e1, const Entity &e2);
-private:
-    uint32_t idx_;
-};
+    public:
+        Entity(uint32_t idx)
+        {
+            idx_ = idx;
+        }
+        uint32_t Index()
+        {
+            return idx_ & kIndexMask;
+        }
 
-const Entity Ghost = Entity(0xFFFFFFFF);
+        uint8_t Gene()
+        {
+            return (idx_ >> kIndexBits) & kGenerationMask;
+        }
 
-class EntityManager {
-public:
-    Entity New();
-    bool Alive(Entity e);
-    void Destroy(Entity e);
+        bool IsGhost()
+        {
+            return idx_ == 0xFFFFFFFF;
+        }
+        friend bool operator==(const Entity &e1, const Entity &e2);
+        friend bool operator!=(const Entity &e1, const Entity &e2);
 
-private:
-    std::vector<uint8_t> generation_;
-    std::deque<uint32_t> freelist_;
-};
+    private:
+        uint32_t idx_;
+    };
 
-} //namespace ant2d
+    const Entity Ghost = Entity(0xFFFFFFFF);
+
+    class EntityManager
+    {
+    public:
+        Entity New();
+        bool Alive(Entity e);
+        void Destroy(Entity e);
+
+    private:
+        std::vector<uint8_t> generation_;
+        std::deque<uint32_t> freelist_;
+    };
+
+} // namespace ant2d

@@ -1,16 +1,15 @@
 #pragma once
+#include "sokol_app.h"
 #include <hid/config.h>
 #include <hid/life_cycle.h>
-#include "sokol_app.h"
 
 namespace ant2d {
-class HidManager
-{
+class HidManager {
 public:
-    WindowCallback *window_callback_;
+    WindowCallback* window_callback_;
     std::array<int, 1024> keys_;
     WindowOptions options_;
-    void SetWindowCallback(WindowCallback *callback);
+    void SetWindowCallback(WindowCallback* callback);
     void SetOptions(WindowOptions options);
     void InitCallback();
     void FrameCallback();

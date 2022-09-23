@@ -49,9 +49,15 @@ public:
 
 class RenderDraw {
 public:
-    RenderDraw():index_buffer_(0),vertex_buffers_(),textures_(),
-    first_index_(0),num_(0),uniformblock_begin_(0), uniformblock_end_(0),
-    scissor_(0)
+    RenderDraw()
+        : index_buffer_(0)
+        , vertex_buffers_()
+        , textures_()
+        , first_index_(0)
+        , num_(0)
+        , uniformblock_begin_(0)
+        , uniformblock_end_(0)
+        , scissor_(0)
     {
     }
     void Reset()
@@ -92,7 +98,7 @@ public:
     void UpdateUniformblockBind(RenderDraw& draw, RenderDraw& current_state);
     void UpdateTextureBind(RenderDraw& draw, RenderDraw& current_state);
     void UpdateBufferBind(RenderDraw& draw, RenderDraw& current_state);
-    void UpdatePipeline(uint16_t &old_pipeline, uint16_t& new_pipeline);
+    void UpdatePipeline(uint16_t& old_pipeline, uint16_t& new_pipeline);
     void DoDraw(RenderDraw& draw, RenderDraw& current_state);
 
     void Draw(std::vector<uint64_t> sort_keys, std::vector<uint16_t> sort_values,

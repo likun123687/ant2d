@@ -1,12 +1,12 @@
 #pragma once
 #include <gfx/bk/buffer.h>
+#include <gfx/bk/pipeline.h>
 #include <gfx/bk/shader.h>
 #include <gfx/bk/texture.h>
 #include <gfx/bk/uniformblock.h>
-#include <gfx/bk/pipeline.h>
 #include <tuple>
-#include <vector>
 #include <utils/singleton.h>
+#include <vector>
 
 namespace ant2d {
 const uint16_t kInvalidId = 0x0000;
@@ -34,7 +34,8 @@ const uint16_t kMaxPipeline = 32;
 
 class FreeList {
 public:
-    FreeList():slots_()
+    FreeList()
+        : slots_()
     {
     }
 
@@ -89,7 +90,7 @@ public:
     std::tuple<uint16_t, Uniformblock*> AllocUniformblock(uint16_t shId, sg_shader_stage stage, const std::string& name);
     std::tuple<uint16_t, Texture2D*> AllocTexture(const ImageData& data);
     std::tuple<uint16_t, Shader*> AllocShader(ShaderType type);
-    std::tuple<uint16_t, Pipeline*> AllocPipeline(const sg_pipeline_desc *desc);
+    std::tuple<uint16_t, Pipeline*> AllocPipeline(const sg_pipeline_desc* desc);
     void Free(uint16_t id);
     IndexBuffer* GetIndexBuffer(uint16_t id, bool had_trip_type = false);
     VertexBuffer* GetVertexBuffer(uint16_t id, bool had_trip_type = false);

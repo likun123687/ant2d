@@ -42,7 +42,7 @@ public:
     RenderQueue();
     void Init();
     void Reset(uint16_t w, uint16_t h, float pr);
-    //void SetState(uint64_t state, uint32_t rgba);
+    // void SetState(uint64_t state, uint32_t rgba);
     void SetIndexBuffer(uint16_t id, uint16_t first_index, uint16_t num);
     void SetVertexBuffer(uint8_t stream, uint16_t id);
     void SetTexture(uint8_t stage, uint16_t tex_id);
@@ -54,36 +54,36 @@ public:
         uint16_t height);
     void SetViewPort(uint8_t id, uint16_t x, uint16_t y, uint16_t width,
         uint16_t height);
-    //void SetViewClear(uint8_t id, uint16_t flags, uint32_t rgba, float depth,
-    //    uint8_t stencil);
+    // void SetViewClear(uint8_t id, uint16_t flags, uint32_t rgba, float depth,
+    //     uint8_t stencil);
     uint32_t Submit(uint8_t id, uint16_t pipeline, uint32_t depth);
     int Flush();
 
 #ifdef ANT2D_DEBUG
-    auto &GetSortKeys()
+    auto& GetSortKeys()
     {
         return sort_keys_;
     }
-    auto &GetSortValues()
+    auto& GetSortValues()
     {
         return sort_values_;
     }
-    auto &GetDrawCallList()
+    auto& GetDrawCallList()
     {
         return draw_call_list_;
     }
 
-    auto &GetDrawCallNum()
+    auto& GetDrawCallNum()
     {
         return draw_call_num_;
     }
 
-    auto &GetSortKey()
+    auto& GetSortKey()
     {
         return sort_key_;
     }
 
-    auto &GetDrawCall()
+    auto& GetDrawCall()
     {
         Info("get draw call {}", draw_call_.num_);
         return draw_call_;

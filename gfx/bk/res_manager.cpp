@@ -120,7 +120,7 @@ std::tuple<uint16_t, Shader*> ResManager::AllocShader(ShaderType type)
     return std::make_tuple(id, shader);
 }
 
-std::tuple<uint16_t, Pipeline*> ResManager::AllocPipeline(const sg_pipeline_desc *desc)
+std::tuple<uint16_t, Pipeline*> ResManager::AllocPipeline(const sg_pipeline_desc* desc)
 {
     uint16_t id = 0;
     Pipeline* pipeline = nullptr;
