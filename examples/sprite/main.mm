@@ -7,6 +7,10 @@
 #include <hid/sokol_app_desc.h>
 #include <utils/debug.h>
 
+#define SOKOL_IMPL
+#include "sokol_app.h"
+#include "sokol_glue.h"
+
 class MainScene:public ant2d::Scene
 {
     void OnEnter(ant2d::Game *g)

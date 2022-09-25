@@ -132,14 +132,17 @@ target("bk")
 
     if is_plat("windows") then
     elseif is_plat("macosx", "iphoneos") then
-        del_files("gfx/bk/sokol_gfx.cpp")
+        remove_files("gfx/bk/sokol_gfx.cpp")
         add_files("gfx/bk/sokol_gfx.mm")
     end
 target_end()
 
 target("ant2d")
     set_kind("static")
+    set_policy("build.merge_archive", true)
     add_deps("ant2d_common", "bk")
+    --add_rules("c++")
+    add_files("empty_file.cpp")
 target_end()
 
 if has_config("with_example") then

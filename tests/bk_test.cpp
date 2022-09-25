@@ -136,12 +136,35 @@ TEST_CASE("test_one_drawcall")
     bk::SetVertexBuffer(0, vertex_id);
     bk::SetIndexBuffer(index_id, 0, 6);
     auto draw_call = SharedRenderQueue.GetDrawCall();
+    RenderDraw draw_call_copy = draw_call;
+
     REQUIRE(draw_call.num_ == 6);
     REQUIRE(draw_call.index_buffer_ == ResManager::TripType(index_id));
     REQUIRE(draw_call.vertex_buffers_[0] == ResManager::TripType(vertex_id));
     bk::Submit(0, pipeline_id, 0);
 
-    //bk::Flush();
+    auto &sort_keys = SharedRenderQueue.GetSortKeys();
+    auto &sort_values = SharedRenderQueue.GetSortValues();
+    auto &draw_call_list = SharedRenderQueue.GetDrawCallList();
+    REQUIRE(sort_values[0] == 0);
+    REQUIRE(draw_call_list[0].num_ == 6);
+    REQUIRE(draw_call_list[0].vertex_buffers_[0] == ResManager::TripType(vertex_id));
+
+
+    bk::SetTexture(0, tex_id);
+    bk::SetVertexBuffer(0, vertex_id);
+    bk::SetIndexBuffer(index_id, 6, 12);
+    bk::Submit(0, pipeline_id, 0);
+
+    REQUIRE(sort_values[1] == 1);
+    REQUIRE(draw_call_list[1].num_ == 6);
+    REQUIRE(draw_call_list[1].vertex_buffers_[0] == ResManager::TripType(vertex_id));
+
+    //两个drawcall一样的
+    bk::Flush();
+
+    //两个drawcall不一样的
+    //是否排序
 }
 
 TEST_CASE("test_multiple_drawcall")
