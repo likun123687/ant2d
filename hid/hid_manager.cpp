@@ -1,10 +1,10 @@
-#include <hid/hid_manager.h>
 #include <gfx/bk/sokol_gfx_bk.h>
+#include <hid/hid_manager.h>
 #include <utils/debug.h>
 namespace ant2d {
-void HidManager::SetWindowCallback(WindowCallback *callback)
+void HidManager::SetWindowCallback(WindowCallback* callback)
 {
-    Info("set windows callback {}", static_cast<void *>(callback));
+    Info("set windows callback {}", static_cast<void*>(callback));
     window_callback_ = callback;
 }
 
@@ -39,4 +39,4 @@ void HidManager::EventCallback(const sapp_event* e)
         }
     }
 }
-} //namespace ant2d
+} // namespace ant2d

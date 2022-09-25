@@ -8,20 +8,20 @@ namespace ant2d {
 RenderContext::RenderContext(ResManager* res_manager, UniformblockBuffer* uniformblock_buffer)
     : res_manager_(res_manager)
     , uniformblock_buffer_(uniformblock_buffer)
-     ,bk_state_{}
+    , bk_state_ {}
 {
     clips_.resize(1);
 }
 
 void RenderContext::Reset()
 {
-    //clips_ = { clips_.begin(), clips_.begin() + 1 };
-    clips_.erase(clips_.begin()+1, clips_.end());
+    // clips_ = { clips_.begin(), clips_.begin() + 1 };
+    clips_.erase(clips_.begin() + 1, clips_.end());
 }
 
 void RenderContext::Init()
 {
-    sg_desc desc = { };
+    sg_desc desc = {};
     desc.context = sapp_sgcontext();
     sg_setup(&desc);
     /* a pass action to clear framebuffer */
@@ -29,10 +29,10 @@ void RenderContext::Init()
     bk_state_.pass_action.colors[0].value = { 1.0f, 1.0f, 1.0f, 1.0f };
     Info("rendercontext init");
     Info("default pass action 1 {}--{}", bk_state_.pass_action._start_canary, bk_state_.pass_action._end_canary);
-    //sg_pass_action action = {};
-    //action.colors[0].action= SG_ACTION_CLEAR;
-    //action.colors[0].value= { 0.0f, 0.5f, 0.7f, 1.0f };
-    //bk_state_.pass_action = action;
+    // sg_pass_action action = {};
+    // action.colors[0].action= SG_ACTION_CLEAR;
+    // action.colors[0].value= { 0.0f, 0.5f, 0.7f, 1.0f };
+    // bk_state_.pass_action = action;
 }
 
 uint16_t RenderContext::AddClipRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h)
@@ -79,7 +79,7 @@ void RenderContext::UpdateTextureBind(RenderDraw& draw, RenderDraw& current_stat
     }
 }
 
-void RenderContext::UpdatePipeline(uint16_t &old_pipeline, uint16_t& new_pipeline)
+void RenderContext::UpdatePipeline(uint16_t& old_pipeline, uint16_t& new_pipeline)
 {
     Info("old pipeline {}, new pipeline {}", old_pipeline, new_pipeline);
     if (new_pipeline != kInvalidId && old_pipeline != new_pipeline) {
@@ -111,17 +111,15 @@ void RenderContext::UpdateBufferBind(RenderDraw& draw, RenderDraw& current_state
 
 void RenderContext::DoDraw(RenderDraw& draw, RenderDraw& current_state)
 {
-    //sg_begin_default_pass(&state.pass_action, sapp_width(), sapp_height());
-    //sg_apply_pipeline(state.pip);
-    //sg_apply_bindings(&state.bind);
-    //sg_draw(0, 6, 1);
-    //sg_end_pass();
-    //sg_commit();
+    // sg_begin_default_pass(&state.pass_action, sapp_width(), sapp_height());
+    // sg_apply_pipeline(state.pip);
+    // sg_apply_bindings(&state.bind);
+    // sg_draw(0, 6, 1);
+    // sg_end_pass();
+    // sg_commit();
     Info("bk_state bind {}--{}--{}", bk_state_.bind.index_buffer.id, bk_state_.bind.vertex_buffers[0].id, bk_state_.bind.fs_images[0].id);
-    //todo 优化判断
-    if (bk_state_.bind.index_buffer.id == SG_INVALID_ID || 
-            bk_state_.bind.vertex_buffers[0].id == SG_INVALID_ID || 
-            bk_state_.bind.fs_images[0].id == SG_INVALID_ID) {
+    // todo 优化判断
+    if (bk_state_.bind.index_buffer.id == SG_INVALID_ID || bk_state_.bind.vertex_buffers[0].id == SG_INVALID_ID || bk_state_.bind.fs_images[0].id == SG_INVALID_ID) {
         return;
     }
 
@@ -141,8 +139,8 @@ void RenderContext::Draw(std::vector<uint64_t> sort_keys, std::vector<uint16_t> 
     auto current_state = RenderDraw {};
     auto pipeline = kInvalidId;
     auto sort_key = SortKey {};
-    //uint8_t prim_index = static_cast<uint8_t>(static_cast<uint64_t>(0) >> kState.pt_shift);
-    // uint64_t state_bits = State.kDepthWrite | ST.DEPTH_TEST_MASK | ST.RGB_WRITE | ST.ALPHA_WRITE | ST.BLEND_MASK | ST.PT_MASK;
+    // uint8_t prim_index = static_cast<uint8_t>(static_cast<uint64_t>(0) >> kState.pt_shift);
+    //  uint64_t state_bits = State.kDepthWrite | ST.DEPTH_TEST_MASK | ST.RGB_WRITE | ST.ALPHA_WRITE | ST.BLEND_MASK | ST.PT_MASK;
     Info("render draw index id {}--{}--{}", draw_list[0].index_buffer_, draw_list[1].index_buffer_, draw_list[2].index_buffer_);
 
     Info("default pass action 2 {}--{}", bk_state_.pass_action._start_canary, bk_state_.pass_action._end_canary);
@@ -191,13 +189,13 @@ void RenderContext::BindUniformblock(uint32_t begin, uint32_t end)
         auto data = uniformblock_buffer_->ReadPointer(size);
         auto sg_data = sg_range { data, size };
 
-        //batch_vs_params_t* params = reinterpret_cast<batch_vs_params_t*>(data);
-        //for (int i= 0; i<4; i++) {
-        //    for (int j= 0; j<4; j++) {
-        //        Info("get ortho2d {}", params->proj.At(i, j));
-        //    }
-        //}
-        //Info("batch_vs_params_t {}", params.proj[0], )
+        // batch_vs_params_t* params = reinterpret_cast<batch_vs_params_t*>(data);
+        // for (int i= 0; i<4; i++) {
+        //     for (int j= 0; j<4; j++) {
+        //         Info("get ortho2d {}", params->proj.At(i, j));
+        //     }
+        // }
+        // Info("batch_vs_params_t {}", params.proj[0], )
 
         sg_apply_uniforms(static_cast<sg_shader_stage>(stage), static_cast<int>(slot),
             &sg_data);
@@ -214,4 +212,4 @@ void RenderContext::SetPixelRatio(float pixel_ratio)
 {
     pixel_ratio_ = pixel_ratio;
 }
-} //namespace ant2d
+} // namespace ant2d

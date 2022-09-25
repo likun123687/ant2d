@@ -9,7 +9,6 @@
 #elif BK_PLATFORM_OSX
 #define SOKOL_METAL
 
-
 #elif BK_PLATFORM_DUMMY
 #define SOKOL_DUMMY_BACKEND
 #else

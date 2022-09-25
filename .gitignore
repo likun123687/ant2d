@@ -1,3 +1,5 @@
 .xmake/
 build/
 .vs/
+.vscode/
+.cache/

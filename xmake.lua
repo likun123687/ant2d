@@ -2,7 +2,7 @@
 set_project("ant2d")
 
 --最小版本
-set_xmakever("2.3.1")
+set_xmakever("2.6.8")
 set_languages("cxx17")
 set_warnings("all")
 --set_warnings("all", "error")
@@ -153,7 +153,6 @@ if has_config("with_test") then
     add_requires("catch2")
     includes("tests")
 end
-
 
 
 --includes("ant2dnet/base")

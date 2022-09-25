@@ -17,7 +17,7 @@ TEST_CASE("test_init")
 
     sg_context_desc ctx_desc = {};
     ctx_desc.sample_count = 5555;
-    sg_desc desc = { };
+    sg_desc desc = {};
     desc.context = ctx_desc;
 
     REQUIRE_CALL(sokol_gfx_api_mock, sapp_sgcontext())
@@ -38,7 +38,7 @@ TEST_CASE("test_one_drawcall")
 
     sg_context_desc ctx_desc = {};
     ctx_desc.sample_count = 5555;
-    sg_desc desc = { };
+    sg_desc desc = {};
     desc.context = ctx_desc;
 
     REQUIRE_CALL(sokol_gfx_api_mock, sapp_sgcontext())
@@ -50,7 +50,7 @@ TEST_CASE("test_one_drawcall")
         .WITH(_1->context.sample_count == 5555);
     bk::Init(); //先初始化
 
-    //create texture
+    // create texture
     auto file_content = SharedContent.LoadFile("assets/face.png");
     auto image_data = ImageData(file_content.first.get(), file_content.second);
     sg_image image_id;
@@ -72,8 +72,7 @@ TEST_CASE("test_one_drawcall")
     vertex_buffer.id = 1;
 
     REQUIRE_CALL(sokol_gfx_api_mock, sg_make_buffer(_))
-        .WITH(_1->data.ptr == vertex_data && _1->data.size == 64 
-                && _1->usage == SG_USAGE_IMMUTABLE)
+        .WITH(_1->data.ptr == vertex_data && _1->data.size == 64 && _1->usage == SG_USAGE_IMMUTABLE)
         .IN_SEQUENCE(seq)
         .TIMES(AT_LEAST(1))
         .RETURN(vertex_buffer);

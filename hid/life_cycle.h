@@ -1,7 +1,6 @@
 #pragma once
 namespace ant2d {
-class WindowCallback
-{
+class WindowCallback {
 public:
     // 窗口创建
     virtual void OnCreate(float w, float h, float pixel_ratio) = 0;
@@ -25,7 +24,7 @@ public:
     virtual void OnFocusChanged(bool focused) = 0;
 
     virtual void OnKeyEvent(int key, bool pressed) = 0;
-    virtual void OnPointEvent(int key,  bool pressed, float x, float y) = 0;
+    virtual void OnPointEvent(int key, bool pressed, float x, float y) = 0;
     virtual ~WindowCallback() = default;
 };
 }
