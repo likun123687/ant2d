@@ -2,7 +2,7 @@
 #include <asset/res.h>
 #include <utils/json.h>
 #include <gfx/bk_texture.h>
-//#include <utils/singleton.h>
+// #include <utils/singleton.h>
 
 namespace ant2d {
 class TextureManager {
@@ -15,11 +15,11 @@ public:
     void LoadAtlasIndexed(const std::string& file, float width, float height, int row, int col);
     // Get returns the low-level Texture.
     BkTexture* Get(const std::string& file);
-    std::tuple<uint16_t, Texture2D*> GetRaw(const std::string &file);
-    Atlas *GetAtlas(const std::string &file);
+    std::tuple<uint16_t, Texture2D*> GetRaw(const std::string& file);
+    Atlas* GetAtlas(const std::string& file);
 
 #ifdef ANT2D_DEBUG
-    auto &GetRepo()
+    auto& GetRepo()
     {
         return repo_;
     }
@@ -34,4 +34,3 @@ private:
     std::tuple<uint16_t, json> CreateTextureByAtlasFile(const std::string& image, const std::string& desc);
 };
 }
-

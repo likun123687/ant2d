@@ -83,7 +83,7 @@ private:
         math::Vec2 scale;
         math::Vec2 inv_scale;
     } view_;
-    //View view_;
+    // View view_;
     Entity follow_;
     WH desire_;
     WH screen_;

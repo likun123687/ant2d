@@ -9,7 +9,7 @@
 
 namespace ant2d {
 
-void DB::AddTable(IBase *table)
+void DB::AddTable(IBase* table)
 {
     tables_.emplace_back(table);
 }
@@ -24,7 +24,7 @@ EntityManager* DB::GetEntityManager()
     return entity_manager_.get();
 }
 
-void DB::SetEntityManager(EntityManager *entity_manager)
+void DB::SetEntityManager(EntityManager* entity_manager)
 {
     entity_manager_.reset(entity_manager);
 }
@@ -93,7 +93,7 @@ void Game::OnFocusChanged(bool focused)
 
 void Game::OnResize(float w, float h)
 {
-    //SetGameSize(w, h);
+    // SetGameSize(w, h);
 }
 
 void Game::OnKeyEvent(int key, bool pressed)

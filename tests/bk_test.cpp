@@ -48,7 +48,7 @@ TEST_CASE("test_one_drawcall")
     REQUIRE_CALL(sokol_gfx_api_mock, sg_setup(_))
         .IN_SEQUENCE(seq)
         .WITH(_1->context.sample_count == 5555);
-    bk::Init(); //先初始化
+    bk::Init(); // 先初始化
 
     // create texture
     auto file_content = SharedContent.LoadFile("assets/face.png");
@@ -66,7 +66,7 @@ TEST_CASE("test_one_drawcall")
 
     auto [tex_id, tex] = SharedResManager.AllocTexture(image_data);
 
-    //创建vertex id
+    // 创建vertex id
     auto vertex_data = new uint8_t[64];
     sg_buffer vertex_buffer;
     vertex_buffer.id = 1;
@@ -79,7 +79,7 @@ TEST_CASE("test_one_drawcall")
 
     auto [vertex_id, vb] = SharedResManager.AllocVertexBuffer(vertex_data, 64, 1);
 
-    //创建index id
+    // 创建index id
     auto index_data = new uint8_t[64];
     sg_buffer index_buffer;
     index_buffer.id = 2;
@@ -92,8 +92,8 @@ TEST_CASE("test_one_drawcall")
 
     auto [index_id, ib] = SharedResManager.AllocIndexBuffer(index_data, 64);
 
-    //创建shader
-    sg_shader shid = sg_shader{1};
+    // 创建shader
+    sg_shader shid = sg_shader { 1 };
     sg_shader_desc sh_desc = {};
     sh_desc.label = "batch_shader_unique";
 
@@ -113,16 +113,16 @@ TEST_CASE("test_one_drawcall")
 
     auto [sh_id, sh] = SharedResManager.AllocShader(kBatchShader);
 
-    //创建pipeline
+    // 创建pipeline
     sg_pipeline_desc pdesc = {};
     pdesc.shader = sh->GetShdId();
     pdesc.layout.attrs[0].format = SG_VERTEXFORMAT_FLOAT4;
     pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_FLOAT4;
     pdesc.index_type = SG_INDEXTYPE_UINT16;
 
-    sg_pipeline pip = {1};
+    sg_pipeline pip = { 1 };
 
-    Info("pipe1 desc {}", static_cast<void *>(&pdesc));
+    Info("pipe1 desc {}", static_cast<void*>(&pdesc));
 
     REQUIRE_CALL(sokol_gfx_api_mock, sg_make_pipeline(_))
         .IN_SEQUENCE(seq)
@@ -142,13 +142,12 @@ TEST_CASE("test_one_drawcall")
     REQUIRE(draw_call.vertex_buffers_[0] == ResManager::TripType(vertex_id));
     bk::Submit(0, pipeline_id, 0);
 
-    auto &sort_keys = SharedRenderQueue.GetSortKeys();
-    auto &sort_values = SharedRenderQueue.GetSortValues();
-    auto &draw_call_list = SharedRenderQueue.GetDrawCallList();
+    auto& sort_keys = SharedRenderQueue.GetSortKeys();
+    auto& sort_values = SharedRenderQueue.GetSortValues();
+    auto& draw_call_list = SharedRenderQueue.GetDrawCallList();
     REQUIRE(sort_values[0] == 0);
     REQUIRE(draw_call_list[0].num_ == 6);
     REQUIRE(draw_call_list[0].vertex_buffers_[0] == ResManager::TripType(vertex_id));
-
 
     bk::SetTexture(0, tex_id);
     bk::SetVertexBuffer(0, vertex_id);
@@ -156,17 +155,16 @@ TEST_CASE("test_one_drawcall")
     bk::Submit(0, pipeline_id, 0);
 
     REQUIRE(sort_values[1] == 1);
-    REQUIRE(draw_call_list[1].num_ == 6);
+    REQUIRE(draw_call_list[1].num_ == 12);
     REQUIRE(draw_call_list[1].vertex_buffers_[0] == ResManager::TripType(vertex_id));
 
-    //两个drawcall一样的
-    bk::Flush();
+    // 两个drawcall一样的
+    // bk::Flush();
 
-    //两个drawcall不一样的
-    //是否排序
+    // 两个drawcall不一样的
+    // 是否排序
 }
 
 TEST_CASE("test_multiple_drawcall")
 {
-
 }

@@ -114,12 +114,12 @@ std::string Content::GetFullPath(const std::string& file_name)
 
 std::pair<OwnArray<uint8_t>, size_t> Content::LoadFile(const std::string& file_name)
 {
-    int64_t size = 0;
+    uint64_t size = 0;
     uint8_t* data = Content::LoadFileUnsafe(file_name, size);
     return { OwnArray<uint8_t>(data), s_cast<size_t>(size) };
 }
 
-uint8_t* Content::LoadFileUnsafe(const std::string& file_name, int64_t& size)
+uint8_t* Content::LoadFileUnsafe(const std::string& file_name, uint64_t& size)
 {
     if (file_name.empty()) {
         return nullptr;

@@ -19,7 +19,7 @@ void Run(WindowOptions options, Scene* sn)
     auto g = new Game {};
     g->Init();
     SharedGame = g;
-    SharedTextureManager = new TextureManager();
+    SharedTextureManager = new TextureManager{};
     SharedEntityManager = g->GetDB()->GetEntityManager();
     SharedSceneManager = g->GetSceneManager();
     SharedSceneManager->SetDefault(sn);

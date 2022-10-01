@@ -128,7 +128,7 @@ TEST_CASE("test_shader")
     trompeloeil::sequence seq;
 
     auto shader = Shader();
-    sg_shader shid = sg_shader{1};
+    sg_shader shid = sg_shader { 1 };
     sg_shader_desc sh_desc = {};
     sh_desc.label = "batch_shader_unique";
 
@@ -168,7 +168,6 @@ TEST_CASE("test_shader")
 
         shader.Destroy();
     }
-
 }
 
 TEST_CASE("test_uniform")
@@ -178,12 +177,12 @@ TEST_CASE("test_uniform")
 
     auto uniformblock = Uniformblock();
 
-    REQUIRE_CALL(sokol_gfx_api_mock, batch_uniformblock_slot(_,_))
+    REQUIRE_CALL(sokol_gfx_api_mock, batch_uniformblock_slot(_, _))
         .IN_SEQUENCE(seq)
         .LR_WITH(_1 == SG_SHADERSTAGE_FS && std::string(_2) == std::string("aaa"))
         .RETURN(1);
 
-    REQUIRE_CALL(sokol_gfx_api_mock, batch_uniformblock_size(_,_))
+    REQUIRE_CALL(sokol_gfx_api_mock, batch_uniformblock_size(_, _))
         .IN_SEQUENCE(seq)
         .LR_WITH(_1 == SG_SHADERSTAGE_FS && std::string(_2) == std::string("aaa"))
         .RETURN(22);
@@ -213,20 +212,19 @@ TEST_CASE("test_uniform")
     REQUIRE(12 == ubb.GetPos());
 
     ubb.Seek(0);
-    void *data = ubb.ReadPointer(4);
-    REQUIRE(*(static_cast<uint16_t *>(data)) == 16);
+    void* data = ubb.ReadPointer(4);
+    REQUIRE(*(static_cast<uint16_t*>(data)) == 16);
 
     ubb.Seek(0);
-    uint8_t *data_ptr = new uint8_t[10];
+    uint8_t* data_ptr = new uint8_t[10];
     ubb.Copy(data_ptr, 10);
     delete[] data_ptr;
     REQUIRE(10 == ubb.GetPos());
-
 }
 
 TEST_CASE("test_sort_key")
 {
-    SortKey sort_key =  SortKey();
+    SortKey sort_key = SortKey();
     sort_key.layer_ = 1;
     sort_key.order_ = 2;
     sort_key.pipeline_ = 3;
@@ -239,11 +237,11 @@ TEST_CASE("test_sort_key")
     auto sort_key1 = SortKey();
     sort_key1.Decode(key);
 
-    bool ret = sort_key1.layer_ == 1 && \
-    sort_key1.order_ == 2 && \
-    sort_key1.pipeline_ == 3 && \
-    sort_key1.blend_ == 4 && \
-    sort_key1.texture_ == 5;
+    bool ret = sort_key1.layer_ == 1
+        && sort_key1.order_ == 2
+        && sort_key1.pipeline_ == 3
+        && sort_key1.blend_ == 4
+        && sort_key1.texture_ == 5;
 
     REQUIRE(ret);
 
@@ -254,11 +252,11 @@ TEST_CASE("test_sort_key")
     sort_key.texture_ = 5;
     sort_key1.Decode(sort_key.Encode());
 
-    bool ret1 = sort_key1.layer_ == sort_key.layer_  && \
-    sort_key1.order_ == sort_key.order_ &&  \
-    sort_key1.pipeline_ == sort_key.pipeline_ && \
-    sort_key1.blend_ == sort_key.blend_ && \
-    sort_key1.texture_ == sort_key.texture_ ;
+    bool ret1 = sort_key1.layer_ == sort_key.layer_
+        && sort_key1.order_ == sort_key.order_
+        && sort_key1.pipeline_ == sort_key.pipeline_
+        && sort_key1.blend_ == sort_key.blend_
+        && sort_key1.texture_ == sort_key.texture_;
 
     REQUIRE(ret1);
 }
@@ -281,15 +279,15 @@ TEST_CASE("test_res_manager")
     uint16_t index_id = 0;
     IndexBuffer* ib = nullptr;
     std::tie(index_id, ib) = SharedResManager.AllocIndexBuffer(data, 64);
-    IndexBuffer *ib1 = SharedResManager.GetIndexBuffer(index_id);
+    IndexBuffer* ib1 = SharedResManager.GetIndexBuffer(index_id);
     REQUIRE(ib == ib1);
 
     std::tie(index_id, ib) = SharedResManager.AllocIndexBuffer(data, 64);
     REQUIRE(ib == SharedResManager.GetIndexBuffer(index_id));
 
-    //test get shader
+    // test get shader
     auto shader = Shader();
-    sg_shader shid = sg_shader{1};
+    sg_shader shid = sg_shader { 1 };
     sg_shader_desc sh_desc = {};
     sh_desc.label = "batch_shader_unique";
 
@@ -308,12 +306,11 @@ TEST_CASE("test_res_manager")
         .RETURN(shid);
 
     uint16_t sh_id = kInvalidId;
-    Shader *sh = nullptr;
+    Shader* sh = nullptr;
     std::tie(sh_id, sh) = SharedResManager.AllocShader(ShaderType::kBatchShader);
     Info("shader id {} sh {}", sh_id, static_cast<void*>(sh));
     REQUIRE(sh == SharedResManager.GetShader(sh_id));
 }
-
 
 TEST_CASE("test_free_list")
 {
@@ -339,10 +336,9 @@ TEST_CASE("test_render_context_rect")
 
 TEST_CASE("test_res_render_draw")
 {
-    RenderDraw render_draw =  RenderDraw();
+    RenderDraw render_draw = RenderDraw();
     render_draw.Reset();
 }
-
 
 TEST_CASE("test_render_context")
 {
@@ -402,7 +398,7 @@ TEST_CASE("test_sprite_table")
 
     auto entity_list = std::vector<Entity>();
     auto sprite_comp_list = std::vector<SpriteComp*>();
-    for (int i = 0; i<1000; i++) {
+    for (int i = 0; i < 1000; i++) {
         Entity entity = em.New();
         auto sprite_comp_new = sprite_table.NewComp(entity);
         entity_list.push_back(entity);
@@ -427,7 +423,7 @@ TEST_CASE("test_transform_table")
     Entity e2 = em.New();
 
     auto transform = transform_table.NewComp(e);
-    transform->SetPosition(math::Vec2{100, 100});
+    transform->SetPosition(math::Vec2 { 100, 100 });
     auto pos = transform->GetPosition();
     REQUIRE((pos[0] == 100 && pos[1] == 100));
     REQUIRE(transform->GetLocal().position[0] == 100);
@@ -439,8 +435,8 @@ TEST_CASE("test_transform_table")
     transform->LinkChild(transform1);
     transform->LinkChild(transform2);
 
-    transform1->SetPosition(math::Vec2{50, 50});
-    transform2->SetPosition(math::Vec2{-50, -50});
+    transform1->SetPosition(math::Vec2 { 50, 50 });
+    transform2->SetPosition(math::Vec2 { -50, -50 });
 
     auto pos1 = transform1->GetWorld().position;
     REQUIRE(pos1[0] == 150);
@@ -448,14 +444,14 @@ TEST_CASE("test_transform_table")
     auto pos2 = transform2->GetWorld().position;
     REQUIRE((pos2[0] == 50 && pos2[1] == 50));
 
-    transform->SetPosition(math::Vec2{200, 200});
+    transform->SetPosition(math::Vec2 { 200, 200 });
     pos1 = transform1->GetWorld().position;
     REQUIRE((pos1[0] == 250 && pos1[1] == 250));
 
     pos2 = transform2->GetWorld().position;
     REQUIRE((pos2[0] == 150 && pos2[1] == 150));
 
-    //test node link
+    // test node link
     Entity car_e = em.New();
     auto car_comp = transform_table.NewComp(car_e);
 
@@ -468,72 +464,72 @@ TEST_CASE("test_transform_table")
     auto wheel3_comp = transform_table.NewComp(wheel3_e);
     auto wheel4_comp = transform_table.NewComp(wheel4_e);
 
-    std::vector<Transform*> wheel_list = {wheel1_comp, wheel2_comp, wheel3_comp, wheel4_comp};
+    std::vector<Transform*> wheel_list = { wheel1_comp, wheel2_comp, wheel3_comp, wheel4_comp };
     car_comp->LinkChildren(wheel_list);
-    for (auto &w:wheel_list) {
+    for (auto& w : wheel_list) {
         auto parent_tran = w->Parent();
         REQUIRE(parent_tran->GetEntity() == car_e);
     }
 
     REQUIRE(car_comp->FirstChild()->GetEntity() == wheel1_e);
 
-    for (int i = 0; i< 3; i++) {
-        Transform *next_sibling = nullptr;
+    for (int i = 0; i < 3; i++) {
+        Transform* next_sibling = nullptr;
         std::tie(std::ignore, next_sibling) = wheel_list[i]->Sibling();
-        REQUIRE(next_sibling->GetEntity() == wheel_list[i+1]->GetEntity());
+        REQUIRE(next_sibling->GetEntity() == wheel_list[i + 1]->GetEntity());
     }
 
-    for (int i = 3; i>0; i--) {
-        Transform *prev_sibling = nullptr;
+    for (int i = 3; i > 0; i--) {
+        Transform* prev_sibling = nullptr;
         std::tie(prev_sibling, std::ignore) = wheel_list[i]->Sibling();
-        REQUIRE(prev_sibling->GetEntity() == wheel_list[i-1]->GetEntity());
+        REQUIRE(prev_sibling->GetEntity() == wheel_list[i - 1]->GetEntity());
     }
 
-    Transform *prev_sibling = nullptr;
-    Transform *next_sibling = nullptr;
+    Transform* prev_sibling = nullptr;
+    Transform* next_sibling = nullptr;
     std::tie(prev_sibling, next_sibling) = wheel1_comp->Sibling();
     REQUIRE(prev_sibling == nullptr);
     REQUIRE(next_sibling == wheel2_comp);
-    //car_comp->dump();
-    //Info("====================");
-    //wheel2_comp->dump();
-    //wheel4_comp->dump();
-    //wheel1_comp->dump();
-    //wheel3_comp->dump();
-    //wheel1_sub_comp->dump();
-    //wheel1_sub_comp1->dump();
+    // car_comp->dump();
+    // Info("====================");
+    // wheel2_comp->dump();
+    // wheel4_comp->dump();
+    // wheel1_comp->dump();
+    // wheel3_comp->dump();
+    // wheel1_sub_comp->dump();
+    // wheel1_sub_comp1->dump();
 
-    //REQUIRE(transform_table.GetSize() == 7);
+    // REQUIRE(transform_table.GetSize() == 7);
 
-    //transform_table.Delete(wheel1_e);
+    // transform_table.Delete(wheel1_e);
     ////transform_table.Delete(wheel3_e);
 
-    //wheel1_comp = transform_table.GetComp(wheel1_e);
-    //REQUIRE(wheel1_comp == nullptr);
-    //wheel2_comp = transform_table.GetComp(wheel2_e);
-    //wheel4_comp = transform_table.GetComp(wheel4_e);
-    //wheel3_comp = transform_table.GetComp(wheel3_e);
+    // wheel1_comp = transform_table.GetComp(wheel1_e);
+    // REQUIRE(wheel1_comp == nullptr);
+    // wheel2_comp = transform_table.GetComp(wheel2_e);
+    // wheel4_comp = transform_table.GetComp(wheel4_e);
+    // wheel3_comp = transform_table.GetComp(wheel3_e);
 
-    //REQUIRE(wheel2_comp->GetNxtSiblingIdx() == transform_table.GetCompIdx(wheel4_e));
-    //REQUIRE(wheel4_comp->GetNxtSiblingIdx() == transform_table.GetCompIdx(wheel3_e));
+    // REQUIRE(wheel2_comp->GetNxtSiblingIdx() == transform_table.GetCompIdx(wheel4_e));
+    // REQUIRE(wheel4_comp->GetNxtSiblingIdx() == transform_table.GetCompIdx(wheel3_e));
 
-    //Info("====================");
+    // Info("====================");
 
-    //wheel2_comp->dump();
-    //wheel4_comp->dump();
-    //wheel3_comp->dump();
+    // wheel2_comp->dump();
+    // wheel4_comp->dump();
+    // wheel3_comp->dump();
 
     ////wheel3_comp->dump();
-    //transform_table.Delete(wheel3_e);
-    //wheel2_comp = transform_table.GetComp(wheel2_e);
-    //wheel4_comp = transform_table.GetComp(wheel4_e);
-    //Info("====================");
-    //wheel2_comp->dump();
-    //wheel4_comp->dump();
+    // transform_table.Delete(wheel3_e);
+    // wheel2_comp = transform_table.GetComp(wheel2_e);
+    // wheel4_comp = transform_table.GetComp(wheel4_e);
+    // Info("====================");
+    // wheel2_comp->dump();
+    // wheel4_comp->dump();
 
-    //REQUIRE(transform_table.GetComp(wheel1_e) == nullptr);
-    //REQUIRE(transform_table.GetComp(wheel3_e) == nullptr);
-    //REQUIRE(transform_table.GetSize() == 3);
+    // REQUIRE(transform_table.GetComp(wheel1_e) == nullptr);
+    // REQUIRE(transform_table.GetComp(wheel3_e) == nullptr);
+    // REQUIRE(transform_table.GetSize() == 3);
 }
 
 /***
@@ -563,18 +559,18 @@ TEST_CASE("test_transform_table_more")
         comp_list.push_back(comp);
     }
 
-    comp_list[0]->LinkChildren({comp_list[1],comp_list[2], comp_list[3]});
-    comp_list[1]->LinkChildren({comp_list[4],comp_list[5], comp_list[6], comp_list[13], comp_list[15]});
+    comp_list[0]->LinkChildren({ comp_list[1], comp_list[2], comp_list[3] });
+    comp_list[1]->LinkChildren({ comp_list[4], comp_list[5], comp_list[6], comp_list[13], comp_list[15] });
     comp_list[4]->LinkChild(comp_list[7]);
 
-    comp_list[7]->LinkChildren({comp_list[11],comp_list[17]});
+    comp_list[7]->LinkChildren({ comp_list[11], comp_list[17] });
 
     comp_list[11]->LinkChild(comp_list[16]);
     comp_list[17]->LinkChild(comp_list[18]);
 
-    comp_list[6]->LinkChildren({comp_list[8],comp_list[9],comp_list[14]});
-    comp_list[8]->LinkChildren({comp_list[10],comp_list[12]});
-    comp_list[12]->LinkChildren({comp_list[19]});
+    comp_list[6]->LinkChildren({ comp_list[8], comp_list[9], comp_list[14] });
+    comp_list[8]->LinkChildren({ comp_list[10], comp_list[12] });
+    comp_list[12]->LinkChildren({ comp_list[19] });
 
     REQUIRE(transform_table.GetComp(entity_list[19]) == comp_list[19]);
     REQUIRE(transform_table.GetSize() == 20);
@@ -593,7 +589,6 @@ TEST_CASE("test_transform_table_more")
     REQUIRE(comp_list[15]->GetFirstChildIdx() == transform_table.GetCompIdx(entity_list[6]));
 }
 
-
 TEST_CASE("test_transform_table_delete")
 {
     auto transform_table = TransformTable();
@@ -608,18 +603,18 @@ TEST_CASE("test_transform_table_delete")
         comp_list.push_back(comp);
     }
 
-    comp_list[0]->LinkChildren({comp_list[1],comp_list[2], comp_list[3]});
-    comp_list[1]->LinkChildren({comp_list[4],comp_list[5], comp_list[6], comp_list[13], comp_list[15]});
+    comp_list[0]->LinkChildren({ comp_list[1], comp_list[2], comp_list[3] });
+    comp_list[1]->LinkChildren({ comp_list[4], comp_list[5], comp_list[6], comp_list[13], comp_list[15] });
     comp_list[4]->LinkChild(comp_list[7]);
 
-    comp_list[7]->LinkChildren({comp_list[11],comp_list[17]});
+    comp_list[7]->LinkChildren({ comp_list[11], comp_list[17] });
 
     comp_list[11]->LinkChild(comp_list[16]);
     comp_list[17]->LinkChild(comp_list[18]);
 
-    comp_list[6]->LinkChildren({comp_list[8],comp_list[9],comp_list[14]});
-    comp_list[8]->LinkChildren({comp_list[10],comp_list[12]});
-    comp_list[12]->LinkChildren({comp_list[19]});
+    comp_list[6]->LinkChildren({ comp_list[8], comp_list[9], comp_list[14] });
+    comp_list[8]->LinkChildren({ comp_list[10], comp_list[12] });
+    comp_list[12]->LinkChildren({ comp_list[19] });
 
     REQUIRE(transform_table.GetComp(entity_list[19]) == comp_list[19]);
     REQUIRE(transform_table.GetSize() == 20);
@@ -633,24 +628,24 @@ TEST_CASE("test_transform_table_delete")
 
 TEST_CASE("test_math")
 {
-    auto vec2_1 = math::Vec2{1,1};
+    auto vec2_1 = math::Vec2 { 1, 1 };
     REQUIRE(vec2_1[0] == 1);
     REQUIRE(vec2_1[1] == 1);
 
-    auto vec2_2 = math::Vec2{1,1};
+    auto vec2_2 = math::Vec2 { 1, 1 };
     auto vec2_3 = vec2_1.Add(vec2_2);
     REQUIRE(vec2_3[0] == 2);
     REQUIRE(vec2_3[1] == 2);
 
-    auto vec2_4 = math::Vec2{3.0,4.0};
+    auto vec2_4 = math::Vec2 { 3.0, 4.0 };
     REQUIRE(vec2_4.Len() == 5);
 
-    auto vec3 = math::Vec3{};
+    auto vec3 = math::Vec3 {};
     REQUIRE(vec3[0] == 0);
     REQUIRE(vec3[1] == 0);
     REQUIRE(vec3[2] == 0);
 
-    auto vec3_1 = math::Vec3{1, 1, 1};
+    auto vec3_1 = math::Vec3 { 1, 1, 1 };
     REQUIRE(vec3_1[0] == 1);
     REQUIRE(vec3_1[1] == 1);
     REQUIRE(vec3_1[2] == 1);
@@ -660,8 +655,8 @@ TEST_CASE("test_math")
     REQUIRE(vec3_2[1] == 1);
     REQUIRE(vec3_2[2] == 1);
 
-    auto vec4_1 = math::Vec4{1, 1, 1, 1};
-    auto vec4_2 = math::Vec4{2, 2, 2, 2};
+    auto vec4_1 = math::Vec4 { 1, 1, 1, 1 };
+    auto vec4_2 = math::Vec4 { 2, 2, 2, 2 };
 
     REQUIRE(vec4_1[0] == 1);
     REQUIRE(vec4_1[1] == 1);
@@ -684,4 +679,5 @@ TEST_CASE("test_fps")
 {
     auto fps = FPS();
     fps.Init();
+    // TODO
 }

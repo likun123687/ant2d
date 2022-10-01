@@ -4,8 +4,14 @@
 
 namespace ant2d {
 
-Transform::Transform():world_{},local_{},
-    parent_{kInvalidIdx}, first_child_{kInvalidIdx}, pre_sibling_{kInvalidIdx}, nxt_sibling_{kInvalidIdx},transform_table_(nullptr)
+Transform::Transform()
+    : world_ {}
+    , local_ {}
+    , parent_ { kInvalidIdx }
+    , first_child_ { kInvalidIdx }
+    , pre_sibling_ { kInvalidIdx }
+    , nxt_sibling_ { kInvalidIdx }
+    , transform_table_(nullptr)
 {
 }
 
@@ -98,13 +104,13 @@ void Transform::SetPosition(math::Vec2 position)
 void Transform::MoveBy(float dx, float dy)
 {
     auto p = local_.position;
-    p[0] = p[0]+dx;
-    p[1]= p[1]+dy;
+    p[0] = p[0] + dx;
+    p[1] = p[1] + dy;
     SetPosition(p);
 }
 
 // update world location: world = parent.world + self.local
-void Transform::SetPosition(const SRT *parent, math::Vec2 local)
+void Transform::SetPosition(const SRT* parent, math::Vec2 local)
 {
     auto p = math::Vec2(0, 0);
     if (parent) {
@@ -134,7 +140,7 @@ void Transform::SetScale(math::Vec2 scale)
     }
 }
 
-void Transform::SetScale(const SRT *parent, math::Vec2 scale)
+void Transform::SetScale(const SRT* parent, math::Vec2 scale)
 {
     auto s = math::Vec2(1, 1);
     if (parent) {
@@ -154,8 +160,8 @@ void Transform::SetScale(const SRT *parent, math::Vec2 scale)
 void Transform::ScaleBy(float dx, float dy)
 {
     auto sk = local_.scale;
-    sk[0] = sk[0]+dx;
-    sk[1] = sk[1]+dy;
+    sk[0] = sk[0] + dx;
+    sk[1] = sk[1] + dy;
     SetScale(sk);
 }
 
@@ -171,7 +177,7 @@ void Transform::SetRotation(float rotation)
     }
 }
 
-void Transform::SetRotation(const SRT *parent, float rotation)
+void Transform::SetRotation(const SRT* parent, float rotation)
 {
     float r = 0.0f;
     if (parent != nullptr) {
@@ -190,18 +196,18 @@ void Transform::SetRotation(const SRT *parent, float rotation)
 void Transform::RotateBy(float d)
 {
     auto r = local_.rotation;
-    r+= d;
+    r += d;
     SetRotation(r);
 }
 
-void Transform::LinkChildren(std::vector<Transform *> child_list)
+void Transform::LinkChildren(std::vector<Transform*> child_list)
 {
     for (auto c : child_list) {
         LinkChild(c);
     }
 }
 
-void Transform::LinkChild(Transform *c)
+void Transform::LinkChild(Transform* c)
 {
     auto pi = transform_table_->GetCompIdx(entity_);
     auto ci = transform_table_->GetCompIdx(c->GetEntity());
@@ -219,7 +225,7 @@ void Transform::LinkChild(Transform *c)
         c->SetParentIdx(pi);
     } else {
         uint16_t prev = kInvalidIdx;
-        for (uint16_t next = first_child_; next != kInvalidIdx; ) {
+        for (uint16_t next = first_child_; next != kInvalidIdx;) {
             prev = next;
             next = transform_table_->GetComp(next)->GetNxtSiblingIdx();
         }
@@ -231,9 +237,9 @@ void Transform::LinkChild(Transform *c)
 }
 
 //断开链接,所有他指向的,和指向他的
-//uint16_t parent_;
-//uint16_t pre_sibling_;
-//uint16_t nxt_sibling_;
+// uint16_t parent_;
+// uint16_t pre_sibling_;
+// uint16_t nxt_sibling_;
 void Transform::BreakLink()
 {
     auto self_idx = transform_table_->GetCompIdx(entity_);
@@ -265,10 +271,10 @@ void Transform::ResetIdx()
 
 void Transform::Relink(uint16_t old_idx, uint16_t new_idx)
 {
-    //uint16_t parent_;
-    //uint16_t pre_sibling_;
-    //uint16_t nxt_sibling_;
-    //first_child_
+    // uint16_t parent_;
+    // uint16_t pre_sibling_;
+    // uint16_t nxt_sibling_;
+    // first_child_
     if (parent_ != kInvalidIdx) {
         auto parent_comp = transform_table_->GetComp(parent_);
         if (parent_comp->GetFirstChildIdx() == old_idx) {
@@ -292,34 +298,34 @@ void Transform::Relink(uint16_t old_idx, uint16_t new_idx)
     }
 }
 
-//void Transform::RemoveChild(Transform *c)
+// void Transform::RemoveChild(Transform *c)
 //{
-//    auto pi = transform_table_->GetCompIdx(entity_);
-//    auto ci = transform_table_->GetCompIdx(c->GetEntity());
+//     auto pi = transform_table_->GetCompIdx(entity_);
+//     auto ci = transform_table_->GetCompIdx(c->GetEntity());
 //
-//    if (c->GetParentIdx() != pi) {
-//        return;
-//    }
-//    Info("nxt {}", c->GetNxtSiblingIdx());
-//    if (first_child_ == ci) {
-//        first_child_ = c->GetNxtSiblingIdx();
-//    } else {
-//        transform_table_->GetComp(c->GetPreSiblingIdx())\
+//     if (c->GetParentIdx() != pi) {
+//         return;
+//     }
+//     Info("nxt {}", c->GetNxtSiblingIdx());
+//     if (first_child_ == ci) {
+//         first_child_ = c->GetNxtSiblingIdx();
+//     } else {
+//         tran sform_table_->GetComp(c->GetPreSiblingIdx())\
 //            ->SetNxtSiblingIdx(c->GetNxtSiblingIdx());
-//    }
+//     }
 //
-//    Info("nxt {}", c->GetNxtSiblingIdx());
-//    auto nxt = c->GetNxtSiblingIdx();
-//    if (nxt != kInvalidIdx) {
-//        transform_table_->GetComp(nxt)\
+//     Info("nxt {}", c->GetNxtSiblingIdx());
+//     auto nxt = c->GetNxtSiblingIdx();
+//     if (nxt != kInvalidIdx) {
+//         tran sform_table_->GetComp(nxt)\
 //            ->SetPreSiblingIdx(c->GetPreSiblingIdx());
-//    }
-//    c->SetParentIdx(kInvalidIdx);
-//    c->SetPreSiblingIdx(kInvalidIdx);
-//    c->SetNxtSiblingIdx(kInvalidIdx);
-//}
+//     }
+//     c->SetParentIdx(kInvalidIdx);
+//     c->SetPreSiblingIdx(kInvalidIdx);
+//     c->SetNxtSiblingIdx(kInvalidIdx);
+// }
 
-Transform * Transform::FirstChild()
+Transform* Transform::FirstChild()
 {
     if (first_child_ != kInvalidIdx) {
         return transform_table_->GetComp(first_child_);
@@ -327,7 +333,7 @@ Transform * Transform::FirstChild()
     return nullptr;
 }
 
-Transform * Transform::Parent()
+Transform* Transform::Parent()
 {
     if (parent_ != kInvalidIdx) {
         return transform_table_->GetComp(parent_);
@@ -335,10 +341,10 @@ Transform * Transform::Parent()
     return nullptr;
 }
 
-std::tuple<Transform *, Transform *>  Transform::Sibling()
+std::tuple<Transform*, Transform*> Transform::Sibling()
 {
-    Transform *prev = nullptr;
-    Transform *next = nullptr;
+    Transform* prev = nullptr;
+    Transform* next = nullptr;
     if (pre_sibling_ != kInvalidIdx) {
         prev = transform_table_->GetComp(pre_sibling_);
     }
@@ -351,16 +357,16 @@ std::tuple<Transform *, Transform *>  Transform::Sibling()
 void Transform::Reset()
 {
     entity_ = Ghost;
-    world_ = {math::Vec2(0,0), 0.0f, math::Vec2(0,0)};
-    local_ = {math::Vec2(0,0), 0.0f, math::Vec2(0,0)};
-    parent_  = kInvalidIdx;
+    world_ = { math::Vec2(0, 0), 0.0f, math::Vec2(0, 0) };
+    local_ = { math::Vec2(0, 0), 0.0f, math::Vec2(0, 0) };
+    parent_ = kInvalidIdx;
     first_child_ = kInvalidIdx;
     pre_sibling_ = kInvalidIdx;
     nxt_sibling_ = kInvalidIdx;
     transform_table_ = nullptr;
 }
 
-void Transform::SetTransformTable(TransformTable *t)
+void Transform::SetTransformTable(TransformTable* t)
 {
     transform_table_ = t;
 }
@@ -376,7 +382,6 @@ void Transform::CollectSubCompIdx(std::vector<int>& idx_list)
         child = node->GetNxtSiblingIdx();
     }
 }
-
 
 void Transform::dump()
 {

@@ -21,7 +21,7 @@ public:
     Content();
 
 private:
-    std::uint8_t* LoadFileUnsafe(const std::string& file_name, int64_t& size);
+    std::uint8_t* LoadFileUnsafe(const std::string& file_name, uint64_t& size);
     std::string asset_path_;
     std::vector<std::string> search_paths_;
     std::unordered_map<std::string, std::string> full_path_cache_;

@@ -90,7 +90,7 @@ BkTexture* TextureManager::Get(const std::string& file)
     auto it = repo_.find(file);
     if (it != repo_.end()) {
         auto rid = it->second.rid;
-        auto tex = new BkTexture{rid};
+        auto tex = new BkTexture { rid };
         textures_[file] = std::unique_ptr<BkTexture>(tex);
         return tex;
     }
@@ -98,7 +98,7 @@ BkTexture* TextureManager::Get(const std::string& file)
     return nullptr;
 }
 
-std::tuple<uint16_t, Texture2D*> TextureManager::GetRaw(const std::string &file)
+std::tuple<uint16_t, Texture2D*> TextureManager::GetRaw(const std::string& file)
 {
     uint16_t tex_id = 0;
     Texture2D* tex = nullptr;
@@ -110,7 +110,7 @@ std::tuple<uint16_t, Texture2D*> TextureManager::GetRaw(const std::string &file)
     return std::make_tuple(tex_id, tex);
 }
 
-Atlas *TextureManager::GetAtlas(const std::string &file)
+Atlas* TextureManager::GetAtlas(const std::string& file)
 {
     auto it = repo_.find(file);
     if (it != repo_.end()) {

@@ -159,7 +159,7 @@ void SpriteRenderFeature::Draw(const std::vector<SortObject>& nodes)
     // batch draw!
     auto sprite_batch_object = SpriteBatchObject {};
     for (auto& b : nodes) {
-        auto ii = b.value & 0xFFFF; //在sprite_table索引
+        auto ii = b.value & 0xFFFF; // 在sprite_table索引
         auto sid = b.sort_id & 0xFFFF; // batch_id也就是texid
         if (sort_id != sid) {
             if (begin) {
@@ -169,7 +169,7 @@ void SpriteRenderFeature::Draw(const std::vector<SortObject>& nodes)
             sort_id = sid;
             begin = true;
             auto texture_id = sprite_table_->GetComp(ii)->GetTextureId();
-            uint16_t depth = 0; //就是z_order
+            uint16_t depth = 0; // 就是z_order
             std::tie(depth, std::ignore) = UnpackSortId(b.sort_id);
             batch_render_->Begin(texture_id, depth);
         }

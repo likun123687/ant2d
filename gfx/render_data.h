@@ -13,7 +13,7 @@ struct PosTexColorVertex {
     float g;
     float b;
     float a;
-    //uint32_t rgba;
+    // uint32_t rgba;
 };
 
 class Camera;
@@ -81,7 +81,8 @@ private:
     uint16_t value_;
 
 public:
-    ZOrder():value_(0)
+    ZOrder()
+        : value_(0)
     {
     }
     void SetValue(uint16_t z)
@@ -97,7 +98,8 @@ public:
 
 class BatchId {
 public:
-    BatchId():value_(0)
+    BatchId()
+        : value_(0)
     {
     }
     uint16_t value_;

@@ -2,7 +2,8 @@
 
 namespace ant2d {
 
-Entity EntityManager::New() {
+Entity EntityManager::New()
+{
     uint32_t ei = 0;
     uint8_t eg = 0;
 
@@ -25,16 +26,16 @@ bool EntityManager::Alive(Entity e)
 void EntityManager::Destroy(Entity e)
 {
     auto ei = e.Index();
-    generation_[ei] ++;
+    generation_[ei]++;
     freelist_.push_back(ei);
 }
 
-bool operator==(const Entity &e1, const Entity &e2)
+bool operator==(const Entity& e1, const Entity& e2)
 {
     return e1.idx_ == e2.idx_;
 }
 
-bool operator!=(const Entity &e1, const Entity &e2)
+bool operator!=(const Entity& e1, const Entity& e2)
 {
     return e1.idx_ != e2.idx_;
 }

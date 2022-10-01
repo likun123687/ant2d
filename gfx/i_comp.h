@@ -5,12 +5,15 @@ namespace ant2d {
 class IComp {
 protected:
     Entity entity_;
+
 public:
-    IComp():entity_(Ghost)
+    IComp()
+        : entity_(Ghost)
     {
     }
 
-    IComp(Entity e):entity_(e)
+    IComp(Entity e)
+        : entity_(e)
     {
     }
     void SetEntity(Entity entity)

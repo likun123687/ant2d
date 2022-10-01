@@ -1,5 +1,5 @@
 namespace game {
-enum TableName{kSprite};
+enum TableName { kSprite };
 
 class Table {
 public:

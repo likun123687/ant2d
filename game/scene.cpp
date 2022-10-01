@@ -4,7 +4,7 @@
 
 namespace ant2d {
 
-void SceneManager::Load(Scene *sn)
+void SceneManager::Load(Scene* sn)
 {
     auto callback = sn->GetOnLoadCallback();
     if (callback) {
@@ -12,7 +12,7 @@ void SceneManager::Load(Scene *sn)
     }
 }
 
-void SceneManager::UnLoad(Scene *sn)
+void SceneManager::UnLoad(Scene* sn)
 {
     auto callback = sn->GetUnLoadCallback();
     if (callback) {
@@ -20,9 +20,9 @@ void SceneManager::UnLoad(Scene *sn)
     }
 }
 
-void SceneManager::Setup(Game *g)
+void SceneManager::Setup(Game* g)
 {
-    Info("g {}", static_cast<void *>(g));
+    Info("g {}", static_cast<void*>(g));
     g_ = g;
     if (h_scene_) {
         auto callback = h_scene_->GetOnLoadCallback();
@@ -40,13 +40,13 @@ void SceneManager::Update(float dt)
     }
 }
 
-void SceneManager::SetDefault(Scene *sn)
+void SceneManager::SetDefault(Scene* sn)
 {
     h_scene_ = sn;
     stack_.emplace_back(sn);
 }
 
-void SceneManager::Push(Scene *sn)
+void SceneManager::Push(Scene* sn)
 {
     if (h_scene_) {
         h_scene_->OnExit();
@@ -59,14 +59,14 @@ void SceneManager::Push(Scene *sn)
 std::unique_ptr<Scene> SceneManager::Pop()
 {
     std::unique_ptr<Scene> ret_sn;
-    size_t size =  stack_.size();
+    size_t size = stack_.size();
     if (size > 0) {
         ret_sn = std::move(stack_.back());
         stack_.pop_back();
         ret_sn->OnExit();
         UnLoad(ret_sn.get());
 
-        auto &next_sn = stack_.back();
+        auto& next_sn = stack_.back();
         if (next_sn) {
             h_scene_ = next_sn.get();
             next_sn->OnExit();
@@ -87,8 +87,8 @@ std::unique_ptr<Scene> SceneManager::Peek()
 
 void SceneManager::Clear()
 {
-    for (int i = stack_.size() - 1; i>=0; i--) {
+    for (int i = stack_.size() - 1; i >= 0; i--) {
         stack_[i]->OnExit();
     }
 }
-}//namespace ant2d
+} // namespace ant2d

@@ -24,19 +24,20 @@ class DB {
 private:
     std::unique_ptr<EntityManager> entity_manager_;
     TableList tables_;
+
 public:
-    void AddTable(IBase *table);
+    void AddTable(IBase* table);
     TableList& GetTableList();
     EntityManager* GetEntityManager();
-    void SetEntityManager(EntityManager *entity_manager);
+    void SetEntityManager(EntityManager* entity_manager);
 };
 
 class AppState {
-using StateChangeCallback = std::function<void(bool)>;
-struct State {
-    bool paused;
-    bool lost_focus;
-};
+    using StateChangeCallback = std::function<void(bool)>;
+    struct State {
+        bool paused;
+        bool lost_focus;
+    };
 
 private:
     StateChangeCallback pause_callback_;
@@ -62,8 +63,12 @@ private:
     std::unique_ptr<AppState> app_state_;
 
 public:
-    Game():fps_(new FPS()), db_(new DB()), scene_manager_(new SceneManager()), 
-    render_system_(new RenderSystem()), app_state_(new AppState())
+    Game()
+        : fps_(new FPS())
+        , db_(new DB())
+        , scene_manager_(new SceneManager())
+        , render_system_(new RenderSystem())
+        , app_state_(new AppState())
     {
     }
 
@@ -91,7 +96,7 @@ public:
         return db_.get();
     }
 
-    SceneManager *GetSceneManager()
+    SceneManager* GetSceneManager()
     {
         return scene_manager_.get();
     }
