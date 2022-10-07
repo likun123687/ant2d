@@ -17,7 +17,7 @@ void Run(WindowOptions options, Scene* sn)
 {
     Info("start to run, main scene--{}", static_cast<void*>(sn));
     auto g = new Game {};
-    //g->Init();
+    g->Init();
     SharedGame = g;
     SharedTextureManager = new TextureManager{};
     SharedEntityManager = g->GetDB()->GetEntityManager();
