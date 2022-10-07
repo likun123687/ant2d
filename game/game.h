@@ -63,15 +63,7 @@ private:
     std::unique_ptr<AppState> app_state_;
 
 public:
-    Game()
-        : fps_(new FPS())
-        , db_(new DB())
-        , scene_manager_(new SceneManager())
-        , render_system_(new RenderSystem())
-        , app_state_(new AppState())
-    {
-    }
-
+    Game();
     Camera* Camera();
     void OnCreate(float w, float h, float ratio);
     void OnLoop();

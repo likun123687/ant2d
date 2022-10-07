@@ -385,6 +385,9 @@ void Transform::CollectSubCompIdx(std::vector<int>& idx_list)
 
 void Transform::dump()
 {
-    Info("entity_idx:{} - this_idx:{}- parent:{}-first_child:{}-pre_slib:{}--nxt:{}", entity_.Index(), transform_table_->GetCompIdx(entity_), parent_, first_child_, pre_sibling_, nxt_sibling_);
+    Info("entity_idx:{} - this_idx:{}- parent:{}-first_child:{}-pre_slib:{}--nxt:{}",
+        entity_.Index(),
+        transform_table_->GetCompIdx(entity_),
+        parent_, first_child_, pre_sibling_, nxt_sibling_);
 }
 }

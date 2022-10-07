@@ -51,6 +51,15 @@ AppState::StateChangeCallback AppState::GetFocusCallback()
     return focus_callback_;
 }
 
+Game::Game()
+    : fps_(new FPS())
+    , db_(new DB())
+    , scene_manager_(new SceneManager())
+    , render_system_(new RenderSystem())
+    , app_state_(new AppState())
+{
+}
+
 Camera* Game::Camera()
 {
     return render_system_->GetMainCamera();

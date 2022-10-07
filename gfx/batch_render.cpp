@@ -161,7 +161,7 @@ void BatchContext::End()
     batch.vertex_id = kInvalidId;
     batch.first_vertex = 0; // uint16(bc.firstVertex)
     batch.num_vertex = uint16_t(vertex_pos_ - first_vertex_);
-    batch.first_index = uint16_t(first_vertex_ / 4 * 6);
+    batch.first_index = uint16_t(first_vertex_ / 4 * 6); //4个顶点，需要draw两个三角形,即6个index
     batch.num_index = uint16_t(batch.num_vertex / 4 * 6);
     batch_used_ += 1;
 }

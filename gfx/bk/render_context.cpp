@@ -8,6 +8,9 @@ namespace ant2d {
 RenderContext::RenderContext(ResManager* res_manager, UniformblockBuffer* uniformblock_buffer)
     : res_manager_(res_manager)
     , uniformblock_buffer_(uniformblock_buffer)
+    , w_rect_ {}
+    , pixel_ratio_ {0.0f}
+    , clips_ {}
     , bk_state_ {}
 {
     clips_.resize(1);
