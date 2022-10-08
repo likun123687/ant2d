@@ -6,7 +6,7 @@
 using namespace ant2d;
 
 RenderQueue::RenderQueue()
-    : sort_mode_(SortMode::kSequential)
+    : sort_mode_(SortMode::kAscending)
     , sort_keys_()
     , sort_values_()
     , draw_call_list_()
@@ -160,16 +160,19 @@ int RenderQueue::Flush()
     auto kv_zip = Zip(sort_keys, sort_values);
     switch (sort_mode_) {
     case SortMode::kAscending:
-        std::sort(kv_zip.begin(), kv_zip.end(), [](const auto& x, const auto& y) {
-            return std::get<0>(x) > std::get<0>(y);
-        });
-        break;
-    case SortMode::kDescending:
+        Info("key sort1");
         std::sort(kv_zip.begin(), kv_zip.end(), [](const auto& x, const auto& y) {
             return std::get<0>(x) < std::get<0>(y);
         });
         break;
+    case SortMode::kDescending:
+        Info("key sort2");
+        std::sort(kv_zip.begin(), kv_zip.end(), [](const auto& x, const auto& y) {
+            return std::get<0>(x) > std::get<0>(y);
+        });
+        break;
     case SortMode::kSequential:
+        Info("key sort3");
         break;
     }
 

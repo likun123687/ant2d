@@ -1,6 +1,6 @@
 #include <gfx/transform/transform_table.h>
 #include <algorithm>
-//#include <functional>
+// #include <functional>
 
 namespace ant2d {
 

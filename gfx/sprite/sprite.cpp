@@ -11,7 +11,7 @@ SpriteComp::SpriteComp()
     , flip_y_(0)
     , width_(0)
     , height_(0)
-    , gravity_ { 0, 0 }
+    , gravity_ { 0.5, 0.5 }
     , visible_(false)
 {
 }

@@ -50,9 +50,9 @@ public:
 class RenderDraw {
 public:
     RenderDraw()
-        : index_buffer_(0)
-        , vertex_buffers_()
-        , textures_()
+        : index_buffer_{kInvalidId}
+        , vertex_buffers_{kInvalidId, kInvalidId}
+        , textures_{kInvalidId, kInvalidId}
         , first_index_(0)
         , num_(0)
         , uniformblock_begin_(0)

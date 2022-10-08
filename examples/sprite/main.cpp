@@ -27,6 +27,19 @@ class MainScene : public ant2d::Scene {
         ant2d::SharedSpriteTable->NewCompX(entity2, tex)->SetSize(80, 80);
         auto xf2 = ant2d::SharedTransformTable->NewComp(entity2);
         xf2->SetPosition(ant2d::math::Vec2 { 60, 60 });
+
+        auto tex1 = ant2d::SharedTextureManager->Get("assets/face1.png");
+        Info("tex1 {}", static_cast<void*>(tex1));
+        auto entity3 = ant2d::SharedEntityManager->New();
+        ant2d::SharedSpriteTable->NewCompX(entity3, tex1)->SetSize(80, 80);
+        auto xf3 = ant2d::SharedTransformTable->NewComp(entity3);
+        xf3->SetPosition(ant2d::math::Vec2 { 400, 400 });
+
+        auto tex2 = ant2d::SharedTextureManager->Get("assets/1111.png");
+        auto entity4 = ant2d::SharedEntityManager->New();
+        ant2d::SharedSpriteTable->NewCompX(entity4, tex2)->SetSize(80, 80);
+        auto xf4 = ant2d::SharedTransformTable->NewComp(entity4);
+        xf4->SetPosition(ant2d::math::Vec2 { 450, 450 });
     }
 
     void Update(float dt)
@@ -44,7 +57,10 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
     Info("ant2d main called");
     auto on_load_callback = []() {
         Info("main scene on load callback");
-        ant2d::SharedTextureManager->Load("assets/face.png") ;
+        ant2d::SharedTextureManager->Load("assets/face.png");
+        ant2d::SharedTextureManager->Load("assets/face1.png");
+        ant2d::SharedTextureManager->Load("assets/1111.png");
+
         auto repo = ant2d::SharedTextureManager->GetRepo();
         assert(repo["assets/face.png"].cnt == 1);
         Info("face rid {}", repo["assets/face.png"].rid);

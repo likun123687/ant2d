@@ -129,7 +129,8 @@ void RenderContext::DoDraw(RenderDraw& draw, RenderDraw& current_state)
     sg_apply_bindings(&bk_state_.bind);
 
     if (draw.index_buffer_ != kInvalidId) {
-        auto offset = int(draw.first_index_) * 2; // 2 = sizeOf(unsigned_short)
+        auto offset = int(draw.first_index_) * 1; // 2 = sizeOf(unsigned_short)
+        Info("sg_draw {}--{}--{}", offset, draw.num_, 1);
         sg_draw(offset, draw.num_, 1);
     } else {
         sg_draw(draw.first_index_, draw.num_, 1);

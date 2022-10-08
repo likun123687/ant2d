@@ -5,11 +5,10 @@
 #include <utils/debug.h>
 
 namespace ant2d {
-class SpriteComp : public IComp
-{
+class SpriteComp : public IComp {
 public:
     SpriteComp();
-    void SetSprite(ITexture2D *spt);
+    void SetSprite(ITexture2D* spt);
     void SetSize(float w, float h);
     std::tuple<float, float> GetSize();
     void SetGravity(float x, float y);
@@ -17,7 +16,7 @@ public:
     void SetVisible(bool v);
     bool GetVisible();
     std::tuple<float, float, float, float> GetRgbaColor();
-    //void SetColor(sg_color color);
+    // void SetColor(sg_color color);
     uint32_t GetColor();
     void SetColor(uint32_t color);
     void Flip(bool flip_x, bool flip_y);
@@ -43,7 +42,7 @@ public:
     uint16_t GetTextureId()
     {
         Info("go inside get");
-        Info("inside get texture id {}", static_cast<void *>(sprite_));
+        Info("inside get texture id {}", static_cast<void*>(sprite_));
         return sprite_->GetTextureId();
     }
 
@@ -61,7 +60,7 @@ private:
     struct {
         float x;
         float y;
-    } gravity_;
+    } gravity_; // 重心
     bool visible_;
 };
 }

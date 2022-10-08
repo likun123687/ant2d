@@ -259,6 +259,11 @@ TEST_CASE("test_sort_key")
         && sort_key1.texture_ == sort_key.texture_;
 
     REQUIRE(ret1);
+
+    auto sort_key2 = SortKey();
+    sort_key2.Decode(key);
+    sort_key2.order_ = 3;
+    REQUIRE(sort_key2.Encode() > key);
 }
 
 TEST_CASE("test_res_manager")
