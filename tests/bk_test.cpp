@@ -64,7 +64,10 @@ TEST_CASE("test_drawcall")
         .LR_WITH(_2->data.subimage[0][0].size == image_data.width_ * image_data.height_ * 4)
         .IN_SEQUENCE(seq);
 
-    auto [tex_id, tex] = SharedResManager.AllocTexture(image_data);
+    // auto [tex_id, tex] = SharedResManager.AllocTexture(image_data);
+    uint16_t tex_id = 0;
+    Texture2D* tex = nullptr;
+    std::tie(tex_id, tex) = SharedResManager.AllocTexture(image_data);
 
     // 创建vertex id
     auto vertex_data = new uint8_t[64];
@@ -77,7 +80,10 @@ TEST_CASE("test_drawcall")
         .TIMES(AT_LEAST(1))
         .RETURN(vertex_buffer);
 
-    auto [vertex_id, vb] = SharedResManager.AllocVertexBuffer(vertex_data, 64, 1);
+    //auto [vertex_id, vb] = SharedResManager.AllocVertexBuffer(vertex_data, 64, 1);
+    uint16_t vertex_id=0;
+    VertexBuffer *vb = nullptr;
+    std::tie(vertex_id, vb) = SharedResManager.AllocVertexBuffer(vertex_data, 64, 1);
 
     // 创建index id
     auto index_data = new uint8_t[64];
@@ -90,7 +96,10 @@ TEST_CASE("test_drawcall")
         .TIMES(AT_LEAST(1))
         .RETURN(index_buffer);
 
-    auto [index_id, ib] = SharedResManager.AllocIndexBuffer(index_data, 64);
+    //auto [index_id, ib] = SharedResManager.AllocIndexBuffer(index_data, 64);
+    uint16_t index_id = 0;
+    IndexBuffer *ib = nullptr;
+    std::tie(index_id, ib) = SharedResManager.AllocIndexBuffer(index_data, 64);
 
     // 创建shader
     sg_shader shid = sg_shader { 1 };
@@ -176,7 +185,7 @@ TEST_CASE("test_drawcall")
         .IN_SEQUENCE(seq);
 
     REQUIRE_CALL(sokol_gfx_api_mock, sg_apply_bindings(_))
-        .LR_WITH((_1->index_buffer.id == ib->GetId().id && _1->fs_images[0].id == tex->GetId().id && _1->vertex_buffers[0].id == vb->GetId().id))
+        .WITH((_1->index_buffer.id == ib->GetId().id && _1->fs_images[0].id == tex->GetId().id && _1->vertex_buffers[0].id == vb->GetId().id))
         .TIMES(1)
         .IN_SEQUENCE(seq);
 
@@ -367,7 +376,6 @@ TEST_CASE("test_multiple_drawcall_sort")
     REQUIRE_CALL(sokol_gfx_api_mock, sapp_height())
         //.IN_SEQUENCE(seq)
         .RETURN(500);
-
 
     // 第二次循环
     REQUIRE_CALL(sokol_gfx_api_mock, sg_apply_pipeline(_))
