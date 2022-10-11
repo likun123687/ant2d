@@ -46,7 +46,7 @@ class MainScene:public ant2d::Scene
         auto entity4 = ant2d::SharedEntityManager->New();
         ant2d::SharedSpriteTable->NewCompX(entity4, tex2)->SetSize(80, 80);
         auto xf4 = ant2d::SharedTransformTable->NewComp(entity4);
-        xf4->SetPosition(ant2d::math::Vec2 { 50, 50 });
+        xf4->SetPosition(ant2d::math::Vec2 { 100, 100 });
     }
 
     void Update(float dt)

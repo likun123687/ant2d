@@ -129,11 +129,6 @@ namespace gfx {
 
         uint16_t id = 0;
         std::tie(id, std::ignore) = SharedResManager.AllocIndexBuffer((uint8_t*)(shared_.index.data()), kSharedIndexBufferSize * sizeof(uint16_t));
-        Info("gctx share index id {}", id);
-
-        for (int i = 0; i < 48; i++) {
-            Info("shared idx {}", shared_.index[i]);
-        }
         if (id != kInvalidId) {
             shared_.id = id;
             shared_.size = kSharedIndexBufferSize;

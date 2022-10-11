@@ -7,7 +7,7 @@
 // a wrapper for bk-api
 namespace ant2d {
 namespace gfx {
-    const uint16_t kSharedIndexBufferSize = static_cast<uint16_t>(0xFFFF / 6);
+    constexpr uint16_t kSharedIndexBufferSize = static_cast<uint16_t>(0xFFFF / 6);
 
     void Init(float pixel_ratio);
     int Flush();
