@@ -75,7 +75,7 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
     };
     auto main_scene = new MainScene();
     main_scene->SetOnLoadCallback(on_load_callback);
-    auto options = ant2d::WindowOptions{"sprite test", 480, 320};
+    auto options = ant2d::WindowOptions{"sprite test", 800, 600};
     ant2d::Run(options, main_scene);
     Info("ant2d main end");
     return options;

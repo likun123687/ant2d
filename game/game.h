@@ -8,12 +8,12 @@
 #include <hid/life_cycle.h>
 
 namespace ant2d {
-const int32_t kMaxScriptSize = 1024;
-const int32_t kMaxSpriteSize = 64 << 10;
-const int32_t kMaxTransformSize = 64 << 10;
-const int32_t kMaxTextSize = 64 << 10;
-const int32_t kMaxMeshSize = 64 << 10;
-const int32_t kMaxParticleSize = 1024;
+constexpr int32_t kMaxScriptSize = 1024;
+constexpr int32_t kMaxSpriteSize = 64 << 10;
+constexpr int32_t kMaxTransformSize = 64 << 10;
+constexpr int32_t kMaxTextSize = 64 << 10;
+constexpr int32_t kMaxMeshSize = 64 << 10;
+constexpr int32_t kMaxParticleSize = 1024;
 
 struct Options {
     int32_t width;

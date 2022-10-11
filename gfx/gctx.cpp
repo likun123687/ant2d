@@ -27,6 +27,12 @@ namespace gfx {
         SharedContext.Destroy();
     }
 
+    Context::Context()
+        : shared_ {}
+        , temps_ {}
+    {
+    }
+
     std::tuple<uint16_t, int, VertexBuffer*> Context::TempVertexBuffer(int req_size, int stride)
     {
         Tempbuffer buffer;

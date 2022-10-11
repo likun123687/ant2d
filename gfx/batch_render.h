@@ -38,6 +38,24 @@ public:
     uint32_t GetVertexPos();
     BatchList& GetBatchList();
     int GetBatchUsed();
+
+#ifdef ANT2D_DEBUG
+    auto& GetVertex()
+    {
+        return vertex_;
+    }
+
+    auto& GetFirstVertex()
+    {
+        return first_vertex_;
+    }
+
+    auto& GetTexId()
+    {
+        return tex_id_;
+    }
+
+#endif
 };
 
 // Batch Render:
@@ -64,6 +82,13 @@ public:
     void Draw(IBatchObject* b);
     void End();
     int Flush();
+#ifdef ANT2D_DEBUG
+    BatchContext* GetBatchContext()
+    {
+        return batch_context_.get();
+    }
+
+#endif
 };
 
 } // namespace ant2d

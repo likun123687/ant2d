@@ -1,6 +1,13 @@
 #include <game/fps.h>
 
 namespace ant2d {
+FPS::FPS()
+    : pre_time_ {}
+    , dt_ { 0 }
+    , pause_ { false }
+{
+}
+
 void FPS::Init()
 {
     start_time_ = std::chrono::system_clock::now();

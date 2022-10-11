@@ -4,6 +4,7 @@
 namespace ant2d {
 class FPS {
 public:
+    FPS();
     void Init();
     void SetScale(float factor);
     float Step();

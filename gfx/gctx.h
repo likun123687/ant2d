@@ -7,7 +7,7 @@
 // a wrapper for bk-api
 namespace ant2d {
 namespace gfx {
-    const uint16_t kSharedIndexBufferSize = 0xFFFF;
+    const uint16_t kSharedIndexBufferSize = static_cast<uint16_t>(0xFFFF / 6);
 
     void Init(float pixel_ratio);
     int Flush();
@@ -27,6 +27,14 @@ namespace gfx {
 
     class Context {
         struct Shared {
+        public:
+            Shared()
+                : id { 0 }
+                , padding { 0 }
+                , index {}
+                , size { 0 }
+            {
+            }
             uint16_t id;
             uint16_t padding;
             std::vector<uint16_t> index;
@@ -34,6 +42,7 @@ namespace gfx {
         };
 
     public:
+        Context();
         // 一帧之后自动释放
         std::tuple<uint16_t, int, VertexBuffer*> TempVertexBuffer(int req_size, int stride);
         Tempbuffer NewVertexBuffer(int vertex_size, int stride);
