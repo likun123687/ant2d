@@ -9,11 +9,11 @@
 #include <vector>
 
 namespace ant2d {
-const uint16_t kInvalidId = 0x0000;
-const uint16_t kUInt16Max = 0xFFFF;
+constexpr uint16_t kInvalidId = 0x0000;
+constexpr uint16_t kUInt16Max = 0xFFFF;
 
-const uint16_t kIdMask = 0x0FFF;
-const uint16_t kIdTypeShift = 12;
+constexpr uint16_t kIdMask = 0x0FFF;
+constexpr uint16_t kIdTypeShift = 12;
 
 enum IdType {
     kIdTypeIndex = 0,
@@ -25,12 +25,12 @@ enum IdType {
     kIdTypePipeline,
 };
 
-const uint16_t kMaxIndex = 2 << 10;
-const uint16_t kMaxVertex = 2 << 10;
-const uint16_t kMaxTexture = 1 << 10;
-const uint16_t kMaxUniformblock = 32 * 8;
-const uint16_t kMaxShader = 32;
-const uint16_t kMaxPipeline = 32;
+constexpr uint16_t kMaxIndex = 2 << 10;
+constexpr uint16_t kMaxVertex = 2 << 10;
+constexpr uint16_t kMaxTexture = 1 << 10;
+constexpr uint16_t kMaxUniformblock = 32 * 8;
+constexpr uint16_t kMaxShader = 32;
+constexpr uint16_t kMaxPipeline = 32;
 
 class FreeList {
 public:

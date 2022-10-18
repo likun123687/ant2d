@@ -5,7 +5,7 @@ using namespace ant2d;
 
 ImageData::StbPixelsPtr ImageData::CreatePixels(const uint8_t* data, size_t size)
 {
-    const int desired_channels = 4;
+    constexpr int desired_channels = 4;
     auto mem_pixels = stbi_load_from_memory(
         data,
         size,

@@ -4,10 +4,10 @@
 
 namespace ant2d {
 
-const int32_t kIndexBits = 24;
-const int32_t kIndexMask = (1 << kIndexBits) - 1;
-const uint8_t kGenerationBits = 8;
-const uint8_t kGenerationMask = (1 << kGenerationBits) - 1;
+constexpr int32_t kIndexBits = 24;
+constexpr int32_t kIndexMask = (1 << kIndexBits) - 1;
+constexpr uint8_t kGenerationBits = 8;
+constexpr uint8_t kGenerationMask = (1 << kGenerationBits) - 1;
 
 class Entity {
 public:

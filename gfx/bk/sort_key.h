@@ -2,10 +2,10 @@
 #include <utils/debug.h>
 
 namespace ant2d {
-const uint32_t kStateLayerMask = 0xF0000000;
-const uint32_t kStateShaderMask = 0x0F000000;
-const uint32_t kStateBlendMask = 0x00F00000;
-const uint32_t kStateTextureMask = 0x000FF000;
+constexpr uint32_t kStateLayerMask = 0xF0000000;
+constexpr uint32_t kStateShaderMask = 0x0F000000;
+constexpr uint32_t kStateBlendMask = 0x00F00000;
+constexpr uint32_t kStateTextureMask = 0x000FF000;
 
 // SortKey FORMAT
 // 64bit:

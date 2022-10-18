@@ -4,7 +4,7 @@
 #include <string>
 
 namespace ant2d {
-const uint16_t kUniformblockBufferSize = 16 << 10;
+constexpr uint16_t kUniformblockBufferSize = 16 << 10;
 
 class Uniformblock {
 private:

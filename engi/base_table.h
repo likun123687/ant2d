@@ -18,8 +18,8 @@ public:
     virtual ~IBase() = default;
 };
 
-static const int kStep = 64;
-static const uint16_t kInvalidIdx = 0xFFFF;
+static constexpr int kStep = 64;
+static constexpr uint16_t kInvalidIdx = 0xFFFF;
 
 template <typename T>
 class BaseTable : public IBase {
