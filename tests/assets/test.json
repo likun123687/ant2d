@@ -1,0 +1,44 @@
+{"frames": {
+
+"obj_deco006.png":
+{
+	"frame": {"x":0,"y":0,"w":198,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":198,"h":198},
+	"sourceSize": {"w":198,"h":198}
+},
+"OBJ_DOOR001.png":
+{
+	"frame": {"x":198,"y":0,"w":146,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":146,"h":202},
+	"sourceSize": {"w":146,"h":202}
+},
+"OBJ_DOOR002.png":
+{
+	"frame": {"x":344,"y":0,"w":146,"h":203},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":146,"h":203},
+	"sourceSize": {"w":146,"h":203}
+},
+"OBJ_DOOR003.png":
+{
+	"frame": {"x":490,"y":0,"w":146,"h":203},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":146,"h":203},
+	"sourceSize": {"w":146,"h":203}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "test.png",
+	"format": "RGBA8888",
+	"size": {"w":636,"h":203},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:527d7ee491ab08e38d44b4f28ed0a2d4:5c3e4efa54104b056b509b66dcd6a691:02ab132358d6d8b512e80119463a8329$"
+}
+}

@@ -16,6 +16,7 @@ public:
         : entity_(e)
     {
     }
+    
     void SetEntity(Entity entity)
     {
         entity_ = entity;

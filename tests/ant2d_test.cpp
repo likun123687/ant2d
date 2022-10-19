@@ -686,13 +686,13 @@ TEST_CASE("test_fps")
 {
     auto fps = FPS();
     fps.Init();
+    FrameRater<60> fr; // 60 FPS
+
     std::vector<int> valid_fps_list {};
     for (int i = 0; i < 100; i++) {
-        auto now = std::chrono::steady_clock::now();
-        auto end = now + std::chrono::milliseconds(16);
         auto dt = fps.Smooth();
         auto fps_count = static_cast<int32_t>(1 / dt);
-        // Info("dt dt {}", fps_count);
+        //Info("dt dt {}", fps_count);
         if ((std::abs(fps_count - 60)) < 10) {
             valid_fps_list.push_back(fps_count);
         }
@@ -700,7 +700,7 @@ TEST_CASE("test_fps")
         // Info("dt dt {}", static_cast<int>(std::abs(static_cast<int32_t>(1 / dt) - 60)));
         // REQUIRE(static_cast<int>(std::abs(static_cast<int32_t>(1 / dt) - 60)) < 10);
         //  do sth
-        std::this_thread::sleep_until(end);
+        fr.Sleep();
     }
     REQUIRE(valid_fps_list.size() > 60);
 }

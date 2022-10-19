@@ -69,7 +69,7 @@ std::unique_ptr<Scene> SceneManager::Pop()
         auto& next_sn = stack_.back();
         if (next_sn) {
             h_scene_ = next_sn.get();
-            next_sn->OnExit();
+            next_sn->OnEnter(g_);
         }
     }
     return ret_sn;

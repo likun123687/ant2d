@@ -66,6 +66,8 @@ private:
     std::vector<Region> regions_;
     std::vector<Size> sizes_;
     std::unordered_map<std::string, int> names_;
+    std::vector<std::unique_ptr<SubTexture>> sub_textures_;
+
     uint16_t index_;
     uint16_t size_;
 
@@ -74,8 +76,8 @@ public:
     void Init(int size);
     void Release();
     void AddItem(float x, float y, float w, float h, const std::string& name, bool rotated);
-    std::tuple<SubTexture, bool> GetSubTexByName(const std::string& name);
-    std::tuple<SubTexture, bool> GetSubTexByIndex(int index);
+    SubTexture* GetSubTexByName(const std::string& name);
+    SubTexture* GetSubTexByIndex(int index);
     Region GetSubTexRegionByIndex(int index);
     Size GetSubTexSizeByIndex(int index);
     void SetTexId(uint16_t id);

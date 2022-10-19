@@ -40,6 +40,15 @@ class MainScene : public ant2d::Scene {
         ant2d::SharedSpriteTable->NewCompX(entity4, tex2)->SetSize(80, 80);
         auto xf4 = ant2d::SharedTransformTable->NewComp(entity4);
         xf4->SetPosition(ant2d::math::Vec2 { 450, 450 });
+
+        auto atlas = ant2d::SharedTextureManager->GetAtlas("assets/test.png");
+        auto sub_tex = atlas->GetSubTexByName("OBJ_DOOR001.png");
+
+        auto entity5 = ant2d::SharedEntityManager->New();
+        ant2d::SharedSpriteTable->NewCompX(entity5, sub_tex)->SetSize(80, 160);
+        auto xf5 = ant2d::SharedTransformTable->NewComp(entity5);
+        xf5->SetPosition(ant2d::math::Vec2 { 300, 300 });
+
     }
 
     void Update(float dt)
@@ -60,6 +69,8 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
         ant2d::SharedTextureManager->Load("assets/face.png");
         ant2d::SharedTextureManager->Load("assets/face1.png");
         ant2d::SharedTextureManager->Load("assets/1111.png");
+
+        ant2d::SharedTextureManager->LoadAtlas("assets/test.png", "assets/test.json");
 
         auto repo = ant2d::SharedTextureManager->GetRepo();
         assert(repo["assets/face.png"].cnt == 1);

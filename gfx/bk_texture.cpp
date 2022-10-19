@@ -40,6 +40,7 @@ void Atlas::Init(int size)
     regions_.resize(size);
     sizes_.resize(size);
     names_.reserve(size);
+    sub_textures_.reserve(size);
 }
 
 void Atlas::Release()
@@ -47,6 +48,7 @@ void Atlas::Release()
     regions_.clear();
     sizes_.clear();
     names_.clear();
+    sub_textures_.clear();
 }
 
 void Atlas::AddItem(float x, float y, float w, float h, const std::string& name, bool rotated)
@@ -55,36 +57,31 @@ void Atlas::AddItem(float x, float y, float w, float h, const std::string& name,
     names_[name] = index_;
     if (rotated) {
         regions_[index_] = Region { x / width_, y / height_,
-            (x + height_) / width_, (y + width_) / height_, true };
+            (x + h) / width_, (y + w) / height_, true };
     } else {
         regions_[index_] = Region { x / width_, y / height_,
-            (x + height_) / width_, (y + width_) / height_, false };
+            (x + w) / width_, (y + h) / height_, false };
     }
+    sub_textures_.emplace_back(new SubTexture { (uint32_t(aid_) << 16) + uint32_t(index_) });
     index_++;
 }
 
-std::tuple<SubTexture, bool> Atlas::GetSubTexByName(const std::string& name)
+SubTexture* Atlas::GetSubTexByName(const std::string& name)
 {
-    bool ok = false;
     auto it = names_.find(name);
     if (it != names_.end()) {
-        ok = true;
-        auto sub_tex = SubTexture { (uint32_t(aid_) << 16) + uint32_t(it->second) };
-        return std::make_tuple(sub_tex, ok);
+        return sub_textures_[it->second].get();
     }
-    return std::make_tuple(SubTexture { 0 }, ok);
+    return nullptr;
 }
 
-std::tuple<SubTexture, bool> Atlas::GetSubTexByIndex(int index)
+SubTexture* Atlas::GetSubTexByIndex(int index)
 {
-    bool ok = false;
     if (index < size_) {
-        ok = true;
-        auto sub_tex = SubTexture { (uint32_t(aid_) << 16) + uint32_t(index) };
-        return std::make_tuple(sub_tex, ok);
+        return sub_textures_[index].get();
     }
 
-    return std::make_tuple(SubTexture { 0 }, ok);
+    return nullptr;
 }
 
 Region Atlas::GetSubTexRegionByIndex(int index)
