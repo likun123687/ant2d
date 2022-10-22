@@ -1,7 +1,7 @@
 #pragma once
 #include <asset/res.h>
-#include <utils/json.h>
 #include <gfx/bk_texture.h>
+#include <third_party/nlohmann/json_fwd.hpp>
 // #include <utils/singleton.h>
 
 namespace ant2d {

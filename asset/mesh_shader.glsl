@@ -1,6 +1,9 @@
 @vs mesh_vs
-uniform mesh_vs_params {
+uniform mesh_vs_proj {
     mat4 proj;
+};
+
+uniform mesh_vs_model {
     mat4 model;
 };
 

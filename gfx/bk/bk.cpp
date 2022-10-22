@@ -77,7 +77,6 @@ namespace bk {
     // Execute final draw
     int Flush()
     {
-        Info("bbbb");
         return SharedRenderQueue.Flush();
     }
 } // namespace ant2d

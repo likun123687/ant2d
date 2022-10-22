@@ -2,6 +2,7 @@
 #include <gfx/bk/res_manager.h>
 #include <utils/content.h>
 #include <utils/debug.h>
+#include <utils/json.h>
 
 namespace ant2d {
 void TextureManager::Load(const std::string& file)

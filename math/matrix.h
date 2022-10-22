@@ -63,5 +63,11 @@ namespace math {
         // Set sets the corresponding matrix element at the given row and column.
         void Set(int row, int col, float value);
     };
+
+    // Ident4 returns the 4x4 identity matrix.
+    Mat4 Ident4()
+    {
+        return Mat4 { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+    }
 } // namespace math
 } // namespace ant2d
