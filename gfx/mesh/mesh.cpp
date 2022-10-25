@@ -1,0 +1,85 @@
+#include <gfx/mesh/mesh.h>
+#include <utils/debug.h>
+
+namespace ant2d {
+void Mesh::Setup()
+{
+    uint16_t stride = sizeof(PosTexColorVertex);
+    std::tie(vertex_id_, std::ignore) = SharedResManager.AllocVertexBuffer((uint8_t*)(vertex_.data()), vertex_.size() * stride, stride);
+    if (vertex_id_ == kInvalidId) {
+        Error("alloc vertex buffer error");
+    }
+
+    std::tie(index_id_, std::ignore) = SharedResManager.AllocIndexBuffer((uint8_t*)(index_.data()), index_.size() * 2);
+    if (index_id_ == kInvalidId) {
+        Error("alloc vertex buffer error");
+    }
+
+    first_vertex_ = 0;
+    num_vertex_ = vertex_.size();
+    first_index_ = 0;
+    num_index_ = index_.size();
+}
+
+void Mesh::SetTexture(uint16_t id)
+{
+    texture_id_ = id;
+}
+
+uint16_t Mesh::GetTexture()
+{
+    return texture_id_;
+}
+
+void Mesh::SetVertex(std::vector<PosTexColorVertex> v)
+{
+    vertex_ = v;
+}
+
+void Mesh::SetIndex(std::vector<uint16_t> index)
+{
+    index_ = index;
+}
+
+uint16_t Mesh::GetVertexId()
+{
+    return vertex_id_;
+}
+
+uint16_t Mesh::GetIndexId()
+{
+    return index_id_;
+}
+
+void Mesh::Update()
+{
+    IndexBuffer* index_buffer = SharedResManager.GetIndexBuffer(index_id_);
+    if (index_buffer) {
+        index_buffer->Update((uint8_t*)index_.data(), index_.size() * sizeof(uint16_t), 0, false);
+    }
+
+    auto vertex_buffer = SharedResManager.GetVertexBuffer(vertex_id_);
+    if (vertex_buffer) {
+        vertex_buffer->Update((uint8_t*)vertex_.data(), vertex_.size() * sizeof(PosTexColorVertex), 0, false);
+    }
+}
+
+void Mesh::Delete()
+{
+    auto ib = SharedResManager.GetIndexBuffer(index_id_);
+    if (ib) {
+        ib->Destroy();
+    }
+
+    auto vb = SharedResManager.GetVertexBuffer(vertex_id_);
+    if (vb) {
+        vb->Destroy();
+    }
+
+    auto tex = SharedResManager.GetTexture(texture_id_);
+    if (tex) {
+        tex->Destroy();
+    }
+}
+
+}

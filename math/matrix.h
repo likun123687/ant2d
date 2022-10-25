@@ -65,7 +65,7 @@ namespace math {
     };
 
     // Ident4 returns the 4x4 identity matrix.
-    Mat4 Ident4()
+    inline Mat4 Ident4()
     {
         return Mat4 { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
     }

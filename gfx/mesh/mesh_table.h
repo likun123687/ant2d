@@ -5,12 +5,6 @@
 namespace ant2d {
 class MeshTable : public BaseTable<MeshComp> {
 public:
-    MeshComp* NewComp(Entity entity)
-    {
-        MeshComp *comp = BaseTable::NewComp(entity);
-        comp->SetSize(64, 64);
-        comp->SetVisible(true);
-        return comp;
-    }
+    MeshComp* NewComp(Entity entity);
 };
 }

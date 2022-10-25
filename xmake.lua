@@ -111,7 +111,10 @@ target("ant2d_common")
     add_files("gfx/bk/pipeline.cpp")
     add_files("ant2d.cpp")
     add_files("third_party/fmt/src/format.cc")
-
+    add_files("gfx/mesh/mesh.cpp")
+    add_files("gfx/mesh/mesh_table.cpp")
+    add_files("gfx/mesh/mesh_render_feature.cpp")
+    add_files("gfx/mesh/mesh_render.cpp")
     if is_plat("windows") then
         add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})
     elseif is_plat("macosx", "iphoneos") then

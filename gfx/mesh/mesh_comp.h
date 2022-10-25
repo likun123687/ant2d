@@ -23,7 +23,7 @@ public:
         size_[1] = height;
     }
 
-    void SetVisible(v bool)
+    void SetVisible(bool v)
     {
         visible_ = v;
     }
@@ -36,6 +36,11 @@ public:
     ZOrder GetZOrder()
     {
         return z_order_;
+    }
+
+    void Reset()
+    {
+
     }
 };
 }
