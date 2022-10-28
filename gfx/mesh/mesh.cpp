@@ -51,6 +51,17 @@ uint16_t Mesh::GetIndexId()
     return index_id_;
 }
 
+uint16_t Mesh::GetFirstIndex()
+{
+    return first_index_;
+}
+
+uint16_t Mesh::GetNumIndex()
+{
+    return num_index_;
+}
+
+
 void Mesh::Update()
 {
     IndexBuffer* index_buffer = SharedResManager.GetIndexBuffer(index_id_);

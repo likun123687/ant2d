@@ -28,6 +28,11 @@ public:
         visible_ = v;
     }
 
+    bool GetVisible()
+    {
+        return visible_;
+    }
+
     Mesh* GetMesh()
     {
         return &mesh_;

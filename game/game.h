@@ -74,7 +74,6 @@ public:
     void OnResize(float w, float h);
     void OnKeyEvent(int key, bool pressed);
     void OnPointEvent(int key, bool pressed, float x, float y);
-
     void SetGameSize(float w, float h);
     void Create(float w, float h, float ratio);
     void Destroy();

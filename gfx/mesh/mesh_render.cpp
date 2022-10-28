@@ -2,6 +2,7 @@
 #include <utils/debug.h>
 #include <gfx/camera.h>
 #include <math/project.h>
+#include <gfx/bk/bk.h>
 
 namespace ant2d {
 MeshRender::MeshRender(ShaderType shader_type)
@@ -35,6 +36,8 @@ MeshRender::MeshRender(ShaderType shader_type)
     if (umh_model_ == kInvalidId) {
         Error("alloc uniform block error");
     }
+
+    Info("umh_projection_--{} umh_model_--{}", umh_projection_, umh_model_);
 }
 
 void MeshRender::SetCamera(Camera* camera)
@@ -43,6 +46,7 @@ void MeshRender::SetCamera(Camera* camera)
     auto p = math::Ortho2D(left, right, bottom, top);
 
     mesh_vs_proj_t vs_proj = { p };
+    Info("umh_projection_1111--{} umh_model_--{}", umh_projection_, umh_model_);
     bk::SetUniformblock(umh_projection_, (uint8_t*)(&vs_proj));
     bk::Submit(0, pipeline_id_, 0);
 }
@@ -56,12 +60,15 @@ void MeshRender::Draw(Mesh* m, math::Mat4* mat4, int32_t depth)
 {
     bk::SetTexture(0, m->GetTexture());
 
+    mesh_vs_model_t vs_model = { *mat4 };
+    Info("umh_projection_2222--{} umh_model_--{}", umh_projection_, umh_model_);
+
     // set uniform - mvp
-    bk::SetUniformblock(umh_model_, (uint8_t*)mat4);
+    bk::SetUniformblock(umh_model_, (uint8_t*)(&vs_model));
 
     // set vertex
     bk::SetVertexBuffer(0, m->GetVertexId());
-    bk::SetIndexBuffer(m->GetIndexId(), m->first_index_, m->num_index_);
+    bk::SetIndexBuffer(m->GetIndexId(), m->GetFirstIndex(), m->GetNumIndex());
     bk::Submit(0, pipeline_id_, depth);
 }
 

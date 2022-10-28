@@ -11,7 +11,7 @@ using uniformblock_size_func = size_t (*)(sg_shader_stage stage, const char* ub_
 
 enum ShaderType {
     kBatchShader = 0,
-    kMeshShader,
+    kMeshShader = 1,
 };
 
 shader_desc_func GetShaderDescFunc(ShaderType type);

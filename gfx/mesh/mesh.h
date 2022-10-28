@@ -5,6 +5,7 @@
 
 namespace ant2d {
 class Mesh {
+private:
     std::vector<PosTexColorVertex> vertex_;
     std::vector<uint16_t> index_;
 
@@ -21,6 +22,7 @@ class Mesh {
     uint16_t first_index_;
     uint16_t num_index_;
 
+public:
     void Setup();
 
     void SetTexture(uint16_t id);
@@ -30,9 +32,9 @@ class Mesh {
     void SetIndex(std::vector<uint16_t> index);
 
     uint16_t GetVertexId();
-
     uint16_t GetIndexId();
-
+    uint16_t GetFirstIndex();
+    uint16_t GetNumIndex();
     void Update();
 
     void Delete();

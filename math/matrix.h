@@ -7,7 +7,8 @@ namespace math {
     class Mat3 {
     public:
         std::array<float, 9> data_;
-
+        Mat3() = default;
+        Mat3(float item1, float item2, float item3, float item4, float item5, float item6, float item7, float item8, float item9);
         // SetCol sets a Column within the Matrix, so it mutates the calling matrix.
         void SetCol(int col, Vec3 v);
 
@@ -47,6 +48,8 @@ namespace math {
     public:
         std::array<float, 16> data_;
 
+        Mat4(float item1, float item2, float item3, float item4, float item5, float item6, float item7, float item8, float item9,
+            float item10, float item11, float item12, float item13, float item14, float item15, float item16);
         // SetCol sets a Column within the Matrix.
         void SetCol(int col, Vec4 v);
         // SetRow sets a Row within the Matrix.
@@ -62,12 +65,10 @@ namespace math {
 
         // Set sets the corresponding matrix element at the given row and column.
         void Set(int row, int col, float value);
+
+        const float& operator[](int i) const;
+        float& operator[](int i);
     };
 
-    // Ident4 returns the 4x4 identity matrix.
-    inline Mat4 Ident4()
-    {
-        return Mat4 { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
-    }
 } // namespace math
 } // namespace ant2d

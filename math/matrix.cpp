@@ -4,6 +4,11 @@
 namespace ant2d {
 namespace math {
 
+    Mat3::Mat3(float item1, float item2, float item3, float item4, float item5, float item6, float item7, float item8, float item9)
+        : data_ { item1, item2, item3, item4, item5, item6, item7, item8, item9 }
+    {
+    }
+
     // SetCol sets a Column within the Matrix, so it mutates the calling matrix.
     void Mat3::SetCol(int col, Vec3 v)
     {
@@ -85,6 +90,12 @@ namespace math {
         return Mat3 { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
     }
 
+    Mat4::Mat4(float item1, float item2, float item3, float item4, float item5, float item6, float item7, float item8, float item9,
+        float item10, float item11, float item12, float item13, float item14, float item15, float item16)
+        : data_ { item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16 }
+    {
+    }
+
     // SetCol sets a Column within the Matrix.
     void Mat4::SetCol(int col, Vec4 v)
     {
@@ -125,6 +136,16 @@ namespace math {
     void Mat4::Set(int row, int col, float value)
     {
         data_[col * 4 + row] = value;
+    }
+
+    const float& Mat4::operator[](int i) const
+    {
+        return data_[i];
+    }
+
+    float& Mat4::operator[](int i)
+    {
+        return data_[i];
     }
 }
 }

@@ -9,6 +9,7 @@ namespace ant2d {
 enum class TableType {
     kSprite,
     kTransform,
+    KMesh,
     kParticle,
 };
 

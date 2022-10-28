@@ -1,3 +1,4 @@
+@ctype mat4 ::ant2d::math::Mat4
 @vs mesh_vs
 uniform mesh_vs_proj {
     mat4 proj;
@@ -17,7 +18,7 @@ void main() {
     outColor = rgba;
     outTexCoord = xyuv.zw;
 
-    gl_Position = proj * model * vec4(xyuv.xy, 1, 1);
+    gl_Position = proj * model * vec4(xyuv.xy, 0, 1);
 }
 @end
 

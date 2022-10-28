@@ -9,6 +9,7 @@ Game* SharedGame = nullptr;
 SceneManager* SharedSceneManager = nullptr;
 EntityManager* SharedEntityManager = nullptr;
 SpriteTable* SharedSpriteTable = nullptr;
+MeshTable* SharedMeshTable = nullptr;
 TransformTable* SharedTransformTable = nullptr;
 TextureManager* SharedTextureManager = nullptr;
 // InputSystem* SharedInputSystem = nullptr;
@@ -32,6 +33,8 @@ void Run(WindowOptions options, Scene* sn)
         case TableType::kTransform:
             SharedTransformTable = reinterpret_cast<TransformTable*>(table.get());
             break;
+        case TableType::KMesh:
+            SharedMeshTable = reinterpret_cast<MeshTable*>(table.get());
         }
     }
 

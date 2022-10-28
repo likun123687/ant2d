@@ -6,6 +6,9 @@
 #include <asset/shader_utils.h>
 #include <gfx/sprite/sprite_render_feature.h>
 #include <utils/debug.h>
+#include <gfx/mesh/mesh_render.h>
+#include <gfx/mesh/mesh_table.h>
+#include <gfx/mesh/mesh_render_feature.h>
 
 namespace ant2d {
 
@@ -130,10 +133,14 @@ void Game::Create(float w, float h, float ratio)
     render_system_->GetMainCamera()->MoveTo(w / 2, h / 2);
     render_system_->RequireTable(db_->GetTableList());
     render_system_->RegisterRender(new BatchRender(ShaderType::kBatchShader));
+    render_system_->RegisterRender(new MeshRender(ShaderType::kMeshShader));
 
     // set feature
     auto srf = new SpriteRenderFeature {};
     srf->Register(render_system_.get());
+
+    auto mrf = new MeshRenderFeature{};
+    mrf->Register(render_system_.get());
 
     /// setup scene manager
     scene_manager_->Setup(this);
@@ -174,9 +181,14 @@ void Game::LoadTables()
     auto sprite_table = new SpriteTable();
     sprite_table->SetTableType(TableType::kSprite);
     db_->AddTable(sprite_table);
+
     auto transform_table = new TransformTable();
     transform_table->SetTableType(TableType::kTransform);
     db_->AddTable(transform_table);
+
+    auto mesh_table = new MeshTable();
+    mesh_table->SetTableType(TableType::KMesh);
+    db_->AddTable(mesh_table);
 }
 
 void Game::Update()
