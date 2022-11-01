@@ -28,7 +28,6 @@ void Block::SetStride(int stride)
     stride_ = stride;
 }
 
-// A Pool represent a particle-pool.
 int Pool::GetChanTypeSize(ChanType t)
 {
     int size = 0;
