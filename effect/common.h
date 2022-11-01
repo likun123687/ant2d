@@ -46,6 +46,7 @@ public:
 
 // Simulator define how a particle-system works.
 class Simulator {
+public:
     // Initialize the particle simulator.
     virtual void Initialize() = 0;
 
@@ -62,6 +63,7 @@ class Simulator {
 
 // ParticleSystem lifecycle controller.
 class Controller {
+public:
     virtual void Stop() = 0;
     virtual void Play() = 0;
     virtual ~Controller() = default;
@@ -69,6 +71,7 @@ class Controller {
 
 // Prewarm particle system
 class WarmupController {
+public:
     virtual void Prewarm(float t) = 0;
     virtual float WarmTime() = 0;
     virtual ~WarmupController() = default;

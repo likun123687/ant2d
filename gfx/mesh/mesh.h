@@ -35,6 +35,13 @@ public:
     uint16_t GetIndexId();
     uint16_t GetFirstIndex();
     uint16_t GetNumIndex();
+    void SetVertexId(uint16_t vertex_id);
+    void SetIndexId(uint16_t index_id);
+    void SetFirstVertex(uint16_t first_vertex);
+    void SetNumVertex(uint16_t num_vertex);
+    void SetFirstIndex(uint16_t first_index);
+    void SetNumIndex(uint16_t num_index);
+
     void Update();
 
     void Delete();

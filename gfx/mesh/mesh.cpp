@@ -61,6 +61,33 @@ uint16_t Mesh::GetNumIndex()
     return num_index_;
 }
 
+void Mesh::SetVertexId(uint16_t vertex_id)
+{
+    vertex_id_ = vertex_id;
+}
+
+void Mesh::SetIndexId(uint16_t index_id)
+{
+    index_id_ = index_id;
+}
+
+    void Mesh::SetFirstVertex(uint16_t first_vertex)
+    {
+        first_vertex_ = first_vertex;
+    }
+    void Mesh::SetNumVertex(uint16_t num_vertex)
+    {
+        num_vertex_ = num_vertex;
+    }
+
+    void Mesh::SetFirstIndex(uint16_t first_index)
+    {
+        first_index_ = first_index;
+    }
+    void Mesh::SetNumIndex(uint16_t num_index)
+    {
+        num_index_ = num_index;
+    }
 
 void Mesh::Update()
 {

@@ -1,10 +1,11 @@
+#pragma once
 #include <cmath>
 #include <random>
 #include <math/vector.h>
 
 namespace ant2d {
 namespace math {
-    constexpr double PI = 3.14159265358979323846;
+    inline constexpr double PI = 3.14159265358979323846;
 
     /// This is A approximate yet fast inverse square-root.
     inline float InvSqrt(float x)

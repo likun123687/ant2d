@@ -46,7 +46,6 @@ void MeshRender::SetCamera(Camera* camera)
     auto p = math::Ortho2D(left, right, bottom, top);
 
     mesh_vs_proj_t vs_proj = { p };
-    Info("umh_projection_1111--{} umh_model_--{}", umh_projection_, umh_model_);
     bk::SetUniformblock(umh_projection_, (uint8_t*)(&vs_proj));
     bk::Submit(0, pipeline_id_, 0);
 }
@@ -61,7 +60,6 @@ void MeshRender::Draw(Mesh* m, math::Mat4* mat4, int32_t depth)
     bk::SetTexture(0, m->GetTexture());
 
     mesh_vs_model_t vs_model = { *mat4 };
-    Info("umh_projection_2222--{} umh_model_--{}", umh_projection_, umh_model_);
 
     // set uniform - mvp
     bk::SetUniformblock(umh_model_, (uint8_t*)(&vs_model));

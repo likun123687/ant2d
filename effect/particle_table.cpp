@@ -1,4 +1,4 @@
-#include <effect/particle_table .h>
+#include <effect/particle_table.h>
 #include <utils/debug.h>
 
 namespace ant2d {

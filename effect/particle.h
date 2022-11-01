@@ -31,14 +31,17 @@ public:
     void Prewarm(float t);
 
     void SetZOrder(int16_t z);
+    uint16_t GetZOrder();
 
     int16_t Z();
 
     bool Visible();
 
-    void SetVisible(v bool);
+    void SetVisible(bool v);
     // The width and height of the particle system. We'll use it to
     // make visibility test. The default value is {w:64, h:64}
     void SetSize(float w, float h);
+    std::tuple<float, float> GetSize();
+    void Reset();
 };
 }

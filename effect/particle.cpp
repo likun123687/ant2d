@@ -48,6 +48,11 @@ void ParticleComp::SetZOrder(int16_t z)
     z_order_ = z;
 }
 
+uint16_t ParticleComp::GetZOrder()
+{
+    return z_order_;
+}
+
 int16_t ParticleComp::Z()
 {
     return z_order_;
@@ -61,7 +66,7 @@ bool ParticleComp::Visible()
     return true;
 }
 
-void ParticleComp::SetVisible(v bool)
+void ParticleComp::SetVisible(bool v)
 {
     if (v) {
         visible_ = 1;
@@ -77,4 +82,14 @@ void ParticleComp::SetSize(float w, float h)
     size_[0] = w;
     size_[1] = h;
 }
+
+std::tuple<float, float> ParticleComp::GetSize()
+{
+    return std::make_tuple(size_[0], size_[1]);
+}
+
+void ParticleComp::Reset()
+{
+}
+
 }
