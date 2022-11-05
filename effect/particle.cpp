@@ -24,22 +24,22 @@ ITexture2D* ParticleComp::GetTexture()
 
 void ParticleComp::Play()
 {
-    if (ctrl_) {
-        ctrl_->Play();
+    if (rate_controller_) {
+        rate_controller_->Play();
     }
 }
 
 void ParticleComp::Stop()
 {
-    if (ctrl_) {
-        ctrl_->Stop();
+    if (rate_controller_) {
+        rate_controller_->Stop();
     }
 }
 
 void ParticleComp::Prewarm(float t)
 {
-    if (warmup_ctrl_) {
-        warmup_ctrl_->Prewarm(t);
+    if (rate_controller_) {
+        rate_controller_->Prewarm(t);
     }
 }
 

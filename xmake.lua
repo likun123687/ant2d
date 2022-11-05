@@ -115,11 +115,8 @@ target("ant2d_common")
     add_files("gfx/mesh/mesh_table.cpp")
     add_files("gfx/mesh/mesh_render_feature.cpp")
     add_files("gfx/mesh/mesh_render.cpp")
-    add_files("effect/chan.cpp")
-    add_files("effect/particle_render_feature.cpp")
-    add_files("effect/particle_table.cpp")
-    add_files("effect/particle.cpp")
-    add_files("effect/pool.cpp")
+    add_files("effect/*.cpp")
+
     if is_plat("windows") then
         add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})
     elseif is_plat("macosx", "iphoneos") then

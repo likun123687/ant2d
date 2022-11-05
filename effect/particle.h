@@ -1,14 +1,14 @@
 #pragma once
 #include <gfx/i_comp.h>
 #include <effect/common.h>
+#include <effect/rate_controller.h>
 
 namespace ant2d {
 class ParticleComp : public IComp {
 private:
-    bool init_;
+    bool is_init_;
     Simulator* sim_;
-    Controller* ctrl_;
-    WarmupController* warmup_ctrl_;
+    RateController* rate_controller_;
     uint16_t z_order_;
     uint16_t visible_;
 
@@ -43,5 +43,33 @@ public:
     void SetSize(float w, float h);
     std::tuple<float, float> GetSize();
     void Reset();
+
+    bool GetIsInit()
+    {
+        return is_init_;
+    }
+
+    void SetIsInit(bool is_init)
+    {
+        is_init_ = is_init;
+    }
+
+    void Init()
+    {
+        if (sim_) {
+            sim_->Initialize();
+        }
+
+        if (rate_controller_ && rate_controller_->WarmTime() > 0) {
+            Warmup(sim_, rate_controller_->WarmTime());
+        }
+    }
+
+    static void Warmup(Simulator* sim, float t)
+    {
+        for (float dt = 1.0 / 30; t > 0; t -= dt) {
+            sim->Simulate(dt);
+        }
+    }
 };
 }

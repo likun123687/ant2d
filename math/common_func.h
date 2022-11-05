@@ -6,6 +6,7 @@
 namespace ant2d {
 namespace math {
     inline constexpr double PI = 3.14159265358979323846;
+    inline constexpr float MaxFloat32 = 3.40282346638528859811704183484516925440e+38;
 
     /// This is A approximate yet fast inverse square-root.
     inline float InvSqrt(float x)

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <math/common_func.h>
 #include <effect/common.h>
@@ -12,11 +14,17 @@ enum class ChanType {
 void normalize(float x, float y, std::array<float, 2>& n);
 class Channel_f32 {
 private:
-    float *data_;
+    float* data_;
     int32_t size_;
 
 public:
-    Channel_f32(float *data, int32_t size);
+    Channel_f32()
+        : data_ { nullptr }
+        , size_ { 0 }
+    {
+    }
+
+    Channel_f32(float* data, int32_t size);
     const float& operator[](int i) const;
 
     float& operator[](int i);
@@ -35,11 +43,16 @@ public:
 
 class Channel_v2 {
 private:
-    math::Vec2 *data_;
+    math::Vec2* data_;
     int32_t size_;
 
 public:
-    Channel_v2(math::Vec2 *data, int32_t size);
+    Channel_v2()
+        : data_ { nullptr }
+        , size_ { 0 }
+    {
+    }
+    Channel_v2(math::Vec2* data, int32_t size);
 
     const math::Vec2& operator[](int i) const;
 
@@ -62,11 +75,16 @@ public:
 
 class Channel_v4 {
 private:
-    math::Vec4 *data_;
+    math::Vec4* data_;
     int32_t size_;
 
 public:
-    Channel_v4(math::Vec4 *data, int32_t size);
+    Channel_v4()
+        : data_ { nullptr }
+        , size_ { 0 }
+    {
+    }
+    Channel_v4(math::Vec4* data, int32_t size);
 
     const math::Vec4& operator[](int i) const;
     math::Vec4& operator[](int i);

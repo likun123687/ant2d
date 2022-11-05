@@ -28,6 +28,11 @@ void Block::SetStride(int stride)
     stride_ = stride;
 }
 
+Pool::Pool(int cap)
+    : cap_ { cap }
+{
+}
+
 int Pool::GetChanTypeSize(ChanType t)
 {
     int size = 0;
@@ -61,7 +66,7 @@ void Pool::Initialize()
     }
 }
 
-void Pool::AddChan(std::vector<ChanField> fields)
+void Pool::AddChan(std::initializer_list<ChanField> fields)
 {
     for (auto& f : fields) {
         blocks_.push_back(Block { f });
