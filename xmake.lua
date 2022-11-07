@@ -155,7 +155,7 @@ if has_config("with_example") then
 end
 
 if has_config("with_test") then
-    add_requires("catch2")
+    add_requires("catch2 v2.13.10")
     includes("tests")
 end
 
