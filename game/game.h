@@ -6,6 +6,7 @@
 #include <game/scene.h>
 #include <gfx/render_system.h>
 #include <hid/life_cycle.h>
+#include <effect/particle_simulate_system.h>
 
 namespace ant2d {
 constexpr int32_t kMaxScriptSize = 1024;
@@ -60,6 +61,7 @@ private:
     std::unique_ptr<DB> db_;
     std::unique_ptr<SceneManager> scene_manager_;
     std::unique_ptr<RenderSystem> render_system_;
+    std::unique_ptr<ParticleSimulateSystem> particle_system_;
     std::unique_ptr<AppState> app_state_;
 
 public:

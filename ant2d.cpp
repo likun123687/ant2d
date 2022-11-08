@@ -10,6 +10,7 @@ SceneManager* SharedSceneManager = nullptr;
 EntityManager* SharedEntityManager = nullptr;
 SpriteTable* SharedSpriteTable = nullptr;
 MeshTable* SharedMeshTable = nullptr;
+ParticleSystemTable* SharedParticleSystemTable = nullptr;
 TransformTable* SharedTransformTable = nullptr;
 TextureManager* SharedTextureManager = nullptr;
 // InputSystem* SharedInputSystem = nullptr;
@@ -35,6 +36,10 @@ void Run(WindowOptions options, Scene* sn)
             break;
         case TableType::KMesh:
             SharedMeshTable = reinterpret_cast<MeshTable*>(table.get());
+            break;
+        case TableType::kParticle:
+            SharedParticleSystemTable = reinterpret_cast<ParticleSystemTable*>(table.get());
+            break;
         }
     }
 

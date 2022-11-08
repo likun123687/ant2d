@@ -9,6 +9,7 @@
 #include <gfx/mesh/mesh_render.h>
 #include <gfx/mesh/mesh_table.h>
 #include <gfx/mesh/mesh_render_feature.h>
+#include <effect/particle_render_feature.h>
 
 namespace ant2d {
 
@@ -59,6 +60,7 @@ Game::Game()
     , db_(new DB())
     , scene_manager_(new SceneManager())
     , render_system_(new RenderSystem())
+    , particle_system_(new ParticleSimulateSystem())
     , app_state_(new AppState())
 {
 }
@@ -142,6 +144,12 @@ void Game::Create(float w, float h, float ratio)
     auto mrf = new MeshRenderFeature{};
     mrf->Register(render_system_.get());
 
+    /// particle-simulation system
+	particle_system_->RequireTable(&db_->GetTableList());
+	// set feature
+	auto prf = new ParticleRenderFeature();
+	prf->Register(render_system_.get());
+
     /// setup scene manager
     scene_manager_->Setup(this);
 }
@@ -189,6 +197,10 @@ void Game::LoadTables()
     auto mesh_table = new MeshTable();
     mesh_table->SetTableType(TableType::KMesh);
     db_->AddTable(mesh_table);
+
+    auto particle_system_table = new ParticleSystemTable();
+    particle_system_table->SetTableType(TableType::kParticle);
+    db_->AddTable(particle_system_table);
 }
 
 void Game::Update()
@@ -197,6 +209,8 @@ void Game::Update()
     scene_manager_->Update(dt);
     // Render
     render_system_->Update(dt);
+
+    particle_system_->Update(dt);
 
     // flush drawCall
     int num = gfx::Flush();

@@ -39,6 +39,15 @@ public:
     void Mul(int32_t n, float v);
 
     void Integrate(int32_t n, Channel_f32 ch1, float dt);
+    int32_t GetSize()
+    {
+        return size_;
+    }
+
+    float* GetData()
+    {
+        return data_;
+    }
 };
 
 class Channel_v2 {
@@ -71,6 +80,14 @@ public:
 
     // ch = tangent * m, normal = normal_vector(y, x), m = magnitude
     void tangentIntegrate(int32_t n, Channel_v2 xy, Channel_f32 m, float dt);
+    int32_t GetSize()
+    {
+        return size_;
+    }
+    math::Vec2* GetData()
+    {
+        return data_;
+    }
 };
 
 class Channel_v4 {
@@ -97,6 +114,14 @@ public:
     void Sub(int32_t n, float x, float y, float z, float w);
 
     void Integrate(int32_t n, Channel_v4 d, float dt);
+    int32_t GetSize()
+    {
+        return size_;
+    }
+    math::Vec4* GetData()
+    {
+        return data_;
+    }
 };
 
 }

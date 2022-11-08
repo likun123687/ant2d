@@ -1,3 +1,4 @@
+#pragma once
 #include <effect/pool.h>
 #include <effect/rate_controller.h>
 #include <effect/life_controller.h>

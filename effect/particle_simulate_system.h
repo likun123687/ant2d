@@ -1,10 +1,10 @@
 #pragma once
-#include <effect/particle_table.h>
+#include <effect/particle_system_table.h>
 
 namespace ant2d {
 class ParticleSimulateSystem {
 private:
-    ParticleTable* pst_;
+    ParticleSystemTable* pst_;
 
 public:
     void RequireTable(TableList* tables);

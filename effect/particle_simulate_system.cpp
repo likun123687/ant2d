@@ -1,4 +1,4 @@
-#include <effect/particle_table.h>
+#include <effect/particle_system_table.h>
 #include <effect/particle_simulate_system.h>
 
 namespace ant2d {
@@ -7,7 +7,7 @@ void ParticleSimulateSystem::RequireTable(TableList* tables)
 {
     for (auto& t : (*tables)) {
         if (t->GetTableType() == TableType::kParticle) {
-            pst_ = reinterpret_cast<ParticleTable*>(t.get());
+            pst_ = reinterpret_cast<ParticleSystemTable*>(t.get());
         }
     }
 }

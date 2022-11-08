@@ -57,7 +57,7 @@ public:
     friend bool operator!=(const Var& v1, const Var& v2);
 };
 
-bool operator!=(const Var& v1, const Var& v2)
+inline bool operator!=(const Var& v1, const Var& v2)
 {
     return v1.base_ != v2.base_ || v1.var_ != v2.var_;
 }
@@ -72,6 +72,12 @@ public:
     Range()
         : start_ {}
         , end_ {}
+    {
+    }
+
+    Range(Var start, Var end)
+        : start_ { start }
+        , end_ { end }
     {
     }
     // Used returns whether the value is empty.

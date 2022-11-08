@@ -3,7 +3,7 @@
 #include <effect/particle.h>
 
 namespace ant2d {
-class ParticleTable : public BaseTable<ParticleComp> {
+class ParticleSystemTable : public BaseTable<ParticleComp> {
 public:
     ParticleComp* NewComp(Entity entity);
 };

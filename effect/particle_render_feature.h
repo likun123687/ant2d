@@ -2,10 +2,11 @@
 #include <gfx/render_data.h>
 #include <gfx/mesh/mesh_render.h>
 #include <gfx/gctx.h>
-#include <effect/particle_table.h>
+#include <effect/particle_system_table.h>
 #include <gfx/transform/transform.h>
 #include <gfx/render_system.h>
 #include <gfx/transform/transform_table.h>
+#include <utils/debug.h>
 
 namespace ant2d {
 
@@ -23,6 +24,7 @@ public:
         if (index_size > index_size_) {
             std::tie(index_id_, index_size_) = SharedContext.SharedIndexBuffer();
         }
+        Info("alloc buffer {}--{}", vertex_id_, index_id_);
     }
     void Release()
     {
@@ -45,7 +47,7 @@ private:
     MeshRender* mesh_render_;
     int id_;
     BufferContext buffer_context_;
-    ParticleTable* particle_table_;
+    ParticleSystemTable* particle_table_;
     TransformTable* transform_table_;
     Stats stats_;
 
