@@ -89,6 +89,16 @@ void Mesh::SetNumIndex(uint16_t num_index)
     num_index_ = num_index;
 }
 
+void Mesh::SetVertexOffset(uint32_t offset)
+{
+    vertex_offset_ = offset;
+}
+
+uint32_t Mesh::GetVertexOffset()
+{
+    return vertex_offset_;
+}
+
 void Mesh::Update()
 {
     IndexBuffer* index_buffer = SharedResManager.GetIndexBuffer(index_id_);

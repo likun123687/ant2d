@@ -65,7 +65,7 @@ void MeshRender::Draw(Mesh* m, math::Mat4* mat4, int32_t depth)
     bk::SetUniformblock(umh_model_, (uint8_t*)(&vs_model));
 
     // set vertex
-    bk::SetVertexBuffer(0, m->GetVertexId());
+    bk::SetVertexBuffer(0, m->GetVertexId(), m->GetVertexOffset());
     bk::SetIndexBuffer(m->GetIndexId(), m->GetFirstIndex(), m->GetNumIndex());
     bk::Submit(0, pipeline_id_, depth);
 }

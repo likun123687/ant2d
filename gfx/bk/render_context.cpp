@@ -9,7 +9,7 @@ RenderContext::RenderContext(ResManager* res_manager, UniformblockBuffer* unifor
     : res_manager_(res_manager)
     , uniformblock_buffer_(uniformblock_buffer)
     , w_rect_ {}
-    , pixel_ratio_ {0.0f}
+    , pixel_ratio_ { 0.0f }
     , clips_ {}
     , bk_state_ {}
 {
@@ -105,9 +105,14 @@ void RenderContext::UpdateBufferBind(RenderDraw& draw, RenderDraw& current_state
 
     for (int stage = 0; stage < 2; stage++) {
         auto vb = draw.vertex_buffers_[stage];
-        if (vb != kInvalidId && vb != current_state.vertex_buffers_[stage]) {
-            bk_state_.bind.vertex_buffers[stage] = res_manager_->GetVertexBuffer(vb, true)->GetId();
-            current_state.vertex_buffers_[stage] = vb;
+        if (vb.vertex_id != kInvalidId && vb.vertex_id != current_state.vertex_buffers_[stage].vertex_id) {
+            bk_state_.bind.vertex_buffers[stage] = res_manager_->GetVertexBuffer(vb.vertex_id, true)->GetId();
+            current_state.vertex_buffers_[stage].vertex_id = vb.vertex_id;
+        }
+
+        if (vb.offset != current_state.vertex_buffers_[stage].offset) {
+            bk_state_.bind.vertex_buffer_offsets[stage] = vb.offset;
+            current_state.vertex_buffers_[stage].offset = vb.offset;
         }
     }
 }

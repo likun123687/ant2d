@@ -3,19 +3,19 @@
 namespace ant2d {
 void ExplosionSimulator::NewParticle(int new_particle)
 {
-    if (life_controller_.live_ + new_particle > pool_.GetCap()) {
+    if (life_controller_->live_ + new_particle > pool_.GetCap()) {
         return;
     }
 
-    auto start = life_controller_.live_;
-    life_controller_.live_ += new_particle;
+    auto start = life_controller_->live_;
+    life_controller_->live_ += new_particle;
 
-    for (int i = start; i < life_controller_.live_; i++) {
-        life_controller_.life_[i] = config_.life.Random();
-        visual_controller_.particle_size_[i] = config_.size.Random();
+    for (int i = start; i < life_controller_->live_; i++) {
+        life_controller_->life_[i] = config_.life.Random();
+        visual_controller_->particle_size_[i] = config_.size.Random();
         auto start_color = config_.color.Random();
-        visual_controller_.color_[i] = start_color;
-        auto inv_life = float(1.0 / life_controller_.life_[i]);
+        visual_controller_->color_[i] = start_color;
+        auto inv_life = float(1.0 / life_controller_->life_[i]);
 
         delta_color_[i] = math::Vec4 {
             -start_color[0] * inv_life,
@@ -27,12 +27,12 @@ void ExplosionSimulator::NewParticle(int new_particle)
         auto px = config_.position[0].Random();
         auto py = config_.position[1].Random();
 
-        visual_controller_.position_[i] = math::Vec2 { px, py };
+        visual_controller_->position_[i] = math::Vec2 { px, py };
 
         auto a = config_.angle.Random();
         auto s = config_.speed.Random();
         velocity_[i] = math::Vec2 { math::Cos(a) * s, math::Sin(a) * s };
-        visual_controller_.rotation_[i] = a;
+        visual_controller_->rotation_[i] = a;
     }
 }
 
@@ -58,49 +58,49 @@ ExplosionSimulator::ExplosionSimulator(int cap)
 void ExplosionSimulator::Initialize()
 {
     pool_.Initialize();
-    life_controller_.life_ = std::get<1>(pool_.GetField(LIFE_CONST));
+    life_controller_->life_ = std::get<1>(pool_.GetField(LIFE_CONST));
 
-    visual_controller_.particle_size_ = std::get<1>(pool_.GetField(SIZE_CONST));
-    visual_controller_.position_ = std::get<2>(pool_.GetField(POSITION_CONST));
-    visual_controller_.color_ = std::get<3>(pool_.GetField(COLOR_CONST));
-    visual_controller_.rotation_ = std::get<1>(pool_.GetField(ROTATION_CONST));
+    visual_controller_->particle_size_ = std::get<1>(pool_.GetField(SIZE_CONST));
+    visual_controller_->position_ = std::get<2>(pool_.GetField(POSITION_CONST));
+    visual_controller_->color_ = std::get<3>(pool_.GetField(COLOR_CONST));
+    visual_controller_->rotation_ = std::get<1>(pool_.GetField(ROTATION_CONST));
 
     delta_color_ = std::get<3>(pool_.GetField(COLORDELTA_CONST));
 
-    rate_controller_.Initialize(config_.duration, config_.rate);
+    rate_controller_->Initialize(config_.duration, config_.rate);
 }
 
 void ExplosionSimulator::Simulate(float dt)
 {
     // spawn new particle
-    auto new_particle = rate_controller_.Rate(dt);
+    auto new_particle = rate_controller_->Rate(dt);
     if (new_particle > 0) {
         NewParticle(new_particle);
     }
 
-    int32_t n = life_controller_.live_;
+    int32_t n = life_controller_->live_;
 
     // update old particle
-    life_controller_.life_.Sub(n, dt);
+    life_controller_->life_.Sub(n, dt);
 
     // position integrate: p' = p + v * t
-    visual_controller_.position_.Integrate(n, velocity_, dt);
+    visual_controller_->position_.Integrate(n, velocity_, dt);
 
     // color
-    visual_controller_.color_.Integrate(n, delta_color_, dt);
+    visual_controller_->color_.Integrate(n, delta_color_, dt);
 
     // Gc
-    life_controller_.GC(&pool_);
+    life_controller_->GC(&pool_);
 }
 
 std::tuple<int, int> ExplosionSimulator::Size()
 {
-    return std::make_tuple(int(life_controller_.live_), pool_.GetCap());
+    return std::make_tuple(int(life_controller_->live_), pool_.GetCap());
 }
 
-void ExplosionSimulator::Visualize(std::vector<PosTexColorVertex>& buf, ITexture2D* tex)
+void ExplosionSimulator::Visualize(PosTexColorVertex* buf, ITexture2D* tex)
 {
-    visual_controller_.Visualize(buf, tex, life_controller_.live_, config_.additive);
+    visual_controller_->Visualize(buf, tex, life_controller_->live_, config_.additive);
 }
 
 } // namespace ant2d

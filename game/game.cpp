@@ -141,14 +141,14 @@ void Game::Create(float w, float h, float ratio)
     auto srf = new SpriteRenderFeature {};
     srf->Register(render_system_.get());
 
-    auto mrf = new MeshRenderFeature{};
+    auto mrf = new MeshRenderFeature {};
     mrf->Register(render_system_.get());
 
     /// particle-simulation system
-	particle_system_->RequireTable(&db_->GetTableList());
-	// set feature
-	auto prf = new ParticleRenderFeature();
-	prf->Register(render_system_.get());
+    particle_system_->RequireTable(&db_->GetTableList());
+    // set feature
+    auto prf = new ParticleRenderFeature();
+    prf->Register(render_system_.get());
 
     /// setup scene manager
     scene_manager_->Setup(this);
@@ -207,10 +207,10 @@ void Game::Update()
 {
     auto dt = fps_->Smooth();
     scene_manager_->Update(dt);
+    particle_system_->Update(dt);
+
     // Render
     render_system_->Update(dt);
-
-    particle_system_->Update(dt);
 
     // flush drawCall
     int num = gfx::Flush();

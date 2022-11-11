@@ -47,13 +47,15 @@ void RenderQueue::SetIndexBuffer(uint16_t id, uint16_t first_index, uint16_t num
     draw_call_.num_ = num;
 }
 
-void RenderQueue::SetVertexBuffer(uint8_t stream, uint16_t id)
+void RenderQueue::SetVertexBuffer(uint8_t stream, uint16_t id, uint32_t offset)
 {
     if (stream < 0 || stream >= 2) {
         Error("vertex buffer stream can only between 0~2, not {}", stream);
         return;
     }
-    draw_call_.vertex_buffers_[stream] = ResManager::TripType(id);
+    auto& item = draw_call_.vertex_buffers_[stream];
+    item.vertex_id = ResManager::TripType(id);
+    item.offset = offset;
 }
 
 void RenderQueue::SetTexture(uint8_t stage, uint16_t tex_id)

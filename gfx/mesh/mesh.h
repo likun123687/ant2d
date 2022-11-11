@@ -22,6 +22,8 @@ private:
     uint16_t first_index_;
     uint16_t num_index_;
 
+    uint32_t vertex_offset_ = 0;
+
 public:
     void Setup();
 
@@ -41,6 +43,8 @@ public:
     void SetNumVertex(uint16_t num_vertex);
     void SetFirstIndex(uint16_t first_index);
     void SetNumIndex(uint16_t num_index);
+    void SetVertexOffset(uint32_t offset = 0);
+    uint32_t GetVertexOffset();
 
     void Update();
 

@@ -8,6 +8,8 @@
 #include <hid/config.h>
 #include <asset/texture_manager.h>
 #include <effect/sim_gravity.h>
+#include <effect/sim_fire.h>
+#include <effect/sim_snow.h>
 
 namespace ant2d {
 extern Game* SharedGame;

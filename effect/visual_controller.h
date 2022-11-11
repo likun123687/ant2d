@@ -1,3 +1,4 @@
+#pragma once
 #include <effect/chan.h>
 #include <math/common_func.h>
 
@@ -18,7 +19,7 @@ public:
 
 public:
     // Visualize write the Live particles to vertex-buffer.
-    void Visualize(std::vector<PosTexColorVertex>& buf, ITexture2D* tex, int live, bool additive);
+    void Visualize(PosTexColorVertex* buf, ITexture2D* tex, int live, bool additive);
 };
 
 } // namespace ant2d

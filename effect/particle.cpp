@@ -2,14 +2,14 @@
 
 namespace ant2d {
 
-void ParticleComp::SetSimulator(Simulator* sim)
+void ParticleComp::SetSimulator(ISimulator* sim)
 {
-    sim_ = sim;
+    sim_.reset(sim);
 }
 
-Simulator* ParticleComp::GetSimulator()
+ISimulator* ParticleComp::GetSimulator()
 {
-    return sim_;
+    return sim_.get();
 }
 
 void ParticleComp::SetTexture(ITexture2D* tex)
@@ -24,22 +24,28 @@ ITexture2D* ParticleComp::GetTexture()
 
 void ParticleComp::Play()
 {
-    if (rate_controller_) {
-        rate_controller_->Play();
+    auto controller = sim_->GetController();
+
+    if (controller) {
+        controller->Play();
     }
 }
 
 void ParticleComp::Stop()
 {
-    if (rate_controller_) {
-        rate_controller_->Stop();
+    auto controller = sim_->GetController();
+
+    if (controller) {
+        controller->Stop();
     }
 }
 
 void ParticleComp::Prewarm(float t)
 {
-    if (rate_controller_) {
-        rate_controller_->Prewarm(t);
+    auto controller = sim_->GetController();
+
+    if (controller) {
+        controller->Prewarm(t);
     }
 }
 

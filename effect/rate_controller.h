@@ -1,6 +1,8 @@
 #pragma once
+#include <effect/common.h>
+
 namespace ant2d {
-class RateController {
+class RateController : public IController {
 
 public:
     // Initialize init RateController with duration and emitter-rate.
@@ -17,14 +19,14 @@ public:
     float WarmTime();
 
 private:
-    float warmup_time_;
+    float warmup_time_ = 0.0f;
     // control emitter-rate
-    float acc_time_;
-    float thresh_time_;
+    float acc_time_ = 0.0f;
+    float thresh_time_ = 0.0f;
 
     // lifetime
-    float life_time_;
-    float duration_;
-    bool stop_;
+    float life_time_ = 0.0f;
+    float duration_ = 0.0f;
+    bool stop_ = false;
 };
 } // namespace ant2d

@@ -44,7 +44,7 @@ public:
     void Reset(uint16_t w, uint16_t h, float pr);
     // void SetState(uint64_t state, uint32_t rgba);
     void SetIndexBuffer(uint16_t id, uint16_t first_index, uint16_t num);
-    void SetVertexBuffer(uint8_t stream, uint16_t id);
+    void SetVertexBuffer(uint8_t stream, uint16_t id, uint32_t offset = 0);
     void SetTexture(uint8_t stage, uint16_t tex_id);
     void SetUniformblock(uint16_t id, uint8_t* ptr);
     void SetStencil(uint32_t stencil);

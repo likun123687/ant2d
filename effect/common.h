@@ -154,8 +154,19 @@ public:
     }
 };
 
+// ParticleSystem lifecycle controller.
+class IController {
+public:
+    virtual void Stop() = 0;
+    virtual void Play() = 0;
+    virtual void Prewarm(float t) = 0;
+    virtual float WarmTime() = 0;
+    virtual ~IController() = default;
+};
+
+
 // Simulator define how a particle-system works.
-class Simulator {
+class ISimulator {
 public:
     // Initialize the particle simulator.
     virtual void Initialize() = 0;
@@ -164,27 +175,15 @@ public:
     virtual void Simulate(float dt) = 0;
 
     // Write the result to vertex-buffer.
-    virtual void Visualize(std::vector<PosTexColorVertex>& buf, ITexture2D* tex) = 0;
+    virtual void Visualize(PosTexColorVertex *buf, ITexture2D* tex) = 0;
 
     // Return the ParticleSize of the simulator.
     virtual std::tuple<int, int> Size() = 0;
-    virtual ~Simulator() = default;
+
+    virtual IController* GetController() = 0;
+
+    virtual ~ISimulator() = default;
 };
 
-// ParticleSystem lifecycle controller.
-class Controller {
-public:
-    virtual void Stop() = 0;
-    virtual void Play() = 0;
-    virtual ~Controller() = default;
-};
-
-// Prewarm particle system
-class WarmupController {
-public:
-    virtual void Prewarm(float t) = 0;
-    virtual float WarmTime() = 0;
-    virtual ~WarmupController() = default;
-};
 
 }

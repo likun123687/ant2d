@@ -8,6 +8,7 @@ class LifeController {
 public:
     LifeController()
         : life_ { nullptr, 0 }
+        , live_ { 0 }
     {
     }
     Channel_f32 life_;

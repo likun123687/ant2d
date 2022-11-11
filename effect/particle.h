@@ -7,8 +7,8 @@ namespace ant2d {
 class ParticleComp : public IComp {
 private:
     bool is_init_;
-    Simulator* sim_;
-    RateController* rate_controller_;
+    std::unique_ptr<ISimulator> sim_;
+    // RateController* rate_controller_;
     uint16_t z_order_;
     uint16_t visible_;
 
@@ -16,9 +16,9 @@ private:
     math::Vec2 size_;
 
 public:
-    void SetSimulator(Simulator* sim);
+    void SetSimulator(ISimulator* sim);
 
-    Simulator* GetSimulator();
+    ISimulator* GetSimulator();
 
     void SetTexture(ITexture2D* tex);
 
@@ -60,12 +60,13 @@ public:
             sim_->Initialize();
         }
 
-        if (rate_controller_ && rate_controller_->WarmTime() > 0) {
-            Warmup(sim_, rate_controller_->WarmTime());
+        auto controller = sim_->GetController();
+        if (controller && controller->WarmTime() > 0) {
+            Warmup(sim_.get(), controller->WarmTime());
         }
     }
 
-    static void Warmup(Simulator* sim, float t)
+    static void Warmup(ISimulator* sim, float t)
     {
         for (float dt = 1.0 / 30; t > 0; t -= dt) {
             sim->Simulate(dt);

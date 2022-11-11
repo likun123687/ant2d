@@ -41,7 +41,6 @@ void ParticleRenderFeature::Extract(View* v)
 
 void ParticleRenderFeature::Draw(const std::vector<SortObject>& nodes)
 {
-    Info("particle render feature draw aa");
     int require_vertex_size = 0;
     int require_index_size = 0;
     for (auto& node : nodes) {
@@ -56,7 +55,6 @@ void ParticleRenderFeature::Draw(const std::vector<SortObject>& nodes)
     }
 
     buffer_context_.AllocBuffer(require_vertex_size, require_index_size);
-    Info("particle render feature draw bb");
     auto mesh = Mesh {};
     mesh.SetIndexId(buffer_context_.index_id_);
     mesh.SetVertexId(buffer_context_.vertex_id_);
@@ -77,9 +75,9 @@ void ParticleRenderFeature::Draw(const std::vector<SortObject>& nodes)
         auto vsz = live * 4;
         auto isz = live * 6;
 
-        std::vector<PosTexColorVertex> buff { std::begin(buffer_context_.vertex_) + offset, std::begin(buffer_context_.vertex_) + offset + vsz };
+        PosTexColorVertex* buff = &(*(std::begin(buffer_context_.vertex_) + offset));
         ps->GetSimulator()->Visualize(buff, ps->GetTexture());
-        mesh.SetFirstVertex(uint16_t(offset));
+        mesh.SetVertexOffset(offset * sizeof(PosTexColorVertex));
         offset += vsz;
         mesh.SetNumVertex(uint16_t(vsz));
         mesh.SetFirstIndex(0);
@@ -93,6 +91,8 @@ void ParticleRenderFeature::Draw(const std::vector<SortObject>& nodes)
 
         stats_.lives += live;
     }
+
+    buffer_context_.vb_->Update(reinterpret_cast<uint8_t*>(buffer_context_.vertex_.data()), require_vertex_size * sizeof(PosTexColorVertex), 0, false);
 }
 
 void ParticleRenderFeature::Flush()

@@ -1,8 +1,9 @@
 #include <effect/visual_controller.h>
+#include <utils/debug.h>
 
 namespace ant2d {
 // Visualize write the Live particles to vertex-buffer.
-void VisualController::Visualize(std::vector<PosTexColorVertex>& buf, ITexture2D* tex, int live, bool additive)
+void VisualController::Visualize(PosTexColorVertex* buf, ITexture2D* tex, int live, bool additive)
 {
     auto pos = position_;
     auto rots = rotation_;

@@ -148,7 +148,7 @@ TEST_CASE("test_drawcall")
 
     REQUIRE(draw_call.num_ == 6);
     REQUIRE(draw_call.index_buffer_ == ResManager::TripType(index_id));
-    REQUIRE(draw_call.vertex_buffers_[0] == ResManager::TripType(vertex_id));
+    REQUIRE(draw_call.vertex_buffers_[0].vertex_id == ResManager::TripType(vertex_id));
     bk::Submit(0, pipeline_id, 0);
 
     auto& sort_keys = SharedRenderQueue.GetSortKeys();
@@ -156,7 +156,7 @@ TEST_CASE("test_drawcall")
     auto& draw_call_list = SharedRenderQueue.GetDrawCallList();
     REQUIRE(sort_values[0] == 0);
     REQUIRE(draw_call_list[0].num_ == 6);
-    REQUIRE(draw_call_list[0].vertex_buffers_[0] == ResManager::TripType(vertex_id));
+    REQUIRE(draw_call_list[0].vertex_buffers_[0].vertex_id == ResManager::TripType(vertex_id));
 
     bk::SetTexture(0, tex_id);
     bk::SetVertexBuffer(0, vertex_id);
@@ -165,7 +165,7 @@ TEST_CASE("test_drawcall")
 
     REQUIRE(sort_values[1] == 1);
     REQUIRE(draw_call_list[1].num_ == 12);
-    REQUIRE(draw_call_list[1].vertex_buffers_[0] == ResManager::TripType(vertex_id));
+    REQUIRE(draw_call_list[1].vertex_buffers_[0].vertex_id == ResManager::TripType(vertex_id));
 
     REQUIRE_CALL(sokol_gfx_api_mock, sg_begin_default_pass(_, _, _))
         .IN_SEQUENCE(seq);
@@ -345,7 +345,7 @@ TEST_CASE("test_multiple_drawcall_sort")
 
     REQUIRE(draw_call.num_ == 6);
     REQUIRE(draw_call.index_buffer_ == ResManager::TripType(res_list[0].index_id));
-    REQUIRE(draw_call.vertex_buffers_[0] == ResManager::TripType(res_list[0].vertex_id));
+    REQUIRE(draw_call.vertex_buffers_[0].vertex_id == ResManager::TripType(res_list[0].vertex_id));
     bk::Submit(0, res_list[0].pipeline_id, 10);
 
     auto& sort_keys = SharedRenderQueue.GetSortKeys();
@@ -353,7 +353,7 @@ TEST_CASE("test_multiple_drawcall_sort")
     auto& draw_call_list = SharedRenderQueue.GetDrawCallList();
     REQUIRE(sort_values[0] == 0);
     REQUIRE(draw_call_list[0].num_ == 6);
-    REQUIRE(draw_call_list[0].vertex_buffers_[0] == ResManager::TripType(res_list[0].vertex_id));
+    REQUIRE(draw_call_list[0].vertex_buffers_[0].vertex_id == ResManager::TripType(res_list[0].vertex_id));
 
     ///////////////////////////////////////////////////////
     // 第二个drawcall
@@ -364,7 +364,7 @@ TEST_CASE("test_multiple_drawcall_sort")
 
     REQUIRE(sort_values[1] == 1);
     REQUIRE(draw_call_list[1].num_ == 12);
-    REQUIRE(draw_call_list[1].vertex_buffers_[0] == ResManager::TripType(res_list[1].vertex_id));
+    REQUIRE(draw_call_list[1].vertex_buffers_[0].vertex_id == ResManager::TripType(res_list[1].vertex_id));
 
     REQUIRE_CALL(sokol_gfx_api_mock, sg_begin_default_pass(_, _, _))
         .IN_SEQUENCE(seq);

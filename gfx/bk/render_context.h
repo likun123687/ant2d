@@ -47,12 +47,17 @@ public:
     }
 };
 
+struct VertexItemInfo {
+    uint16_t vertex_id = kInvalidId;
+    uint32_t offset = 0;
+};
+
 class RenderDraw {
 public:
     RenderDraw()
-        : index_buffer_{kInvalidId}
-        , vertex_buffers_{kInvalidId, kInvalidId}
-        , textures_{kInvalidId, kInvalidId}
+        : index_buffer_ { kInvalidId }
+        , vertex_buffers_ { kInvalidId, kInvalidId }
+        , textures_ { kInvalidId, kInvalidId }
         , first_index_(0)
         , num_(0)
         , uniformblock_begin_(0)
@@ -68,7 +73,7 @@ public:
         scissor_ = 0;
     }
     uint16_t index_buffer_;
-    std::array<uint16_t, 2> vertex_buffers_;
+    std::array<VertexItemInfo, 2> vertex_buffers_;
     std::array<uint16_t, 2> textures_;
 
     uint16_t first_index_;

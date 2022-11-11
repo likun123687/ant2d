@@ -25,9 +25,9 @@ namespace bk {
         SharedRenderQueue.SetIndexBuffer(id, first_index, num);
     }
 
-    void SetVertexBuffer(uint8_t stream, uint16_t id)
+    void SetVertexBuffer(uint8_t stream, uint16_t id, uint32_t offset = 0)
     {
-        SharedRenderQueue.SetVertexBuffer(stream, id);
+        SharedRenderQueue.SetVertexBuffer(stream, id, offset);
     }
 
     // SetSprite sets texture stages for drawCall primitive.
