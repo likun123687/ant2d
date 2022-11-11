@@ -8,6 +8,7 @@ set_warnings("all")
 --set_warnings("all", "error")
 
 add_requires("stb")
+add_requires("freetype 2.12.1")
 
 add_rules("mode.release", "mode.debug")
 add_includedirs("$(projectdir)")
