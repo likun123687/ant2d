@@ -131,5 +131,78 @@ namespace math {
     {
         return Vec2 { Cos(a), Sin(a) };
     }
+
+    inline uint32_t U32Clamp(uint32_t v, uint32_t low, uint32_t high)
+    {
+        if (v < low) {
+            return low;
+        }
+        if (v > high) {
+            return high;
+        }
+        return v;
+    }
+
+    uint32_t U32Min(uint32_t a, uint32_t b)
+    {
+        if (a < b) {
+            return a;
+        }
+        return b;
+    }
+
+    uint32_t U32Max(uint32_t a, uint32_t b)
+    {
+        if (a < b) {
+            return b;
+        }
+        return a;
+    }
+
+    uint16_t U16Clamp(uint16_t v, uint16_t low, uint16_t high)
+    {
+        if (v < low) {
+            return low;
+        }
+        if (v > high) {
+            return high;
+        }
+        return v;
+    }
+
+    uint16_t U16Min(uint16_t a, uint16_t b)
+    {
+        if (a < b) {
+            return a;
+        }
+        return b;
+    }
+
+    uint16_t U16Max(uint16_t a, uint16_t b)
+    {
+        if (a < b) {
+            return b;
+        }
+        return a;
+    }
+
+    // Pow2 returns the first power-of-two value >= to n.
+    // This can be used to create suitable Texture dimensions.
+    uint32_t Pow2(uint32_t x)
+    {
+        x--;
+        x |= x >> 1;
+        x |= x >> 2;
+        x |= x >> 4;
+        x |= x >> 8;
+        x |= x >> 16;
+        return x + 1;
+    }
+
+    // IsPow2 returns true if the given value if a power-of-two.
+    bool IsPow2(uint32_t x)
+    {
+        return (x & (x - 1)) == 0;
+    }
 }
 }

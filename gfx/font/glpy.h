@@ -23,8 +23,8 @@ struct Glyph {
     float width;
     float height;
 
-    float x_offset;
-    float y_offset;
+    float xoffset;
+    float yoffset;
 
     int advance;
 };

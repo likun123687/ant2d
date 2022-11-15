@@ -1,5 +1,6 @@
 #include <asset/image_data.h>
 #include <utils/debug.h>
+#include <utils/content.h>
 
 using namespace ant2d;
 
@@ -21,7 +22,29 @@ ImageData::ImageData(const uint8_t* data, size_t size)
     size_ = size;
 }
 
-// ImageData::ImageData(ImageData&& other) :width(other.width), height(other.height),
-//                                         size(other.size), pixels(std::move(other.pixels))
-//                                         num_channels(other.num_channels)
-// }
+ImageData::ImageData(ImageData&& other)
+    : width_(other.width_)
+    , height_(other.height_)
+    , size_(other.size_)
+    , pixels_(std::move(other.pixels_))
+    , num_channels_(other.num_channels_)
+{
+}
+
+ImageData::ImageData(int width, int height, size_t size, StbPixelsPtr pixels, int num_channels)
+    : width_(width)
+    , height_(height)
+    , size_(size)
+    , pixels_(std::move(pixels))
+    , num_channels_(num_channels)
+{
+}
+
+ImageData::ImageData(const std::string& filename)
+    : pixels_ { nullptr, stbi_image_free }
+{
+    auto full_path = SharedContent.GetFullPath(filename);
+    uint8_t* data = stbi_load(full_path.c_str(), &width_, &height_, &num_channels_, 4);
+    assert(data);
+    pixels_.reset(data);
+}
