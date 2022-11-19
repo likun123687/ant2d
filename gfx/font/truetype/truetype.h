@@ -1,3 +1,4 @@
+#pragma once
 #include <gfx/font/font.h>
 #include <gfx/font/truetype/config.h>
 #include <unordered_map>
