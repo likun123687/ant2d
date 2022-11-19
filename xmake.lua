@@ -76,9 +76,11 @@ add_includedirs("$(projectdir)/third_party/ZipIterator", {public = true})
 
 target("ant2d_common")
     set_kind("static")
-    add_packages("stb") 
+    add_packages("stb")
+    add_packages("freetype")
     add_files("asset/*.glsl") --最好加在比较前面
     add_files("utils/content.cpp")
+    add_files("utils/freeType/FtLibrary.cpp")
     add_files("gfx/bk/buffer.cpp")
     add_files("gfx/bk/texture.cpp")
     add_files("asset/image_data.cpp")
@@ -117,6 +119,7 @@ target("ant2d_common")
     add_files("gfx/mesh/mesh_render_feature.cpp")
     add_files("gfx/mesh/mesh_render.cpp")
     add_files("effect/*.cpp")
+    add_files("gfx/font/**.cpp")
 
     if is_plat("windows") then
         add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})

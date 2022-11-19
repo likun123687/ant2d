@@ -1,9 +1,7 @@
 #pragma once
 
 #include <cstdint>
-namespace ant2d {
-using Rune = int32_t;
-
+namespace font {
 struct Point {
     float x;
     float y;
@@ -16,7 +14,7 @@ struct Point {
 // Advance determines the distance to the next glyph.
 // This is used to properly align non-monospaced fonts.
 struct Glyph {
-    Rune rune;
+    uint32_t rune;
 
     float x;
     float y;
@@ -27,5 +25,9 @@ struct Glyph {
     float yoffset;
 
     int advance;
+    bool IsEmpty() const
+    {
+        return (width == 0.0) || (height == 0.0);
+    }
 };
-} // namespace ant2d
+} // namespace font

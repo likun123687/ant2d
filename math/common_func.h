@@ -143,7 +143,7 @@ namespace math {
         return v;
     }
 
-    uint32_t U32Min(uint32_t a, uint32_t b)
+    inline uint32_t U32Min(uint32_t a, uint32_t b)
     {
         if (a < b) {
             return a;
@@ -151,7 +151,7 @@ namespace math {
         return b;
     }
 
-    uint32_t U32Max(uint32_t a, uint32_t b)
+    inline uint32_t U32Max(uint32_t a, uint32_t b)
     {
         if (a < b) {
             return b;
@@ -159,7 +159,7 @@ namespace math {
         return a;
     }
 
-    uint16_t U16Clamp(uint16_t v, uint16_t low, uint16_t high)
+    inline uint16_t U16Clamp(uint16_t v, uint16_t low, uint16_t high)
     {
         if (v < low) {
             return low;
@@ -170,7 +170,7 @@ namespace math {
         return v;
     }
 
-    uint16_t U16Min(uint16_t a, uint16_t b)
+    inline uint16_t U16Min(uint16_t a, uint16_t b)
     {
         if (a < b) {
             return a;
@@ -178,7 +178,7 @@ namespace math {
         return b;
     }
 
-    uint16_t U16Max(uint16_t a, uint16_t b)
+    inline uint16_t U16Max(uint16_t a, uint16_t b)
     {
         if (a < b) {
             return b;
@@ -188,7 +188,7 @@ namespace math {
 
     // Pow2 returns the first power-of-two value >= to n.
     // This can be used to create suitable Texture dimensions.
-    uint32_t Pow2(uint32_t x)
+    inline uint32_t Pow2(uint32_t x)
     {
         x--;
         x |= x >> 1;
@@ -200,7 +200,7 @@ namespace math {
     }
 
     // IsPow2 returns true if the given value if a power-of-two.
-    bool IsPow2(uint32_t x)
+    inline bool IsPow2(uint32_t x)
     {
         return (x & (x - 1)) == 0;
     }
