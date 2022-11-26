@@ -46,13 +46,13 @@ FireSimulator::FireSimulator(int cap)
     // config
     config_.duration = math::MaxFloat32;
     config_.rate = float(cap) / 3;
-    config_.life = Var { 3, 0.25 };
-    config_.color = math::Vec4 { .76, .25, .12, 1 };
+    config_.life = Var { 3, 0.25f };
+    config_.color = math::Vec4 { .76f, .25f, .12f, 1 };
     config_.size = Var { 34, 10 };
     config_.position[0] = Var { 0, 20 };
     config_.position[1] = Var { 0, 20 };
 
-    config_.angle = Var { 3.14 / 2, 0.314 };
+    config_.angle = Var { 3.14f / 2, 0.314f };
     config_.speed = Var { 60, 20 };
     config_.additive = true;
 }

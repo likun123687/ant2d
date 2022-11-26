@@ -10,6 +10,7 @@
 #include <gfx/mesh/mesh_table.h>
 #include <gfx/mesh/mesh_render_feature.h>
 #include <effect/particle_render_feature.h>
+#include <gfx/dbg/debug.h>
 
 namespace ant2d {
 
@@ -156,6 +157,7 @@ void Game::Create(float w, float h, float ratio)
 
 void Game::Destroy()
 {
+    SharedDebug.Destroy();
     scene_manager_->Clear();
     render_system_->Destroy();
 }
@@ -212,8 +214,19 @@ void Game::Update()
     // Render
     render_system_->Update(dt);
 
+    DrawProfile();
+
     // flush drawCall
     int num = gfx::Flush();
+
+    // drawCall = all-drawCall - camera-drawCall
+    auto draw_call = num - render_system_->GetRenderList().size();
+    SharedDebug.LogFPS(fps_->GetFPS(), draw_call);
+}
+
+void Game::DrawProfile()
+{
+    SharedDebug.AdvanceFrame();
 }
 
 }

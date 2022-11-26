@@ -25,6 +25,12 @@ BatchRender::BatchRender(ShaderType shader_type)
     pdesc.layout.attrs[0].format = SG_VERTEXFORMAT_FLOAT4;
     pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_FLOAT4;
     pdesc.index_type = SG_INDEXTYPE_UINT16;
+    pdesc.colors->blend.enabled = true;
+    pdesc.colors->blend.src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA;
+    pdesc.colors->blend.dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
+
+    pdesc.colors->blend.src_factor_alpha = SG_BLENDFACTOR_SRC_ALPHA;
+    pdesc.colors->blend.dst_factor_alpha = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
 
     // make pipeline
     uint16_t pipeline_id = 0;
@@ -71,7 +77,6 @@ void BatchRender::Submit(std::vector<Batch> b_list)
         // set vertex
         bk::SetVertexBuffer(0, b.vertex_id);
         bk::SetIndexBuffer(b.index_id, uint32_t(b.first_index), uint32_t(b.num_index));
-        Info("batch submit {}--{}--{}", b.texture_id, b.vertex_id, b.index_id);
 
         // submit draw-call
         bk::Submit(0, pipeline_id_, int32_t(b.depth));
@@ -161,7 +166,7 @@ void BatchContext::End()
     batch.vertex_id = kInvalidId;
     batch.first_vertex = 0; // uint16(bc.firstVertex)
     batch.num_vertex = uint16_t(vertex_pos_ - first_vertex_);
-    batch.first_index = uint16_t(first_vertex_ / 4 * 6); //4个顶点，需要draw两个三角形,即6个index
+    batch.first_index = uint16_t(first_vertex_ / 4 * 6); // 4个顶点，需要draw两个三角形,即6个index
     batch.num_index = uint16_t(batch.num_vertex / 4 * 6);
     batch_used_ += 1;
 }

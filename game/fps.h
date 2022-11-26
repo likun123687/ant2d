@@ -13,6 +13,7 @@ public:
     float Smooth();
     void Pause();
     void Resume();
+    float GetFPS();
 
 private:
     std::chrono::system_clock::time_point start_time_;

@@ -26,12 +26,18 @@ class MainScene : public ant2d::Scene {
         auto entity1 = ant2d::SharedEntityManager->New();
         ant2d::SharedSpriteTable->NewCompX(entity1, tex)->SetSize(80, 80);
         auto xf1 = ant2d::SharedTransformTable->NewComp(entity1);
-        xf1->SetPosition(ant2d::math::Vec2 { 50, 50 });
+        xf1->SetPosition(ant2d::math::Vec2 { 200, 200 });
 
         auto entity2 = ant2d::SharedEntityManager->New();
         ant2d::SharedSpriteTable->NewCompX(entity2, tex)->SetSize(80, 80);
         auto xf2 = ant2d::SharedTransformTable->NewComp(entity2);
-        xf2->SetPosition(ant2d::math::Vec2 { 60, 60 });
+        xf2->SetPosition(ant2d::math::Vec2 { 100, 100 });
+
+        auto entity_font = ant2d::SharedEntityManager->New();
+        auto tex_font = ant2d::SharedTextureManager->Get("assets/debug_font.png");
+        ant2d::SharedSpriteTable->NewCompX(entity_font, tex_font)->SetSize(999, 54);
+        auto xf_font = ant2d::SharedTransformTable->NewComp(entity_font);
+        xf_font->SetPosition(ant2d::math::Vec2 { 600, 400 });
 
         auto tex1 = ant2d::SharedTextureManager->Get("assets/face1.png");
         Info("tex1 {}", static_cast<void*>(tex1));
@@ -74,6 +80,7 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
         ant2d::SharedTextureManager->Load("assets/face.png");
         ant2d::SharedTextureManager->Load("assets/face1.png");
         ant2d::SharedTextureManager->Load("assets/1111.png");
+        ant2d::SharedTextureManager->Load("assets/debug_font.png");
 
         ant2d::SharedTextureManager->LoadAtlas("assets/test.png", "assets/test.json");
 

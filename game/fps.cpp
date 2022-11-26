@@ -59,4 +59,10 @@ void FPS::Resume()
 {
     pause_ = false;
 }
+
+float FPS::GetFPS()
+{
+    return fps_;
+}
+
 }

@@ -87,7 +87,7 @@ std::unique_ptr<Scene> SceneManager::Peek()
 
 void SceneManager::Clear()
 {
-    for (int i = stack_.size() - 1; i >= 0; i--) {
+    for (size_t i = stack_.size() - 1; i >= 0; i--) {
         stack_[i]->OnExit();
     }
 }

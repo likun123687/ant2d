@@ -1,26 +1,39 @@
 #pragma once
 #include <gfx/render_data.h>
 #include <gfx/bk/res_manager.h>
-#include <gfx/mesh/mesh.h>
+#include <gfx/dbg/text_shape_buffer.h>
+#include <math/project.h>
+#include <gfx/bk/bk.h>
 
 namespace ant2d {
-class MeshRender  {
+class DebugRender {
 private:
+    struct View {
+        float x;
+        float y;
+        float w;
+        float h;
+    };
     uint32_t rgba_;
-    struct {
-        float x,
-        float y,
-        float w,
-        float h
-    } view_;
+
+    View view_;
+    ShaderType shader_type_;
     uint16_t pipeline_id_;
 
     // uniform handle
     uint16_t umh_projection_; // Projection
-    uint16_t umh_model_; // model
-public:
-    MeshRender(ShaderType shader_type);
+    TextShapeBuffer buffer_;
 
+public:
+    DebugRender(ShaderType shader_type);
+    void Destroy();
+    void SetViewPort(float x, float y, float w, float h);
+
+    void Draw();
+
+    View& GetView();
+
+    TextShapeBuffer& GetBuffer();
 };
 
 } // namespace ant2d

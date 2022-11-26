@@ -20,7 +20,7 @@ class MainScene : public ant2d::Scene {
         cfg.max = 1024;
         cfg.rate = 10;
         cfg.duration = ant2d::math::MaxFloat32;
-        cfg.life = ant2d::Var { 40.1, 0.4 };
+        cfg.life = ant2d::Var { 40.1f, 0.4f };
         cfg.size = ant2d::Range { ant2d::Var { 10, 5 }, ant2d::Var { 20, 5 } };
         cfg.x = ant2d::Var { 0, 0 };
         cfg.y = ant2d::Var { 0, 0 };

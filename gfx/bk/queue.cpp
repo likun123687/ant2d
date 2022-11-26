@@ -197,5 +197,5 @@ int RenderQueue::Flush()
     uniformblock_end_ = 0;
     uniformblock_buffer_->Reset();
     ctx_->Reset();
-    return 0;
+    return num;
 }

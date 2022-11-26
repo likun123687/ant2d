@@ -2,6 +2,7 @@
 #include <gfx/render_system.h>
 #include <gfx/transform/transform_table.h>
 #include <utils/debug.h>
+#include <gfx/dbg/debug.h>
 
 namespace ant2d {
 
@@ -55,6 +56,11 @@ void RenderSystem::Update(float dt)
     // main camera
     for (auto& r : render_list_) {
         r->SetCamera(main_camera_.get());
+    }
+
+    if (dbg::DEBUG != dbg::None) {
+        auto [x, y, w, h] = main_camera_->GetView();
+        SharedDebug.SetCamera(x, y, w, h);
     }
 
     // extract

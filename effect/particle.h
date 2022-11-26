@@ -68,7 +68,7 @@ public:
 
     static void Warmup(ISimulator* sim, float t)
     {
-        for (float dt = 1.0 / 30; t > 0; t -= dt) {
+        for (float dt = 1.0f / 30; t > 0; t -= dt) {
             sim->Simulate(dt);
         }
     }

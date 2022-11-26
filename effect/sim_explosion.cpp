@@ -46,12 +46,12 @@ ExplosionSimulator::ExplosionSimulator(int cap)
     pool_.AddChan({COLORDELTA_CONST});
 
     // config
-    config_.duration = 0.1;
+    config_.duration = 0.1f;
     config_.rate = float(cap) / config_.duration;
     config_.life = Var { 3, 1 };
-    config_.color = TwoColor { math::Vec4 { 1, 1, 0, 1 }, math::Vec4 { .973, .349, 0, 1 }, true };
+    config_.color = TwoColor { math::Vec4 { 1, 1, 0, 1 }, math::Vec4 { .973f, .349f, 0, 1 }, true };
     config_.size = Var { 15, 10 };
-    config_.angle = Var { 0, 6.28 };
+    config_.angle = Var { 0, 6.28f };
     config_.speed = Var { 100, 40 };
 }
 

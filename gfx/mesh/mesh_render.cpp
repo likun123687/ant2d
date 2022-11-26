@@ -20,6 +20,12 @@ MeshRender::MeshRender(ShaderType shader_type)
     pdesc.layout.attrs[0].format = SG_VERTEXFORMAT_FLOAT4;
     pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_FLOAT4;
     pdesc.index_type = SG_INDEXTYPE_UINT16;
+    pdesc.colors->blend.enabled = true;
+    pdesc.colors->blend.src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA;
+    pdesc.colors->blend.dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
+
+    pdesc.colors->blend.src_factor_alpha = SG_BLENDFACTOR_SRC_ALPHA;
+    pdesc.colors->blend.dst_factor_alpha = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
 
     // make pipeline
     uint16_t pipeline_id = 0;

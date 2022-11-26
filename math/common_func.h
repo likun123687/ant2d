@@ -15,7 +15,7 @@ namespace math {
         auto i = *(int32_t*)(&x);
         i = int32_t(0x5f3759df) - int32_t(i >> 1);
         x = *(float*)(&i);
-        x = x * (1.5 - (xhalf * x * x));
+        x = x * (1.5f - (xhalf * x * x));
         return x;
     }
 
@@ -96,13 +96,13 @@ namespace math {
     // Radian converts degree to radian.
     inline float Radian(float d)
     {
-        return d * PI / 180;
+        return static_cast<float>(d * PI / 180);
     }
 
     // Degree converts radian to degree.
     inline float Degree(float r)
     {
-        return r * 180 / PI;
+        return static_cast<float>(r * 180 / PI);
     }
 
     inline float AngleTo(Vec2 v1, Vec2 v2)

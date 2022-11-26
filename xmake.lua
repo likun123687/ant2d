@@ -120,6 +120,7 @@ target("ant2d_common")
     add_files("gfx/mesh/mesh_render.cpp")
     add_files("effect/*.cpp")
     add_files("gfx/font/**.cpp")
+    add_files("gfx/dbg/*.cpp")
 
     if is_plat("windows") then
         add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})

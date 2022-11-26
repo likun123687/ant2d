@@ -5,9 +5,9 @@ void RateController::Initialize(float du, float rate)
 {
     duration_ = du;
     if (rate == 0) {
-        thresh_time_ = 1.0 / 60;
+        thresh_time_ = 1.0f / 60;
     } else {
-        thresh_time_ = 1.0 / rate;
+        thresh_time_ = 1.0f / rate;
     }
 }
 

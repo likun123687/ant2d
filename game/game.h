@@ -84,6 +84,7 @@ public:
     void Init();
     void LoadTables();
     void Update();
+    void DrawProfile();
     DB* GetDB()
     {
         return db_.get();
