@@ -66,11 +66,10 @@ void Channel_f32::Integrate(int32_t n, Channel_f32 ch1, float dt)
     }
 }
 
-Channel_v2::Channel_v2(math::Vec2 *data, int32_t size)
+Channel_v2::Channel_v2(math::Vec2* data, int32_t size)
     : data_ { data }
     , size_ { size }
 {
-
 }
 
 const math::Vec2& Channel_v2::operator[](int i) const
@@ -147,11 +146,10 @@ void Channel_v2::tangentIntegrate(int32_t n, Channel_v2 xy, Channel_f32 m, float
     }
 }
 
-Channel_v4::Channel_v4(math::Vec4 *data, int32_t size)
+Channel_v4::Channel_v4(math::Vec4* data, int32_t size)
     : data_ { data }
     , size_ { size }
 {
-
 }
 
 const math::Vec4& Channel_v4::operator[](int i) const

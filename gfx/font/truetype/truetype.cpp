@@ -5,6 +5,7 @@
 #include <iostream>
 #include <set>
 
+namespace ant2d {
 namespace font {
 namespace truetype {
     static std::vector<rbp::RectSize> GetGlyphRectangles(const Glyphs& glyphs, const std::uint32_t additionalWidth, const std::uint32_t additionalHeight, const Config& config)
@@ -204,5 +205,6 @@ namespace truetype {
         return std::move(f);
     }
 
+}
 }
 }

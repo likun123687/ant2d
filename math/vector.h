@@ -42,6 +42,7 @@ namespace math {
         Vec4(float item1, float item2, float item3, float item4);
         const float& operator[](int i) const;
         float& operator[](int i);
+        friend bool operator==(const Vec4& v1, const Vec4& v2);
     };
 } // namespace math
 } // namespace ant2d

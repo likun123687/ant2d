@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+namespace ant2d {
 namespace font {
 namespace truetype {
 
@@ -112,4 +113,5 @@ namespace truetype {
 
 } // namespace truetype
 
+}
 }

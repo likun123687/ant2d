@@ -121,6 +121,10 @@ target("ant2d_common")
     add_files("effect/*.cpp")
     add_files("gfx/font/**.cpp")
     add_files("gfx/dbg/*.cpp")
+    add_files("gui/drawing.cpp")
+    add_files("gui/font.cpp")
+    add_files("hid/input/button.cpp")
+    add_files("hid/input/input_system.cpp")
 
     if is_plat("windows") then
         add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})
