@@ -11,6 +11,10 @@
 #include <gfx/mesh/mesh_render_feature.h>
 #include <effect/particle_render_feature.h>
 #include <gfx/dbg/debug.h>
+#include <gfx/text/text_table.h>
+#include <gfx/text/text_render_feature.h>
+#include <gui/ui_render_feature.h>
+#include <gui/gui.h>
 
 namespace ant2d {
 
@@ -123,11 +127,13 @@ void Game::SetGameSize(float w, float h)
 {
     Info("game set size {}--{}", w, h);
     render_system_->GetMainCamera()->SetViewPort(w, h);
+    // gui real screen size
+	gui::SetScreenSize(w, h);
 }
 
 void Game::Create(float w, float h, float ratio)
 {
-    fps_->Init();
+    fps_->Init(); 
     gfx::Init(ratio);
 
     // render system
@@ -144,6 +150,12 @@ void Game::Create(float w, float h, float ratio)
 
     auto mrf = new MeshRenderFeature {};
     mrf->Register(render_system_.get());
+
+    auto textf = new TextRenderFeature{};
+    textf->Register(render_system_.get());
+
+    auto ui = new UIRenderFeature{};
+    ui->Register(render_system_.get());
 
     /// particle-simulation system
     particle_system_->RequireTable(&db_->GetTableList());
@@ -203,6 +215,10 @@ void Game::LoadTables()
     auto particle_system_table = new ParticleSystemTable();
     particle_system_table->SetTableType(TableType::kParticle);
     db_->AddTable(particle_system_table);
+
+    auto text_table = new TextTable();
+    text_table->SetTableType(TableType::kText);
+    db_->AddTable(text_table);
 }
 
 void Game::Update()

@@ -99,7 +99,7 @@ public:
         if (start_ != end_) {
             d = (end_.Random() - start) * inv_life;
         }
-        return std::make_tuple(start, d);
+        return {start, d};
     }
 
     Var& GetStart()
@@ -164,7 +164,6 @@ public:
     virtual ~IController() = default;
 };
 
-
 // Simulator define how a particle-system works.
 class ISimulator {
 public:
@@ -175,7 +174,7 @@ public:
     virtual void Simulate(float dt) = 0;
 
     // Write the result to vertex-buffer.
-    virtual void Visualize(PosTexColorVertex *buf, ITexture2D* tex) = 0;
+    virtual void Visualize(PosTexColorVertex* buf, ITexture2D* tex) = 0;
 
     // Return the ParticleSize of the simulator.
     virtual std::tuple<int, int> Size() = 0;
@@ -184,6 +183,5 @@ public:
 
     virtual ~ISimulator() = default;
 };
-
 
 }

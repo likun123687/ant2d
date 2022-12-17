@@ -677,7 +677,7 @@ void DrawList::AddCommand(int elem_count)
     auto index = cmd_index_;
 
     auto prev = cmd_buffer_[index - 1];
-    if (prev.clip_rect == clip && prev.texture_id == tex && prev.z_order_ == order) {
+    if (prev.clip_rect == clip && prev.texture_id == tex && prev.z_order == order) {
         elem_count += elem_count;
     } else {
         uint16_t fi = prev.first_index + prev.elem_count;

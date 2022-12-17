@@ -16,18 +16,17 @@ struct KeyBind {
     Button* btn;
 };
 
-enum class KeyPoint {
-    KeyPoint1,
-    KeyPoint2,
-    KeyPoint3,
-    KeyPoint4,
-    KeyPoint5,
-    KeyPoint6,
-    KeyPoint7,
-    KeyPoint8,
-    KeyPoint9,
-    KeyPointX,
-};
+using KeyPoint = int;
+static constexpr KeyPoint KeyPoint1 = 0;
+static constexpr KeyPoint KeyPoint2 = 1;
+static constexpr KeyPoint KeyPoint3 = 2;
+static constexpr KeyPoint KeyPoint4 = 3;
+static constexpr KeyPoint KeyPoint5 = 4;
+static constexpr KeyPoint KeyPoint6 = 5;
+static constexpr KeyPoint KeyPoint7 = 6;
+static constexpr KeyPoint KeyPoint8 = 7;
+static constexpr KeyPoint KeyPoint9 = 8;
+static constexpr KeyPoint KeyPointX = 9;
 
 // 记录一帧之内的按键，一帧时间做多支持同时按6个按键
 class SparseMap {

@@ -98,7 +98,7 @@ void ParticleRenderFeature::Draw(const std::vector<SortObject>& nodes)
 void ParticleRenderFeature::Flush()
 {
     // TODO add dgb
-    stats_.lives = 0;
+    stats_.lives = 0; 
 }
 
 }

@@ -2,6 +2,7 @@
 
 #include "stb_image.h"
 #include "stb_image_resize.h"
+#include "stb_image_write.h"
 #include <memory>
 #include <math/common_func.h>
 
@@ -10,14 +11,13 @@ class ImageData {
 public:
     using StbPixelsPtr = std::unique_ptr<stbi_uc, decltype(&stbi_image_free)>;
 
-    ImageData(const uint8_t* data, size_t size);
+    ImageData(const uint8_t* filedata, size_t size);
     ImageData(ImageData&& other);
     ImageData(int width, int height, size_t size, StbPixelsPtr pixels, int num_channels);
     ImageData(const std::string& filename);
     ImageData(int width, int height, int num_channels);
     int width_;
     int height_;
-    size_t size_;
     StbPixelsPtr pixels_;
     int num_channels_;
 

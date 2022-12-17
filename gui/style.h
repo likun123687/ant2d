@@ -29,13 +29,20 @@ struct ProgressBarStyle {
 struct SliderStyle {
     uint32_t bar;
     uint32_t knob;
-}
+};
 
 struct Padding {
     float left;
     float right;
     float top;
     float bottom;
+};
+
+struct InputStyle {
+    uint8_t visibility;
+    uint32_t color;
+    uint32_t hint_color;
+    float size;
 };
 
 struct ButtonStyle {
@@ -53,7 +60,7 @@ struct ButtonStyle {
 struct ImageButtonStyle {
     ImageStyle image_style;
     Padding padding;
-}
+};
 
 struct Theme {
     TextStyle text;
@@ -72,37 +79,40 @@ struct Theme {
     // default font
     font::FontAtlas* font;
 
-    static Theme& NewLightTheme()
+    static Theme& LightTheme()
     {
         static Theme theme;
-        theme.text.color = 0xFFFFFFFF;
-        theme.text.size = 12;
-        theme.text.line_space = 6;
+        static bool is_init = false;
+        if (!is_init) {
+            theme.text.color = 0xFFFFFFFF;
+            theme.text.size = 18;
+            theme.text.line_space = 6;
 
-        theme.button.text_style.color = 0x0;
-        theme.button.text_style.size = 12;
-        theme.button.gravity = math::Vec2 { 0.5, 0.5 };
-        theme.button.rounding = 5;
+            theme.button.text_style.color = 0xFFFFFFFF;
+            theme.button.text_style.size = 24;
+            theme.button.gravity = math::Vec2 { 0.5, 0.5 };
+            theme.button.rounding = 5;
 
-        theme.image.tint = 0x0;
-        theme.image_button.image_style.tint = 0x0;
-        auto& padding = theme.image_button.padding;
-        padding.left = 0;
-        padding.right = 0;
-        padding.bottom = 0;
-        padding.top = 0;
+            theme.image.tint = 0xFFFFFFFF;
+            theme.image_button.image_style.tint = 0xFFFFFFFF;
+            auto& padding = theme.image_button.padding;
+            padding.left = 0;
+            padding.right = 0;
+            padding.bottom = 0;
+            padding.top = 0;
 
-        theme.slider.bar = 0x0;
-        theme.slider.knob = 0x0;
+            theme.slider.bar = 0xFFFFFFFF;
+            theme.slider.knob = 0xFFFFFFFF;
 
-        theme.normal = 0x0;
-        theme.pressed = 0x0;
-        theme.spacing = 4;
+            theme.normal = 0xFFFFFFFF;
+            theme.pressed = 0xFFFFFFFF;
+            theme.spacing = 4;
+        }
 
         return theme;
     }
 
-    static Theme& NewDarkTheme()
+    static Theme& DarkTheme()
     {
         static Theme theme;
         return theme;
@@ -110,3 +120,6 @@ struct Theme {
 };
 
 } // namespace ant2d
+
+#define SharedContent \
+    ant2d::Singleton<ant2d::Content>()

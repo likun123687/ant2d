@@ -10,6 +10,9 @@
 #include <effect/sim_gravity.h>
 #include <effect/sim_fire.h>
 #include <effect/sim_snow.h>
+#include <asset/font_manager.h>
+#include <gfx/text/text_table.h>
+#include <gui/gui.h>
 
 namespace ant2d {
 extern Game* SharedGame;
@@ -20,6 +23,9 @@ extern MeshTable* SharedMeshTable;
 extern ParticleSystemTable* SharedParticleSystemTable;
 extern TransformTable* SharedTransformTable;
 extern TextureManager* SharedTextureManager;
+extern FontManager *SharedFontManager;
+extern TextTable* SharedTextTable;
+
 // extern InputSystem* SharedInputSystem;
 
 void Run(WindowOptions options, Scene* sn);

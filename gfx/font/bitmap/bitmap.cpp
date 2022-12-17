@@ -5,6 +5,11 @@
 namespace ant2d {
 namespace font {
     namespace bitmap {
+        inline int json_string_to_int(nlohmann::json& value)
+        {
+            return std::stoi(value.get_ref<std::string&>());
+        }
+
         std::unique_ptr<FontAtlas> LoadBitmap(const std::string& filename, const std::string& config, int scale)
         {
             std::unique_ptr<FontAtlas> f { new FontAtlas };
@@ -28,30 +33,30 @@ namespace font {
             int gh = 0;
             int gw = 0;
             // add glyphs
-            for (auto& g : config_json["glyphs"].items()) {
+            for (auto& g : config_json["glyphs"].items()) { 
                 auto glyph = Glyph {};
-                const auto& value = g.value();
-                glyph.rune = value["id"];
-                glyph.x = value["x"];
-                glyph.y = value["y"];
-                glyph.width = value["width"];
-                glyph.height = value["height"];
-                glyph.xoffset = value["xoffset"];
-                glyph.yoffset = value["yoffset"];
-                glyph.advance = value["advance"];
-                f->AddGlyphs(value["id"], glyph);
+                auto& value = g.value();
+                glyph.rune = json_string_to_int(value["id"]);
+                glyph.x = json_string_to_int(value["x"]);
+                glyph.y = json_string_to_int(value["y"]);
+                glyph.width = json_string_to_int(value["width"]);
+                glyph.height = json_string_to_int(value["height"]);
+                glyph.xoffset = json_string_to_int(value["xoffset"]);
+                glyph.yoffset = json_string_to_int(value["yoffset"]);
+                glyph.advance = json_string_to_int(value["advance"]);
+                f->AddGlyphs(json_string_to_int(value["id"]), glyph);
 
-                if (value["width"] > gw) {
-                    gw = value["width"];
+                if (glyph.width > gw) {
+                    gw = glyph.width;
                 }
 
-                if (value["height"] > gh) {
-                    gh = value["height"];
+                if (glyph.height > gh) {
+                    gh = glyph.height;
                 }
             }
 
             f->SetGWidth(gw);
-            f->SetGWidth(gh);
+            f->SetGHeight(gh);
             return std::move(f);
         }
     }

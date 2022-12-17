@@ -52,13 +52,13 @@ namespace gfx {
             temps_.push_back(buffer);
         }
 
-        return std::make_tuple(buffer.id, buffer.size, buffer.vb);
+        return { buffer.id, buffer.size, buffer.vb };
     }
 
     Tempbuffer Context::NewVertexBuffer(int vertex_size, int stride)
     {
         {
-            //对齐
+            // 对齐
             vertex_size--;
             vertex_size |= vertex_size >> 1;
             vertex_size |= vertex_size >> 2;

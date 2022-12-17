@@ -10,9 +10,10 @@ Library::Library()
 {
     if (!initialized) {
         const auto error = FT_Init_FreeType(&library);
-        if (error)
+        if (error) {
             // throw Exception("Couldn't init FreeType engine", error);
             Error("Couldn't init FreeType engine {}", std::to_string(error));
+        }
     }
 
     ++initialized;

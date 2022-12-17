@@ -60,6 +60,16 @@ public:
             hint_y_ = h;
         }
     }
+
+    std::tuple<float, float> Gui2Game(float x, float y)
+    {
+        return { x, hint_y_ - y };
+    }
+
+    std::tuple<float, float> Game2Gui(float x, float y)
+    {
+        return { x, hint_y_ - y };
+    }
 };
 } // namespace ant2d
 

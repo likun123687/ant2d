@@ -1,6 +1,5 @@
 #pragma once
 #include <gfx/font/font.h>
-#include <third_party/utfcpp/utf8/unchecked.h>
 
 namespace ant2d {
 class DrawList;

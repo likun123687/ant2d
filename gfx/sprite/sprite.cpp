@@ -66,7 +66,7 @@ std::tuple<float, float, float, float> SpriteComp::GetRgbaColor()
     auto g = static_cast<uint8_t>(color_ >> 16) / 255.0f;
     auto b = static_cast<uint8_t>(color_ >> 8) / 255.0f;
     auto a = static_cast<uint8_t>(color_ >> 0) / 255.0f;
-    return std::make_tuple(r, g, b, a);
+    return { r, g, b, a };
 }
 // sg_color SpriteComp::GetColor()
 //{

@@ -3,10 +3,10 @@
 
 namespace ant2d {
 namespace math {
-    Vec2::Vec2()
-        : data_()
-    {
-    }
+    // Vec2::Vec2()
+    //     : data_()
+    // {
+    // }
 
     Vec2::Vec2(float item1, float item2)
         : data_ { item1, item2 }
@@ -64,10 +64,10 @@ namespace math {
         return data_[i];
     }
 
-    Vec3::Vec3()
-        : data_()
-    {
-    }
+    // Vec3::Vec3()
+    //     : data_()
+    // {
+    // }
 
     Vec3::Vec3(float item1, float item2, float item3)
         : data_ { item1, item2, item3 }
@@ -99,10 +99,10 @@ namespace math {
         return data_[i];
     }
 
-    Vec4::Vec4()
-        : data_()
-    {
-    }
+    // Vec4::Vec4()
+    //     : data_()
+    // {
+    // }
 
     Vec4::Vec4(float item1, float item2, float item3, float item4)
         : data_ { item1, item2, item3, item4 }

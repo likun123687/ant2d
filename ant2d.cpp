@@ -13,6 +13,9 @@ MeshTable* SharedMeshTable = nullptr;
 ParticleSystemTable* SharedParticleSystemTable = nullptr;
 TransformTable* SharedTransformTable = nullptr;
 TextureManager* SharedTextureManager = nullptr;
+FontManager* SharedFontManager = nullptr;
+TextTable* SharedTextTable = nullptr;
+
 // InputSystem* SharedInputSystem = nullptr;
 
 void Run(WindowOptions options, Scene* sn)
@@ -21,7 +24,8 @@ void Run(WindowOptions options, Scene* sn)
     auto g = new Game {};
     g->Init();
     SharedGame = g;
-    SharedTextureManager = new TextureManager{};
+    SharedTextureManager = new TextureManager {};
+    SharedFontManager = new FontManager {};
     SharedEntityManager = g->GetDB()->GetEntityManager();
     SharedSceneManager = g->GetSceneManager();
     SharedSceneManager->SetDefault(sn);
@@ -40,6 +44,8 @@ void Run(WindowOptions options, Scene* sn)
         case TableType::kParticle:
             SharedParticleSystemTable = reinterpret_cast<ParticleSystemTable*>(table.get());
             break;
+        case TableType::kText:
+            SharedTextTable = reinterpret_cast<TextTable*>(table.get());
         }
     }
 

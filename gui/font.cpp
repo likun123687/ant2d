@@ -1,5 +1,6 @@
 #include <gui/font.h>
 #include <gui/drawing.h>
+#include <third_party/utfcpp/utf8/unchecked.h>
 
 namespace ant2d {
 
@@ -8,6 +9,7 @@ FontRender::FontRender(DrawList* draw_list, float font_size, font::FontAtlas* fo
     , font_(font)
     , font_size_(font_size)
     , color_(color)
+    , line_space_(0)
 {
 }
 
@@ -73,7 +75,7 @@ math::Vec2 FontRender::RenderText(math::Vec2 pos, const std::string& text)
         vtx_writer[vi + 3] = DrawVert { math::Vec2 { x1, y2 }, math::Vec2 { u1, v1 }, color };
 
         auto ii = buffer_used * 6;
-        auto offset = draw_list_->idx_index_;
+        auto offset = draw_list_->vtx_index_;
         idx_writer[ii + 0] = DrawIdx(offset + 0);
         idx_writer[ii + 1] = DrawIdx(offset + 1);
         idx_writer[ii + 2] = DrawIdx(offset + 2);
@@ -91,9 +93,7 @@ math::Vec2 FontRender::RenderText(math::Vec2 pos, const std::string& text)
     if (dx > max_width) {
         max_width = dx;
     }
-    math::Vec2 size;
-    size[0] = max_width - pos[0];
-    size[1] = pos[1] - dy + font_size_;
+    math::Vec2 size { max_width - pos[0], pos[1] - dy + font_size_ };
 
     draw_list_->AddCommand(buffer_used * 6);
     return size;

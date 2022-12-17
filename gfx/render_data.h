@@ -1,6 +1,7 @@
 #pragma once
 #include <asset/shader_utils.h>
 #include <vector>
+#include <gfx/color.h>
 
 namespace ant2d {
 
@@ -9,12 +10,11 @@ struct PosTexColorVertex {
     float y;
     float u;
     float v;
-    float r;
-    float g;
-    float b;
-    float a;
+    color::Float4 rgba;
     // uint32_t rgba;
 };
+
+static_assert(std::is_pod<PosTexColorVertex>::value, "PosTexColorVertex must be a POD type.");
 
 class Camera;
 class IRender {

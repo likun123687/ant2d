@@ -46,10 +46,7 @@ void VisualController::Visualize(PosTexColorVertex* buf, ITexture2D* tex, int li
         buf[vi + 3].v = rg.y2;
 
         for (int j = 0; j < 4; j++) {
-            buf[vi + j].r = r;
-            buf[vi + j].g = g;
-            buf[vi + j].b = b;
-            buf[vi + j].a = a;
+            buf[vi + j].rgba = color::Float4 { r, g, b, a };
         }
     }
 }

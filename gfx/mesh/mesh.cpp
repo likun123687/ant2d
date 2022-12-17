@@ -84,6 +84,7 @@ void Mesh::SetFirstIndex(uint16_t first_index)
 {
     first_index_ = first_index;
 }
+
 void Mesh::SetNumIndex(uint16_t num_index)
 {
     num_index_ = num_index;

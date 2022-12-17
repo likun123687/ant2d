@@ -65,10 +65,7 @@ void TextShapeBuffer::String(float x, float y, const std::string& chars, float s
         b[3].v = top;
 
         for (int j = 0; j < 4; j++) {
-            b[j].r = static_cast<uint8_t>(color_ >> 24) / 255.0f;
-            b[j].g = static_cast<uint8_t>(color_ >> 16) / 255.0f;
-            b[j].b = static_cast<uint8_t>(color_ >> 8) / 255.0f;
-            b[j].a = static_cast<uint8_t>(color_ >> 0) / 255.0f;
+            b[j].rgba = color::Float4 { color_ };
         }
 
         // advance x,y
@@ -109,10 +106,7 @@ void TextShapeBuffer::Rect(float x, float y, float w, float h)
     Info("color color rect {:#x}", color_);
 
     for (int j = 0; j < 4; j++) {
-        b[j].r = static_cast<uint8_t>(color_ >> 24) / 255.0f;
-        b[j].g = static_cast<uint8_t>(color_ >> 16) / 255.0f;
-        b[j].b = static_cast<uint8_t>(color_ >> 8) / 255.0f;
-        b[j].a = static_cast<uint8_t>(color_ >> 0) / 255.0f;
+        b[j].rgba = color::Float4 { color_ };
     }
 }
 
@@ -150,10 +144,7 @@ void TextShapeBuffer::Line(math::Vec2 from, math::Vec2 to)
     b[3].v = 0;
 
     for (int j = 0; j < 4; j++) {
-        b[j].r = static_cast<uint8_t>(color_ >> 24) / 255.0f;
-        b[j].g = static_cast<uint8_t>(color_ >> 16) / 255.0f;
-        b[j].b = static_cast<uint8_t>(color_ >> 8) / 255.0f;
-        b[j].a = static_cast<uint8_t>(color_ >> 0) / 255.0f;
+        b[j].rgba = color::Float4(color_);
     }
 }
 

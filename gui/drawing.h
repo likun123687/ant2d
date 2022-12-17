@@ -7,6 +7,8 @@
 #include <gfx/font/font.h>
 #include <math/common_func.h>
 #include <gfx/bk/res_manager.h>
+#include <gfx/color.h>
+#include <gfx/render_data.h>
 
 namespace ant2d {
 constexpr uint32_t FlagAntiAliasedLine = 0;
@@ -31,7 +33,7 @@ constexpr uint32_t AlignRight = 1 << 2;
 constexpr uint32_t AlignTop = 1 << 3;
 constexpr uint32_t AlignBottom = 1 << 4;
 
-const int16_t DefaultZOrder = int16_t(0xFFFF >> 1 - 100);
+constexpr int16_t DefaultZOrder = int16_t((0xFFFF >> 1) - 100);
 
 // DrawList provide method to write primitives to buffer
 struct DrawCmd {
@@ -39,14 +41,17 @@ struct DrawCmd {
     uint16_t elem_count;
     math::Vec4 clip_rect;
     uint16_t texture_id;
-    uint16_t z_order_;
+    uint16_t z_order;
 };
 
 struct DrawVert {
     math::Vec2 xy;
     math::Vec2 uv;
-    uint32_t color;
+    color::Float4 color;
 };
+
+static_assert(std::is_pod<DrawVert>::value, "DrawVert must be pod");
+static_assert(sizeof(DrawVert) == sizeof(PosTexColorVertex), "drawvert and PosTexColorVertex must be same size");
 
 using DrawIdx = uint16_t;
 

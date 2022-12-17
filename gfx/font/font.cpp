@@ -107,12 +107,13 @@ namespace font {
             float line_size = 0;
             int last_space = -1;
 
-            for (int j = 0; i < size; i = i + w, j = j + w) {
+            for (int j = 0; i < size; i += w, j += w) {
                 auto iter = text.begin() + i;
                 auto old_iter = iter;
 
                 uint32_t r = ::utf8::unchecked::next(iter);
                 int width = iter - old_iter;
+                w = width;
 
                 if (r == '\n') {
                     i += w;
@@ -120,7 +121,8 @@ namespace font {
                     goto NEW_LINE;
                 }
 
-                std::copy(text.begin() + i, text.begin() + i + w, line.end());
+                // std::copy(text.begin() + i, text.begin() + i + w, line.end());
+                line.insert(line.end(), text.begin() + i, text.begin() + i + w);
                 Glyph* g = font->GetGlyph(r);
                 if (g) {
                     line_size += float(g->advance) * scale;
@@ -140,7 +142,8 @@ namespace font {
             }
             // reach the end
             if (line_size < wrap) {
-                std::copy(line.begin(), line.end(), buff.end());
+                // std::copy(line.begin(), line.end(), buff.end());
+                buff.insert(buff.end(), line.begin(), line.end());
                 n += 1;
                 break;
             }
@@ -156,12 +159,13 @@ namespace font {
 
         NEW_LINE:
             line.push_back('\n');
-            std::copy(line.begin(), line.end(), buff.end());
+            // std::copy(line.begin(), line.end(), buff.end());
+            buff.insert(buff.end(), line.begin(), line.end());
             line.resize(0);
             n += 1;
         }
 
-        return std::make_tuple(n, std::string(buff.begin(), buff.end()));
+        return { n, std::string(buff.begin(), buff.end()) };
     }
 
     math::Vec2 CalculateTextSize(const std::string& text, FontAtlas* font, float font_size)
@@ -177,16 +181,12 @@ namespace font {
             Error("invalid utf-8 encoding string {}", std::string { text.begin(), text.end() });
         }
 
-        for (int i = 0, w = 0; i < text.size(); i += w) {
-            auto iter = text.begin() + i;
-            auto old_iter = iter;
-
+        auto iter = text.begin();
+        while (iter != text.end()) {
             uint32_t r = ::utf8::unchecked::next(iter);
-            int width = iter - old_iter;
-
             Glyph* g = font->GetGlyph(r);
             if (r >= 32) {
-                size[0] += float(g->advance) * scale;
+                size[0] += float(g->advance) * scale; 
             }
         }
         return size;

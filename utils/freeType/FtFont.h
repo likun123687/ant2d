@@ -41,14 +41,17 @@ public:
         : library(library)
         , monochrome_(monochrome)
     {
-        if (!library.library)
+        if (!library.library) {
             Error("Library is not initialized");
+        }
 
         auto error = FT_New_Face(library.library, fontFile.c_str(), faceIndex, &face);
-        if (error == FT_Err_Unknown_File_Format)
+        if (error == FT_Err_Unknown_File_Format){
             Error("Unsupported font format {}", std::to_string(error));
-        if (error)
+        }
+        if (error) {
             Error("Couldn't load font file {}", std::to_string(error));
+        }
 
         if (!face->charmap) {
             FT_Done_Face(face);
@@ -197,8 +200,9 @@ public:
         if (FT_HAS_KERNING(face)) {
             const FT_UInt kernMode = kerningMode == KerningMode::Basic ? FT_KERNING_DEFAULT : FT_KERNING_UNFITTED;
             const auto error = FT_Get_Kerning(face, indexLeft, indexRight, kernMode, &k);
-            if (error)
+            if (error) {
                 Error("Couldn't find glyphs kerning");
+            }
         }
 
         // X advance is already in pixels for bitmap fonts
