@@ -13,6 +13,7 @@
 #include <asset/font_manager.h>
 #include <gfx/text/text_table.h>
 #include <gui/gui.h>
+#include <asset/audio_manager.h>
 
 namespace ant2d {
 extern Game* SharedGame;
@@ -25,6 +26,7 @@ extern TransformTable* SharedTransformTable;
 extern TextureManager* SharedTextureManager;
 extern FontManager *SharedFontManager;
 extern TextTable* SharedTextTable;
+extern AudioManager *SharedAudioManager;
 
 // extern InputSystem* SharedInputSystem;
 

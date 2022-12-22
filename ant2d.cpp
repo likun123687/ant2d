@@ -15,6 +15,7 @@ TransformTable* SharedTransformTable = nullptr;
 TextureManager* SharedTextureManager = nullptr;
 FontManager* SharedFontManager = nullptr;
 TextTable* SharedTextTable = nullptr;
+AudioManager* SharedAudioManager = nullptr;
 
 // InputSystem* SharedInputSystem = nullptr;
 
@@ -26,6 +27,7 @@ void Run(WindowOptions options, Scene* sn)
     SharedGame = g;
     SharedTextureManager = new TextureManager {};
     SharedFontManager = new FontManager {};
+    SharedAudioManager = new AudioManager {};
     SharedEntityManager = g->GetDB()->GetEntityManager();
     SharedSceneManager = g->GetSceneManager();
     SharedSceneManager->SetDefault(sn);
