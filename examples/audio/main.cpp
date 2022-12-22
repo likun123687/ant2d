@@ -38,10 +38,11 @@ class MainScene : public ant2d::Scene {
         auto xf1 = ant2d::SharedTransformTable->NewComp(entity1);
         xf1->SetPosition(ant2d::math::Vec2 { 300, 300 });
 
-        auto sound = ant2d::SharedAudioManager->Get("music1");
-        sound->Start();
+        // auto sound = ant2d::SharedAudioManager->Get("music1");
+        // sound->Start();
 
         auto sound1 = ant2d::SharedAudioManager->Get("music2");
+        sound1->SetLooping(true);
         sound1->Start();
     }
 

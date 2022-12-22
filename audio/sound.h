@@ -4,7 +4,6 @@
 namespace ant2d {
 class Sound {
 public:
-    Sound() = default;
     Sound(const std::string& filepath, ma_engine* engine, bool is_stream = false);
 
     void Start();
@@ -14,6 +13,9 @@ public:
     void SetVolume(float volume);
 
     float GetVolume();
+
+    void SetLooping(bool is_looping);
+    bool IsLooping();
 
     ~Sound();
 

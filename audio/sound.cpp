@@ -18,16 +18,7 @@ Sound::Sound(const std::string& filepath, ma_engine* engine, bool is_stream)
     result = ma_sound_init_from_file(engine_, filepath.c_str(), flag, NULL, NULL, &snd_);
     if (result != MA_SUCCESS) {
         Error("load sound error {}--{}", filepath, result);
-        std::cout<<"aaaa"<<std::endl;
     }
-
-    result = ma_sound_start(&snd_);
-   if (result != MA_SUCCESS) {
-        Error("start sound error {}--{}", result, (void*)(&snd_));
-        std::cout<<"bbbb"<<std::endl;
-
-    }
-    std::cout<<"cccc"<<std::endl;
 }
 
 void Sound::Start()
@@ -37,7 +28,7 @@ void Sound::Start()
     if (result != MA_SUCCESS) {
         Error("start sound error {}--{}", result, (void*)(&snd_));
     } else {
-        Info("start sound success  {}--{}--{}", result, (void*)(&snd_), (void *)this);
+        Info("start sound success  {}--{}--{}", result, (void*)(&snd_), (void*)this);
     }
 }
 
@@ -54,6 +45,16 @@ void Sound::SetVolume(float volume)
 float Sound::GetVolume()
 {
     return ma_sound_get_volume(&snd_);
+}
+
+void Sound::SetLooping(bool is_looping)
+{
+    ma_sound_set_looping(&snd_, is_looping);
+}
+
+bool Sound::IsLooping()
+{
+    return ma_sound_is_looping(&snd_);
 }
 
 Sound::~Sound()
