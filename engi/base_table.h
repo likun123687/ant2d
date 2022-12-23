@@ -12,6 +12,7 @@ enum class TableType {
     KMesh,
     kParticle,
     kText,
+    kFlipbook,
 };
 
 class IBase {

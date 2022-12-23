@@ -27,8 +27,6 @@ void Sound::Start()
     result = ma_sound_start(&snd_);
     if (result != MA_SUCCESS) {
         Error("start sound error {}--{}", result, (void*)(&snd_));
-    } else {
-        Info("start sound success  {}--{}--{}", result, (void*)(&snd_), (void*)this);
     }
 }
 

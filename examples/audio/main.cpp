@@ -41,7 +41,7 @@ class MainScene : public ant2d::Scene {
         // auto sound = ant2d::SharedAudioManager->Get("music1");
         // sound->Start();
 
-        auto sound1 = ant2d::SharedAudioManager->Get("music2");
+        auto sound1 = ant2d::SharedAudioManager->Get("music1");
         sound1->SetLooping(true);
         sound1->Start();
     }

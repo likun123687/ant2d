@@ -136,6 +136,7 @@ target("ant2d_common")
     add_files("third_party/maxRectsBinPack/*.cpp")
     add_files("audio/*.cpp")
     add_files("asset/audio_manager.cpp")
+    add_files("anim/**.cpp")
 
     if is_plat("windows") then
         add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})
