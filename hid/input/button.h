@@ -14,8 +14,8 @@ namespace ant2d {
 // 0x0004 记录release状态
 class Button {
 private:
-    uint16_t state_;
-    uint16_t button_id_;
+    uint16_t state_ = 0;
+    uint16_t button_id_ = 0;
 
 public:
     uint16_t GetButtonId();
@@ -35,9 +35,10 @@ public:
 class ButtonManager {
 private:
     std::array<Button, 64> button_cache_;
-    uint16_t btn_id_;
+    uint16_t btn_id_ = 0;
 
 public:
+    ButtonManager();
     Button* NewButton();
 };
 }

@@ -228,7 +228,12 @@ void Game::LoadTables()
 void Game::Update()
 {
     auto dt = fps_->Smooth();
+    SharedInputSystem->AdvanceFrame();
+
     scene_manager_->Update(dt);
+
+    SharedInputSystem->Reset();
+
     particle_system_->Update(dt);
 
     // Render

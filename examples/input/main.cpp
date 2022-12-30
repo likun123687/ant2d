@@ -32,6 +32,7 @@ class MainScene : public ant2d::Scene {
         Info("main scene update {}", dt);
         ant2d::math::Vec2 speed { 0, 0 };
         if (ant2d::SharedInputSystem->GetButton("up")->Down()) {
+            Info("up button clicked");
             speed[1] = 5;
         }
 

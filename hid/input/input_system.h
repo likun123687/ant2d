@@ -31,6 +31,7 @@ static constexpr KeyPoint KeyPointX = 9;
 // 记录一帧之内的按键，一帧时间做多支持同时按6个按键
 class SparseMap {
 public:
+    SparseMap();
     void PutKey(Key k, bool st);
 
     void Clear();
@@ -42,7 +43,7 @@ public:
 private:
     std::array<Key, 6> keys_;
     std::array<bool, 6> stat_;
-    int used_;
+    int used_ = 0;
 };
 
 class InputSystem {
@@ -91,7 +92,7 @@ private:
 
     // 触摸/鼠标, 最多支持10个手指头同时触摸
     // 通常情况下，active < 1
-    int active_;
+    int active_ = 0;
     std::array<Button, 10> pointer_button_;
     std::array<PointerInput, 10> pointers_;
     ButtonManager button_manager_;

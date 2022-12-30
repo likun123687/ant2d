@@ -3,6 +3,13 @@
 
 namespace ant2d {
 
+SparseMap::SparseMap()
+    : keys_ {}
+    , stat_ {}
+    , used_ { 0 }
+{
+}
+
 void SparseMap::PutKey(Key k, bool st)
 {
     keys_[used_] = k;
@@ -31,6 +38,13 @@ int SparseMap::GetUsed()
 }
 
 InputSystem::InputSystem()
+    : buttons_ {}
+    , dirty_ {}
+    , binds_ {}
+    , active_ { 0 }
+    , pointer_button_ {}
+    , pointers_ {}
+    , button_manager_ {}
 {
 }
 

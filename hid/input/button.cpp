@@ -47,6 +47,11 @@ void Button::Reset()
     state_ = state_ & 0x01;
 }
 
+ButtonManager::ButtonManager()
+    : button_cache_ {}
+{
+}
+
 Button* ButtonManager::NewButton()
 {
     auto btn = &button_cache_[btn_id_];
