@@ -67,6 +67,7 @@ Game::Game()
     , render_system_(new RenderSystem())
     , particle_system_(new ParticleSimulateSystem())
     , app_state_(new AppState())
+    , input_(new InputSystem {})
 {
 }
 
@@ -117,10 +118,13 @@ void Game::OnResize(float w, float h)
 
 void Game::OnKeyEvent(int key, bool pressed)
 {
+    Info("on key event {}--{}", key, pressed);
+    input_->SetKeyEvent(key, pressed);
 }
 
 void Game::OnPointEvent(int key, bool pressed, float x, float y)
 {
+    input_->SetPointerEvent(key, pressed, x, y);
 }
 
 void Game::SetGameSize(float w, float h)
@@ -128,12 +132,12 @@ void Game::SetGameSize(float w, float h)
     Info("game set size {}--{}", w, h);
     render_system_->GetMainCamera()->SetViewPort(w, h);
     // gui real screen size
-	gui::SetScreenSize(w, h);
+    gui::SetScreenSize(w, h);
 }
 
 void Game::Create(float w, float h, float ratio)
 {
-    fps_->Init(); 
+    fps_->Init();
     gfx::Init(ratio);
 
     // render system
@@ -151,10 +155,10 @@ void Game::Create(float w, float h, float ratio)
     auto mrf = new MeshRenderFeature {};
     mrf->Register(render_system_.get());
 
-    auto textf = new TextRenderFeature{};
+    auto textf = new TextRenderFeature {};
     textf->Register(render_system_.get());
 
-    auto ui = new UIRenderFeature{};
+    auto ui = new UIRenderFeature {};
     ui->Register(render_system_.get());
 
     /// particle-simulation system

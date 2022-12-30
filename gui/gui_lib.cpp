@@ -154,7 +154,7 @@ namespace gui {
         }
         // Update the knob position & default = Horizontal
         if ((event & (Event::kEventDragging | Event::kEventWentDown)) != 0) {
-            auto p1 = (SharedInputSystem.PointerPosition(0).mouse_pos[0]) / SharedScreen.scale_x_;
+            auto p1 = (SharedInputSystem->PointerPosition(0).mouse_pos[0]) / SharedScreen.scale_x_;
             auto p0 = bound->x + cursor_.x;
             v = (p1 - p0) / bound->w;
             if (v > 1) {
@@ -176,9 +176,9 @@ namespace gui {
             rect->w * SharedScreen.scale_x_,
             rect->h * SharedScreen.scale_y_ };
 
-        auto p = SharedInputSystem.PointerPosition(0);
+        auto p = SharedInputSystem->PointerPosition(0);
         if (bb.InRange(p.mouse_pos)) {
-            auto btn = SharedInputSystem.PointerButton(0);
+            auto btn = SharedInputSystem->PointerButton(0);
             if (btn->JustPressed()) {
                 state_.active = id;
                 event = Event::kEventWentDown;
@@ -204,10 +204,10 @@ namespace gui {
             bound->w * SharedScreen.scale_x_,
             bound->h * SharedScreen.scale_y_
         };
-        auto p = SharedInputSystem.PointerPosition(0);
+        auto p = SharedInputSystem->PointerPosition(0);
         if (bb.InRange(p.mouse_pos) || state_.pointer_capture == id) {
             // in-dragging, The pointer is in drag operation
-            auto btn = SharedInputSystem.PointerButton(0);
+            auto btn = SharedInputSystem->PointerButton(0);
             if (state_.dragging_pointer == id && !btn->JustPressed()) {
                 if (btn->JustReleased()) {
                     event = Event::kEventEndDrag;

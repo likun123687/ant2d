@@ -9,6 +9,7 @@
 #include <utils/singleton.h>
 
 namespace ant2d {
+extern InputSystem* SharedInputSystem;
 namespace gui {
     using EventType = uint8_t;
     struct Event {

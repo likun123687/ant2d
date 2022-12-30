@@ -37,6 +37,9 @@ void HidManager::EventCallback(const sapp_event* e)
         if (e->key_code == SAPP_KEYCODE_ESCAPE) {
             sapp_request_quit();
         }
+        window_callback_->OnKeyEvent(e->key_code, true);
+    } else if (e->type == SAPP_EVENTTYPE_KEY_UP) {
+        window_callback_->OnKeyEvent(e->key_code, false);
     }
 }
 } // namespace ant2d

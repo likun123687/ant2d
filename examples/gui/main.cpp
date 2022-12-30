@@ -41,8 +41,8 @@ class MainScene : public ant2d::Scene {
     {
         ant2d::gui::Move(100, 60);
 
-        // // draw text
-        // ant2d::gui::Text(2, ant2d::gui::Rect { 0, 0, 0, 0 }, "abcdesadfasdf", nullptr);
+        // draw text
+        ant2d::gui::Text(2, ant2d::gui::Rect { 0, 0, 0, 0 }, "abcdesadfasdf", nullptr);
 
         // //  draw image
         // ant2d::gui::Image(3, ant2d::gui::Rect { 0, 30, 100, 100 }, face_, nullptr);
@@ -51,11 +51,11 @@ class MainScene : public ant2d::Scene {
         // ant2d::gui::ImageButton(6, ant2d::gui::Rect { 50, 30, 30, 30 }, normal_, pressed_, nullptr);
 
         // draw button
-        auto e = ant2d::gui::Button(4, ant2d::gui::Rect { 0, 100, 0, 0 }, "NewButton", nullptr);
-        if ((ant2d::gui::Event::kEventDown & e) != 0) {
-            std::cout << "click new button" << std::endl;
-            showbutton_ = true;
-        }
+        // auto e = ant2d::gui::Button(4, ant2d::gui::Rect { 0, 100, 0, 0 }, "NewButton", nullptr);
+        // if ((ant2d::gui::Event::kEventDown & e) != 0) {
+        //     std::cout << "click new button" << std::endl;
+        //     showbutton_ = true;
+        // }
 
         // if (showbutton_) {
         //     e = ant2d::gui::Button(4, ant2d::gui::Rect { 0, 150, 0, 0 }, "Dismiss", nullptr);
@@ -84,7 +84,7 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
         ant2d::SharedTextureManager->Load("assets/particle.png");
         ant2d::SharedTextureManager->Load("assets/press.png");
         ant2d::SharedFontManager->Loadbitmap("font1", "assets/font.png", "assets/font.json");
-        ant2d::SharedFontManager->LoadTrueType("font2", "assets/OCRAEXT.TTF", ant2d::font::truetype::Config { 0, 0, 24 });
+        ant2d::SharedFontManager->LoadTrueType("font2", "assets/OCRAEXT.TTF",  { 0, 0, 24 });
     };
     auto main_scene = new MainScene();
     main_scene->SetOnLoadCallback(on_load_callback);

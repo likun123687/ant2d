@@ -99,5 +99,5 @@ private:
 
 }
 
-#define SharedInputSystem \
-    ant2d::Singleton<ant2d::InputSystem>()
+// #define SharedInputSystem \
+//     ant2d::Singleton<ant2d::InputSystem>()

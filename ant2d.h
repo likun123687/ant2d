@@ -27,8 +27,7 @@ extern TextureManager* SharedTextureManager;
 extern FontManager *SharedFontManager;
 extern TextTable* SharedTextTable;
 extern AudioManager *SharedAudioManager;
-
-// extern InputSystem* SharedInputSystem;
+extern InputSystem* SharedInputSystem;
 
 void Run(WindowOptions options, Scene* sn);
 }

@@ -7,6 +7,7 @@
 #include <gfx/render_system.h>
 #include <hid/life_cycle.h>
 #include <effect/particle_simulate_system.h>
+#include <hid/input/input_system.h>
 
 namespace ant2d {
 constexpr int32_t kMaxScriptSize = 1024;
@@ -63,6 +64,7 @@ private:
     std::unique_ptr<RenderSystem> render_system_;
     std::unique_ptr<ParticleSimulateSystem> particle_system_;
     std::unique_ptr<AppState> app_state_;
+    std::unique_ptr<InputSystem> input_;
 
 public:
     Game();
@@ -93,6 +95,11 @@ public:
     SceneManager* GetSceneManager()
     {
         return scene_manager_.get();
+    }
+
+    InputSystem* GetInputSystem()
+    {
+        return input_.get();
     }
 };
 } // namespace ant2d

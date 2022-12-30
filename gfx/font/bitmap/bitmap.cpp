@@ -12,7 +12,7 @@ namespace font {
 
         std::unique_ptr<FontAtlas> LoadBitmap(const std::string& filename, const std::string& config, int scale)
         {
-            std::unique_ptr<FontAtlas> f { new FontAtlas };
+            std::unique_ptr<FontAtlas> f = std::make_unique<FontAtlas>();
             if (scale == 1) {
                 auto image_data = ImageData { filename };
                 image_data.SetColor(0, 0, 0xff, 0xff, 0xff, 0xff);
@@ -33,7 +33,7 @@ namespace font {
             int gh = 0;
             int gw = 0;
             // add glyphs
-            for (auto& g : config_json["glyphs"].items()) { 
+            for (auto& g : config_json["glyphs"].items()) {
                 auto glyph = Glyph {};
                 auto& value = g.value();
                 glyph.rune = json_string_to_int(value["id"]);

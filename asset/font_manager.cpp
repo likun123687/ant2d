@@ -15,7 +15,7 @@ void FontManager::Loadbitmap(const std::string& name, const std::string& file, c
     }
 }
 
-void FontManager::LoadTrueType(const std::string& name, const std::string& file, font::truetype::Config& config)
+void FontManager::LoadTrueType(const std::string& name, const std::string& file, font::truetype::Config config)
 {
     int32_t cnt = 0;
     if (config.fontFile.empty()) {

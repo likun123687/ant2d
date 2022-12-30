@@ -15,7 +15,7 @@ public:
     };
     void Loadbitmap(const std::string& name, const std::string& file, const std::string& fc);
 
-    void LoadTrueType(const std::string& name, const std::string& file, font::truetype::Config& config);
+    void LoadTrueType(const std::string& name, const std::string& file, font::truetype::Config config);
     void Unload(const std::string& name);
 
     font::FontAtlas* Get(const std::string& name);

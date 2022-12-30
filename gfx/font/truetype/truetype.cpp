@@ -164,7 +164,7 @@ namespace font {
 
         std::unique_ptr<FontAtlas> LoadTrueType(const Config& config)
         {
-            std::unique_ptr<FontAtlas> f { new FontAtlas };
+            std::unique_ptr<FontAtlas> f = std::make_unique<FontAtlas>();
 
             ft::Library library;
             if (config.verbose) {

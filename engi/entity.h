@@ -11,6 +11,10 @@ constexpr uint8_t kGenerationMask = (1 << kGenerationBits) - 1;
 
 class Entity {
 public:
+    Entity()
+        : idx_(0xFFFFFFFF)
+    {
+    }
     Entity(uint32_t idx)
     {
         idx_ = idx;

@@ -16,8 +16,7 @@ TextureManager* SharedTextureManager = nullptr;
 FontManager* SharedFontManager = nullptr;
 TextTable* SharedTextTable = nullptr;
 AudioManager* SharedAudioManager = nullptr;
-
-// InputSystem* SharedInputSystem = nullptr;
+InputSystem* SharedInputSystem = nullptr;
 
 void Run(WindowOptions options, Scene* sn)
 {
@@ -31,6 +30,7 @@ void Run(WindowOptions options, Scene* sn)
     SharedEntityManager = g->GetDB()->GetEntityManager();
     SharedSceneManager = g->GetSceneManager();
     SharedSceneManager->SetDefault(sn);
+    SharedInputSystem = g->GetInputSystem();
     for (auto& table : g->GetDB()->GetTableList()) {
         auto table_type = table->GetTableType();
         switch (table_type) {
