@@ -1,6 +1,6 @@
 
 #include <hid/input/button.h>
-
+#include <utils/debug.h>
 namespace ant2d {
 
 uint16_t Button::GetButtonId()
@@ -30,6 +30,7 @@ bool Button::Down()
 
 void Button::Update(bool down)
 {
+    Info("btn update {}-{}", button_id_, down);
     auto d = ((state_ & 0x01) == 1);
     state_ &= (0x04 | 0x02);
     if (down) {
@@ -55,6 +56,7 @@ ButtonManager::ButtonManager()
 Button* ButtonManager::NewButton()
 {
     auto btn = &button_cache_[btn_id_];
+    btn->SetButtonId(btn_id_);
     btn_id_++;
     return btn;
 }

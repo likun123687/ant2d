@@ -31,19 +31,16 @@ static constexpr KeyPoint KeyPointX = 9;
 // 记录一帧之内的按键，一帧时间做多支持同时按6个按键
 class SparseMap {
 public:
+    using StateList = std::vector<bool>;
     SparseMap();
     void PutKey(Key k, bool st);
 
     void Clear();
-
-    std::tuple<bool, bool> GetKey(Key k);
-
-    int GetUsed();
+    StateList* GetKey(Key k);
+    int GetKeyMapSize();
 
 private:
-    std::array<Key, 6> keys_;
-    std::array<bool, 6> stat_;
-    int used_ = 0;
+    std::unordered_map<Key, StateList> key_map_;
 };
 
 class InputSystem {
