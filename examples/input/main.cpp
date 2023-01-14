@@ -16,7 +16,7 @@ class MainScene : public ant2d::Scene {
     void OnEnter(ant2d::Game* g)
     {
         Info("main scene on enter");
-        auto tex = ant2d::SharedTextureManager->Get("assets/face.png");
+        auto tex = ant2d::SharedTextureManager->Get("assets/block.png");
         auto face = ant2d::SharedEntityManager->New();
         auto sprite = ant2d::SharedSpriteTable->NewCompX(face, tex);
         sprite->SetSize(50, 50);
@@ -50,6 +50,12 @@ class MainScene : public ant2d::Scene {
 
         auto xf = ant2d::SharedTransformTable->GetComp(face_);
         xf->MoveBy(speed[0], speed[1]);
+
+        auto [btn, pos, pos1] = ant2d::SharedInputSystem->Mouse(SAPP_MOUSEBUTTON_LEFT);
+        if (btn && btn->Down()) {
+            Info("left btn click {}:{}", pos[0], pos[1]);
+            xf->SetPosition(pos);
+        }
     }
 
     void OnExit()
@@ -61,7 +67,7 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
 {
     Info("ant2d main called");
     auto on_load_callback = []() {
-        ant2d::SharedTextureManager->Load("assets/face.png");
+        ant2d::SharedTextureManager->Load("assets/block.png");
         ant2d::SharedInputSystem->RegisterButton("up", { SAPP_KEYCODE_UP });
         ant2d::SharedInputSystem->RegisterButton("down", { SAPP_KEYCODE_DOWN });
         ant2d::SharedInputSystem->RegisterButton("left", { SAPP_KEYCODE_LEFT });

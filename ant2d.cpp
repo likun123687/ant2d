@@ -17,10 +17,10 @@ FontManager* SharedFontManager = nullptr;
 TextTable* SharedTextTable = nullptr;
 AudioManager* SharedAudioManager = nullptr;
 InputSystem* SharedInputSystem = nullptr;
+frame::FlipbookTable* SharedFlipbookTable = nullptr;
 
 void Run(WindowOptions options, Scene* sn)
 {
-    Info("start to run, main scene--{}", static_cast<void*>(sn));
     auto g = new Game {};
     g->Init();
     SharedGame = g;
@@ -48,6 +48,10 @@ void Run(WindowOptions options, Scene* sn)
             break;
         case TableType::kText:
             SharedTextTable = reinterpret_cast<TextTable*>(table.get());
+            break;
+        case TableType::kFlipbook:
+            SharedFlipbookTable = reinterpret_cast<frame::FlipbookTable*>(table.get());
+            break;
         }
     }
 

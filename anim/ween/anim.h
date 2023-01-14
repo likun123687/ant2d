@@ -19,17 +19,17 @@ namespace ween {
     };
 
     using AnimState = uint8_t;
-    constexpr AnimState Waiting = 0;
-    constexpr AnimState Running = 1;
-    constexpr AnimState Stopped = 2;
-    constexpr AnimState Dispose = 3;
+    constexpr AnimState kWaiting = 0;
+    constexpr AnimState kRunning = 1;
+    constexpr AnimState kStopped = 2;
+    constexpr AnimState kDispose = 3;
 
     using LoopType = uint8_t;
-    constexpr LoopType Restart = 0;
-    constexpr LoopType PingPong = 1;
+    constexpr LoopType kRestart = 0;
+    constexpr LoopType kPingPong = 1;
 
-    constexpr int RepeatOnce = 1;
-    constexpr int RepeatInfinite = -1;
+    constexpr int kRepeatOnce = 1;
+    constexpr int kRepeatInfinite = -1;
 
     // 维护动画的状态数据
     // 底层动画系统，使用float作为单位 0-1
@@ -52,6 +52,7 @@ namespace ween {
         void Reset();
         // 动画核心算法
         float Animate(float dt_);
+        Animation();
     };
 
     struct TweenEngine {
@@ -69,7 +70,7 @@ namespace ween {
         TweenEngine();
 
         int New();
-        Animator NewAnimator();
+        // Animator NewAnimator();
 
         void Delete(int index_);
 

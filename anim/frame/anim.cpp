@@ -14,16 +14,17 @@ namespace frame {
         }
     }
 
-    void SpriteEngine::NewAnimation(const std::string& name, std::vector<ITexture2D*>& frames, bool loop)
+    void SpriteEngine::NewAnimation(const std::string& name, std::vector<ITexture2D*>::iterator frames_begin, int size, bool loop)
     {
         auto start = frames_.size();
-        auto size = frames.size();
-        frames_.insert(frames_.end(), frames.begin(), frames.end());
+        // auto size = frames.size();
+        frames_.insert(frames_.end(), frames_begin, frames_begin + size);
         data_.emplace_back(Animation { name, int(start), int(size), loop });
-        names_[name] = frames_.size() - 1;
+        names_[name] = data_.size() - 1;
     }
 
-    std::tuple<Animation*, std::vector<ITexture2D*>::iterator, std::vector<ITexture2D*>::iterator> SpriteEngine::GetAnimation(const std::string& name)
+    std::tuple<Animation*, std::vector<ITexture2D*>::iterator, std::vector<ITexture2D*>::iterator>
+    SpriteEngine::GetAnimation(const std::string& name)
     {
         auto it = names_.find(name);
         if (it != names_.end()) {

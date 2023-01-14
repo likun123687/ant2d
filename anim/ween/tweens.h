@@ -7,31 +7,31 @@
 
 namespace ant2d {
 namespace ween {
-    uint8_t U8Lerp(uint8_t from, uint8_t to, float f)
+    inline uint8_t U8Lerp(uint8_t from, uint8_t to, float f)
     {
         float v1 = float(from);
         float v2 = float(to);
         return uint8_t(v1 + (v2 - v1) * f);
     }
 
-    uint16_t U16Lerp(uint16_t from, uint16_t to, float f)
+    inline uint16_t U16Lerp(uint16_t from, uint16_t to, float f)
     {
         float v1 = float(from);
         float v2 = float(to);
         return uint16_t(v1 + (v2 - v1) * f);
     }
 
-    int IntLerp(int from, int to, float f)
+    inline int IntLerp(int from, int to, float f)
     {
         return from + int(float(to - from) * f);
     }
 
-    float F32Lerp(float from, float to, float f)
+    inline float F32Lerp(float from, float to, float f)
     {
         return from + (to - from) * f;
     }
 
-    math::Vec2 Vec2Lerp(math::Vec2 from, math::Vec2 to, float f)
+    inline math::Vec2 Vec2Lerp(math::Vec2 from, math::Vec2 to, float f)
     {
         auto v2 = math::Vec2 {
             F32Lerp(from[0], to[0], f),
@@ -40,7 +40,7 @@ namespace ween {
         return v2;
     }
 
-    color::Float4 ColorLerp(color::Float4 from, color::Float4 to, float f)
+    inline color::Float4 ColorLerp(color::Float4 from, color::Float4 to, float f)
     {
         auto c = color::Float4 {
             F32Lerp(from.r, to.r, f),

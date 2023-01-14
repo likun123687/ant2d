@@ -3,11 +3,6 @@ namespace ant2d {
 namespace math {
     namespace ease {
 
-        inline double InBounce(double t)
-        {
-            return 1 - OutBounce(1 - t);
-        }
-
         inline double OutBounce(double t)
         {
             if (t < 4 / 11.0) {
@@ -19,6 +14,11 @@ namespace math {
             } else {
                 return (54 / 5.0 * t * t) - (513 / 25.0 * t) + 268 / 25.0;
             }
+        }
+
+        inline double InBounce(double t)
+        {
+            return 1 - OutBounce(1 - t);
         }
 
         inline double InOutBounce(double t)

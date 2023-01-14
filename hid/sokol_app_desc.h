@@ -46,6 +46,7 @@ sapp_desc sokol_main(int argc, char* argv[])
     desc.window_title = options.title.c_str();
     desc.win32_console_utf8 = true;
     desc.win32_console_attach = true;
+    desc.high_dpi = true;
     Info("sokol main called!!");
     return desc;
 }

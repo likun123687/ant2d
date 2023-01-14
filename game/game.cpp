@@ -68,6 +68,7 @@ Game::Game()
     , particle_system_(new ParticleSimulateSystem())
     , app_state_(new AppState())
     , input_(new InputSystem {})
+    , anim_system_(new anim::AnimationSystem {})
 {
 }
 
@@ -167,6 +168,10 @@ void Game::Create(float w, float h, float ratio)
     auto prf = new ParticleRenderFeature();
     prf->Register(render_system_.get());
 
+    // Tex2D animation system
+    anim_system_->RequireTable(&db_->GetTableList());
+    anim::SetDefaultAnimationSystem(anim_system_.get());
+
     /// setup scene manager
     scene_manager_->Setup(this);
 }
@@ -223,12 +228,17 @@ void Game::LoadTables()
     auto text_table = new TextTable();
     text_table->SetTableType(TableType::kText);
     db_->AddTable(text_table);
+
+    auto flipbook_table = new frame::FlipbookTable();
+    flipbook_table->SetTableType(TableType::kFlipbook);
+    db_->AddTable(flipbook_table);
 }
 
 void Game::Update()
 {
     auto dt = fps_->Smooth();
     SharedInputSystem->AdvanceFrame();
+    anim_system_->Update(dt);
 
     scene_manager_->Update(dt);
 

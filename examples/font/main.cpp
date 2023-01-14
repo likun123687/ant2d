@@ -32,7 +32,7 @@ class MainScene : public ant2d::Scene {
         auto text1 = ant2d::SharedTextTable->NewComp(entity1);
         text1->SetFont(font1);
         //text1->SetColor(0xFF0000FF);
-        text1->SetText("aaaaaa");
+        text1->SetText("aaaaaabbbccc");
 
         auto xf1 = ant2d::SharedTransformTable->NewComp(entity1);
         xf1->SetPosition(ant2d::math::Vec2 { 300, 300 });
@@ -57,7 +57,7 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
     };
     auto main_scene = new MainScene();
     main_scene->SetOnLoadCallback(on_load_callback);
-    auto options = ant2d::WindowOptions { "font test", 800, 600 };
+    auto options = ant2d::WindowOptions { "font test", 480, 320 };
     ant2d::Run(options, main_scene);
     Info("ant2d main end");
     return options;

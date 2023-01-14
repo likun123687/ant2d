@@ -90,6 +90,7 @@ void TextRenderFeature::SetTable(TextTable* text_table, TransformTable* transfor
 
 void TextRenderFeature::Register(RenderSystem* rs)
 {
+    Info("get table {}", 11); 
     for (auto& r : rs->GetRenderList()) {
         if (r->GetType() == ShaderType::kBatchShader) {
             batch_render_ = reinterpret_cast<BatchRender*>(r.get());
@@ -97,6 +98,7 @@ void TextRenderFeature::Register(RenderSystem* rs)
     }
 
     for (auto& t : (*rs->GetTableList())) {
+        Info("get table {}", int(t->GetTableType()));
         if (t->GetTableType() == TableType::kText) {
             text_table_ = reinterpret_cast<TextTable*>(t.get());
         } else if (t->GetTableType() == TableType::kTransform) {

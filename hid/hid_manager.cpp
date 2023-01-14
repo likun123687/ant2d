@@ -40,6 +40,25 @@ void HidManager::EventCallback(const sapp_event* e)
         window_callback_->OnKeyEvent(e->key_code, true);
     } else if (e->type == SAPP_EVENTTYPE_KEY_UP) {
         window_callback_->OnKeyEvent(e->key_code, false);
+
+    } else if (e->type == SAPP_EVENTTYPE_MOUSE_DOWN
+        || e->type == SAPP_EVENTTYPE_MOUSE_UP) {
+        int pb = 0;
+        if (e->mouse_button == SAPP_MOUSEBUTTON_LEFT) {
+            pb = SAPP_MOUSEBUTTON_LEFT;
+        } else if (e->mouse_button == SAPP_MOUSEBUTTON_MIDDLE) {
+            pb = SAPP_MOUSEBUTTON_MIDDLE;
+        } else if (e->mouse_button == SAPP_MOUSEBUTTON_RIGHT) {
+            pb = SAPP_MOUSEBUTTON_RIGHT;
+        }
+
+        bool is_pressed = false;
+        if (e->type == SAPP_EVENTTYPE_MOUSE_DOWN) {
+            is_pressed = true;
+        }
+
+        Info("mouse cb {}:{}:{}:{}", pb, is_pressed, e->mouse_x, e->mouse_y);
+        window_callback_->OnPointEvent(pb, is_pressed, e->mouse_x, e->mouse_y);
     }
 }
 } // namespace ant2d

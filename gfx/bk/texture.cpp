@@ -34,8 +34,10 @@ sg_image Texture2D::NewTexture(const ImageData& img)
     desc.width = img.width_;
     desc.height = img.height_;
     desc.pixel_format = SG_PIXELFORMAT_RGBA8;
-    desc.wrap_u = SG_WRAP_REPEAT;
-    desc.wrap_v = SG_WRAP_REPEAT;
+    desc.min_filter = SG_FILTER_LINEAR;
+    desc.mag_filter = SG_FILTER_LINEAR;
+    desc.wrap_u = SG_WRAP_CLAMP_TO_EDGE;
+    desc.wrap_v = SG_WRAP_CLAMP_TO_EDGE;
     desc.data.subimage[0][0].ptr = img.pixels_.get();
     desc.data.subimage[0][0].size = img.width_ * img.height_ * img.num_channels_;
     sg_init_image(image_id, &desc);
