@@ -9,6 +9,7 @@ public:
     WindowCallback* window_callback_;
     std::array<int, 1024> keys_;
     WindowOptions options_;
+    sg_pass_action pass_action_;
     void SetWindowCallback(WindowCallback* callback);
     void SetOptions(WindowOptions options);
     void InitCallback();

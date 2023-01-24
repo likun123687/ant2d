@@ -177,20 +177,7 @@ int RenderQueue::Flush()
         Info("key sort3");
         break;
     }
-
-    Info("before draw {}", num);
-    for (auto key : sort_keys) {
-        Info("key item {}", key);
-    }
-
-    for (auto value : sort_values) {
-        Info("value item {}", value);
-    }
-
-    for (auto& draw : draw_list) {
-        Info("draw item {}", draw.index_buffer_);
-    }
-    ctx_->Draw(std::move(sort_keys), std::move(sort_values), std::move(draw_list));
+    ctx_->Draw(sort_keys, sort_values, draw_list);
     Info("after draw");
     draw_call_num_ = 0;
     uniformblock_begin_ = 0;

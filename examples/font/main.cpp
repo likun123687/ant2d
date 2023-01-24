@@ -21,7 +21,7 @@ class MainScene : public ant2d::Scene {
         text->SetFont(font);
         //text->SetColor(0xFF0000FF);
 
-        text->SetText("bbbb");
+        text->SetText("aaabbbbccc");
 
         auto xf = ant2d::SharedTransformTable->NewComp(entity);
         xf->SetPosition(ant2d::math::Vec2 { 200, 200 });

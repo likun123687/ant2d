@@ -2,6 +2,7 @@
 #include <hid/hid_manager.h>
 #include <utils/debug.h>
 namespace ant2d {
+
 void HidManager::SetWindowCallback(WindowCallback* callback)
 {
     Info("set windows callback {}", static_cast<void*>(callback));
@@ -15,6 +16,9 @@ void HidManager::SetOptions(WindowOptions options)
 
 void HidManager::InitCallback()
 {
+    /* a pass action to clear framebuffer */
+    pass_action_.colors[0].action = SG_ACTION_CLEAR;
+    pass_action_.colors[0].value = { 1.0f, 1.0f, 1.0f, 1.0f };
     float width = sapp_widthf();
     float height = sapp_heightf();
     window_callback_->OnCreate(width, height, sapp_dpi_scale());
@@ -23,7 +27,10 @@ void HidManager::InitCallback()
 
 void HidManager::FrameCallback()
 {
+    sg_begin_default_pass(&pass_action_, sapp_width(), sapp_height());
     window_callback_->OnLoop();
+    sg_end_pass();
+    sg_commit();
 }
 
 void HidManager::CleanupCallback(void)

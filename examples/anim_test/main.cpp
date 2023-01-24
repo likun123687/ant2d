@@ -30,32 +30,15 @@ class MainScene : public ant2d::Scene {
     void Update(float dt)
     {
         Info("main scene update {}", dt);
-        ant2d::math::Vec2 speed { 0, 0 };
-        if (ant2d::SharedInputSystem->GetButton("up")->Down()) {
-            Info("up button clicked");
-            speed[1] = 5;
-        }
-
-        if (ant2d::SharedInputSystem->GetButton("down")->Down()) {
-            speed[1] = -5;
-        }
-
-        if (ant2d::SharedInputSystem->GetButton("left")->Down()) {
-            speed[0] = -5;
-        }
-
-        if (ant2d::SharedInputSystem->GetButton("right")->Down()) {
-            speed[0] = 5;
-        }
+        ant2d::math::Vec2 speed { 5, 5 };
 
         auto xf = ant2d::SharedTransformTable->GetComp(face_);
         xf->MoveBy(speed[0], speed[1]);
-
-        auto [btn, pos, pos1] = ant2d::SharedInputSystem->Mouse(SAPP_MOUSEBUTTON_LEFT);
-        if (btn && btn->Down()) {
-            Info("left btn click {}:{}", pos[0], pos[1]);
-            xf->SetPosition(pos);
+        auto cur_pos = xf->GetPosition();
+        if (cur_pos[0]>800) {
+            xf->SetPosition(ant2d::math::Vec2 { 100, 100 });
         }
+
     }
 
     void OnExit()
@@ -68,10 +51,6 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
     Info("ant2d main called");
     auto on_load_callback = []() {
         ant2d::SharedTextureManager->Load("assets/face.png");
-        ant2d::SharedInputSystem->RegisterButton("up", { SAPP_KEYCODE_UP });
-        ant2d::SharedInputSystem->RegisterButton("down", { SAPP_KEYCODE_DOWN });
-        ant2d::SharedInputSystem->RegisterButton("left", { SAPP_KEYCODE_LEFT });
-        ant2d::SharedInputSystem->RegisterButton("right", { SAPP_KEYCODE_RIGHT });
     };
     auto main_scene = new MainScene();
     main_scene->SetOnLoadCallback(on_load_callback);

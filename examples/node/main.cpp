@@ -112,10 +112,6 @@ class MainScene : public ant2d::Scene {
 
     void Update(float dt)
     {
-        if (dt > 1) {
-            return;
-        }
-
         float x = 0;
         float y = 0;
 
@@ -139,6 +135,7 @@ class MainScene : public ant2d::Scene {
         auto p = xf->GetPosition();
         x = x * dt + p[0];
         y = y * dt + p[1];
+        Info("new pos {}:{}", x, y);
 
         xf->SetPosition(ant2d::math::Vec2 { x, y });
     }

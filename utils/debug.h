@@ -12,7 +12,7 @@ namespace ant2d {
 
 #define assertm(exp, msg) assert(((void)msg, exp))
 
-#if !ANT2D_DEBUG
+#if ANT2D_DEBUG
 #define Info(...) ANT2D_DUMMY
 #define Warn(...) ANT2D_DUMMY
 #define Error(...) ANT2D_DUMMY
