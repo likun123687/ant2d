@@ -5,13 +5,12 @@ namespace ant2d {
 
 void HidManager::SetWindowCallback(WindowCallback* callback)
 {
-    Info("set windows callback {}", static_cast<void*>(callback));
     window_callback_ = callback;
 }
 
-void HidManager::SetOptions(WindowOptions options)
+void HidManager::SetOptions(WindowOptions* options)
 {
-    options_ = options;
+    options_.reset(options);
 }
 
 void HidManager::InitCallback()

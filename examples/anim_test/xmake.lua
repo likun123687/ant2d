@@ -8,9 +8,6 @@ target("anim_example")
     else
         add_files("main.cpp")
     end
-    after_build(function (target)
-        os.cp("tests/assets/", path.join(target:targetdir(), "assets"), {rootdir = "tests/assets/"})
-        print("copy test assets to target dir success\n")
-    end)
+    
 target_end()
 

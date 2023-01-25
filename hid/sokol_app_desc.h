@@ -29,7 +29,7 @@ namespace hid {
 } // namespace hid
 } // namespace ant2d
 
-extern ant2d::WindowOptions ant2d_main(int argc, char* argv[]);
+extern ant2d::WindowOptions* ant2d_main(int argc, char* argv[]);
 
 sapp_desc sokol_main(int argc, char* argv[])
 {
@@ -39,11 +39,11 @@ sapp_desc sokol_main(int argc, char* argv[])
     desc.frame_cb = ::ant2d::hid::FrameCallback;
     desc.cleanup_cb = ::ant2d::hid::CleanupCallback;
     desc.event_cb = ::ant2d::hid::EventCallback;
-    if (options.width > 0 && options.height > 0) {
-        desc.width = options.width;
-        desc.height = options.height;
+    if (options->width > 0 && options->height > 0) {
+        desc.width = options->width;
+        desc.height = options->height;
     }
-    desc.window_title = options.title.c_str();
+    desc.window_title = options->title.c_str();
     desc.win32_console_utf8 = true;
     desc.win32_console_attach = true;
     desc.high_dpi = true;

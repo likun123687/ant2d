@@ -1,4 +1,4 @@
-target("gui_example")
+target("script_example")
     set_kind("binary")
     add_deps("ant2d")
     add_packages("stb") 

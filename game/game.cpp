@@ -69,6 +69,7 @@ Game::Game()
     , app_state_(new AppState())
     , input_(new InputSystem {})
     , anim_system_(new anim::AnimationSystem {})
+    , script_system_(new ScriptSystem {})
 {
 }
 
@@ -168,6 +169,8 @@ void Game::Create(float w, float h, float ratio)
     auto prf = new ParticleRenderFeature();
     prf->Register(render_system_.get());
 
+    script_system_->RequireTable(&db_->GetTableList());
+
     // Tex2D animation system
     anim_system_->RequireTable(&db_->GetTableList());
     anim::SetDefaultAnimationSystem(anim_system_.get());
@@ -232,6 +235,10 @@ void Game::LoadTables()
     auto flipbook_table = new frame::FlipbookTable();
     flipbook_table->SetTableType(TableType::kFlipbook);
     db_->AddTable(flipbook_table);
+
+    auto script_table = new ScriptTable();
+    script_table->SetTableType(TableType::kScript);
+    db_->AddTable(script_table);
 }
 
 void Game::Update()
@@ -241,6 +248,8 @@ void Game::Update()
     anim_system_->Update(dt);
 
     scene_manager_->Update(dt);
+
+    script_system_->Update(dt);
 
     SharedInputSystem->Reset();
 

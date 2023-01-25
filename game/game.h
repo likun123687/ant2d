@@ -9,6 +9,7 @@
 #include <effect/particle_simulate_system.h>
 #include <hid/input/input_system.h>
 #include <anim/anim.h>
+#include <game/script/script_system.h>
 
 namespace ant2d {
 constexpr int32_t kMaxScriptSize = 1024;
@@ -67,6 +68,7 @@ private:
     std::unique_ptr<AppState> app_state_;
     std::unique_ptr<InputSystem> input_;
     std::unique_ptr<anim::AnimationSystem> anim_system_;
+    std::unique_ptr<ScriptSystem> script_system_;
 
 public:
     Game();

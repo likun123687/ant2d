@@ -42,13 +42,13 @@ class MainScene : public ant2d::Scene {
         ant2d::gui::Move(100, 60);
 
         // draw text
-        // ant2d::gui::Text(2, ant2d::gui::Rect { 0, 0, 0, 0 }, "abcdesadfasdf", nullptr);
+        ant2d::gui::Text(2, ant2d::gui::Rect { 0, 0, 0, 0 }, "abcdesadfasdf", nullptr);
 
         // //  draw image
-        // ant2d::gui::Image(3, ant2d::gui::Rect { 0, 30, 100, 100 }, face_, nullptr);
+        ant2d::gui::Image(3, ant2d::gui::Rect { 0, 30, 100, 100 }, face_, nullptr);
 
         // // draw image button
-        // ant2d::gui::ImageButton(6, ant2d::gui::Rect { 50, 30, 30, 30 }, normal_, pressed_, nullptr);
+        ant2d::gui::ImageButton(6, ant2d::gui::Rect { 50, 30, 30, 30 }, normal_, pressed_, nullptr);
 
         // draw button
         auto e = ant2d::gui::Button(4, ant2d::gui::Rect { 0, 100, 0, 0 }, "NewButton", nullptr);
@@ -74,7 +74,7 @@ class MainScene : public ant2d::Scene {
     }
 };
 
-ant2d::WindowOptions ant2d_main(int argc, char* argv[])
+ant2d::WindowOptions* ant2d_main(int argc, char* argv[])
 {
     Info("ant2d main called");
     auto on_load_callback = []() {
@@ -88,7 +88,7 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
     };
     auto main_scene = new MainScene();
     main_scene->SetOnLoadCallback(on_load_callback);
-    auto options = ant2d::WindowOptions { "gui test", 800, 600 };
+    auto options = new ant2d::WindowOptions { "gui test", 800, 600 };
     ant2d::Run(options, main_scene);
     Info("ant2d main end");
     return options;

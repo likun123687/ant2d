@@ -8,10 +8,10 @@ class HidManager {
 public:
     WindowCallback* window_callback_;
     std::array<int, 1024> keys_;
-    WindowOptions options_;
+    std::unique_ptr<WindowOptions> options_;
     sg_pass_action pass_action_;
     void SetWindowCallback(WindowCallback* callback);
-    void SetOptions(WindowOptions options);
+    void SetOptions(WindowOptions* options);
     void InitCallback();
     void FrameCallback();
     void CleanupCallback();
