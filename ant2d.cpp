@@ -17,10 +17,11 @@ FontManager* SharedFontManager = nullptr;
 TextTable* SharedTextTable = nullptr;
 AudioManager* SharedAudioManager = nullptr;
 InputSystem* SharedInputSystem = nullptr;
+frame::FlipbookTable* SharedFlipbookTable = nullptr;
+ScriptTable* SharedScriptTable = nullptr;
 
-void Run(WindowOptions options, Scene* sn)
+void Run(WindowOptions* options, Scene* sn)
 {
-    Info("start to run, main scene--{}", static_cast<void*>(sn));
     auto g = new Game {};
     g->Init();
     SharedGame = g;
@@ -37,17 +38,30 @@ void Run(WindowOptions options, Scene* sn)
         case TableType::kSprite:
             SharedSpriteTable = reinterpret_cast<SpriteTable*>(table.get());
             break;
+
         case TableType::kTransform:
             SharedTransformTable = reinterpret_cast<TransformTable*>(table.get());
             break;
+
         case TableType::KMesh:
             SharedMeshTable = reinterpret_cast<MeshTable*>(table.get());
             break;
+
         case TableType::kParticle:
             SharedParticleSystemTable = reinterpret_cast<ParticleSystemTable*>(table.get());
             break;
+
         case TableType::kText:
             SharedTextTable = reinterpret_cast<TextTable*>(table.get());
+            break;
+
+        case TableType::kFlipbook:
+            SharedFlipbookTable = reinterpret_cast<frame::FlipbookTable*>(table.get());
+            break;
+
+        case TableType::kScript:
+            SharedScriptTable = reinterpret_cast<ScriptTable*>(table.get());
+            break;
         }
     }
 

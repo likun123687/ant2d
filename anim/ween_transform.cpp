@@ -1,4 +1,5 @@
 #include <anim/ween_transform.h>
+#include <anim/anim.h>
 
 namespace ant2d {
 namespace anim {
@@ -7,7 +8,7 @@ namespace anim {
     // Move the Entity to given value.
     std::unique_ptr<ProxyAnimator> Move(Entity e, math::Vec2 from, math::Vec2 to)
     {
-        ProxyAnimator* p_animator = new ProxyAnimator();
+        ProxyAnimator* p_animator = new ProxyAnimator(SharedTweenEngine);
         std::unique_ptr<ProxyAnimator> proxy { p_animator };
         auto update_cb = [e, from, to, p_animator](bool reverse, float f) -> void {
             auto comp = SharedAnimationSystem->transform_table->GetComp(e);
@@ -36,7 +37,7 @@ namespace anim {
     // Move the 'x' to given value.
     std::unique_ptr<ProxyAnimator> MoveX(Entity e, float from, float to)
     {
-        ProxyAnimator* p_animator = new ProxyAnimator();
+        ProxyAnimator* p_animator = new ProxyAnimator(SharedTweenEngine);
         std::unique_ptr<ProxyAnimator> proxy { p_animator };
         auto update_cb = [e, from, to, p_animator](bool reverse, float f) -> void {
             auto comp = SharedAnimationSystem->transform_table->GetComp(e);
@@ -45,9 +46,9 @@ namespace anim {
                 auto old_pos = comp->GetPosition();
                 comp->SetPosition(math::Vec2 { x, old_pos[1] });
             }
-            auto fn = p_animator->update;
-            if (fn) {
-                fn(reverse, f);
+            // auto fn = p_animator->update;
+            if (p_animator->update) {
+                p_animator->update(reverse, f);
             }
         };
 
@@ -67,7 +68,7 @@ namespace anim {
     // Move the 'y' to given value.
     std::unique_ptr<ProxyAnimator> MoveY(Entity e, float from, float to)
     {
-        ProxyAnimator* p_animator = new ProxyAnimator();
+        ProxyAnimator* p_animator = new ProxyAnimator(SharedTweenEngine);
         std::unique_ptr<ProxyAnimator> proxy { p_animator };
         auto update_cb = [e, from, to, p_animator](bool reverse, float f) -> void {
             auto comp = SharedAnimationSystem->transform_table->GetComp(e);
@@ -98,7 +99,7 @@ namespace anim {
     // Scale the Entity to the given value.
     std::unique_ptr<ProxyAnimator> Scale(Entity e, math::Vec2 from, math::Vec2 to)
     {
-        ProxyAnimator* p_animator = new ProxyAnimator();
+        ProxyAnimator* p_animator = new ProxyAnimator(SharedTweenEngine);
         std::unique_ptr<ProxyAnimator> proxy { p_animator };
         auto update_cb = [e, from, to, p_animator](bool reverse, float f) -> void {
             auto comp = SharedAnimationSystem->transform_table->GetComp(e);
@@ -128,7 +129,7 @@ namespace anim {
     // Scale the 'x' to the given value.
     std::unique_ptr<ProxyAnimator> ScaleX(Entity e, float from, float to)
     {
-        ProxyAnimator* p_animator = new ProxyAnimator();
+        ProxyAnimator* p_animator = new ProxyAnimator(SharedTweenEngine);
         std::unique_ptr<ProxyAnimator> proxy { p_animator };
         auto update_cb = [e, from, to, p_animator](bool reverse, float f) -> void {
             auto comp = SharedAnimationSystem->transform_table->GetComp(e);
@@ -159,7 +160,7 @@ namespace anim {
     // Scale the 'y' to the given value.
     std::unique_ptr<ProxyAnimator> ScaleY(Entity e, float from, float to)
     {
-        ProxyAnimator* p_animator = new ProxyAnimator();
+        ProxyAnimator* p_animator = new ProxyAnimator(SharedTweenEngine);
         std::unique_ptr<ProxyAnimator> proxy { p_animator };
         auto update_cb = [e, from, to, p_animator](bool reverse, float f) -> void {
             auto comp = SharedAnimationSystem->transform_table->GetComp(e);
@@ -190,7 +191,7 @@ namespace anim {
     // Rotate the Entity to given value.
     std::unique_ptr<ProxyAnimator> Rotate(Entity e, float from, float to)
     {
-        ProxyAnimator* p_animator = new ProxyAnimator();
+        ProxyAnimator* p_animator = new ProxyAnimator(SharedTweenEngine);
         std::unique_ptr<ProxyAnimator> proxy { p_animator };
         auto update_cb = [e, from, to, p_animator](bool reverse, float f) -> void {
             auto comp = SharedAnimationSystem->transform_table->GetComp(e);

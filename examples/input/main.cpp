@@ -50,6 +50,12 @@ class MainScene : public ant2d::Scene {
 
         auto xf = ant2d::SharedTransformTable->GetComp(face_);
         xf->MoveBy(speed[0], speed[1]);
+
+        auto [btn, pos, pos1] = ant2d::SharedInputSystem->Mouse(SAPP_MOUSEBUTTON_LEFT);
+        if (btn && btn->Down()) {
+            Info("left btn click {}:{}", pos[0], pos[1]);
+            xf->SetPosition(pos);
+        }
     }
 
     void OnExit()
@@ -57,7 +63,7 @@ class MainScene : public ant2d::Scene {
     }
 };
 
-ant2d::WindowOptions ant2d_main(int argc, char* argv[])
+ant2d::WindowOptions* ant2d_main(int argc, char* argv[])
 {
     Info("ant2d main called");
     auto on_load_callback = []() {
@@ -69,7 +75,7 @@ ant2d::WindowOptions ant2d_main(int argc, char* argv[])
     };
     auto main_scene = new MainScene();
     main_scene->SetOnLoadCallback(on_load_callback);
-    auto options = ant2d::WindowOptions { "input test", 800, 600 };
+    auto options = new ant2d::WindowOptions { "input test", 800, 600 };
     ant2d::Run(options, main_scene);
     Info("ant2d main end");
     return options;

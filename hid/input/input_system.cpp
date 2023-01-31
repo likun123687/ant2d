@@ -1,40 +1,41 @@
 
 #include <hid/input/input_system.h>
-
+#include <utils/debug.h>
 namespace ant2d {
 
 SparseMap::SparseMap()
-    : keys_ {}
-    , stat_ {}
-    , used_ { 0 }
+    : key_map_ {}
 {
 }
 
 void SparseMap::PutKey(Key k, bool st)
 {
-    keys_[used_] = k;
-    stat_[used_] = st;
-    used_++;
+    Info("btn update PutKey {}-{}", k, st);
+    auto iter = key_map_.find(k);
+    if (iter != key_map_.end()) {
+        iter->second.push_back(st);
+    } else {
+        key_map_.emplace(k, std::vector<bool> { st });
+    }
 }
 
 void SparseMap::Clear()
 {
-    used_ = 0;
+    key_map_.clear();
 }
 
-std::tuple<bool, bool> SparseMap::GetKey(Key k)
+SparseMap::StateList* SparseMap::GetKey(Key k)
 {
-    for (int i = 0; i < used_; i++) {
-        if (keys_[i] == k) {
-            return { stat_[i], true };
-        }
+    auto iter = key_map_.find(k);
+    if (iter != key_map_.end()) {
+        return &(iter->second);
     }
-    return { false, false };
+    return nullptr;
 }
 
-int SparseMap::GetUsed()
+int SparseMap::GetKeyMapSize()
 {
-    return used_;
+    return key_map_.size();
 }
 
 InputSystem::InputSystem()
@@ -56,7 +57,7 @@ Button* InputSystem::GetButton(const std::string& name)
 
 bool InputSystem::AnyKeyChanged()
 {
-    if (dirty_.GetUsed() > 0) {
+    if (dirty_.GetKeyMapSize() > 0) {
         return true;
     }
     return false;
@@ -106,28 +107,20 @@ std::tuple<Button*, math::Vec2, math::Vec2> InputSystem::Mouse(int key)
 // TODO 此处的输入状态，更新有bug！！
 void InputSystem::AdvanceFrame()
 {
-    auto n = binds_.size();
-    auto dirty = dirty_.GetUsed();
+    const int n = binds_.size();
+    // auto dirty = dirty_.GetUsed();
     if (n > 0) {
-        bool ok = false;
-        bool st = false;
-        Button* pr = nullptr;
-
+        // bool ok = false;
+        // bool st = false;
+        //  Button* pr = nullptr;
         for (auto& bd : binds_) {
-            auto [s, o] = dirty_.GetKey(bd.key);
-            if (o) {
-                st = st || s;
-                ok = ok || o;
-            }
-            if (pr != bd.btn) {
-                if (ok) {
+            auto state_list = dirty_.GetKey(bd.key);
+            if (state_list) {
+                for (auto st : *state_list) {
+                    Info("btn update before {}-{}", bd.key, st);
                     bd.btn->Update(st);
                 }
-
-                st = false;
-                ok = false;
             }
-            pr = bd.btn;
         }
     }
 }

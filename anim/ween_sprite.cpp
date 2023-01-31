@@ -6,7 +6,7 @@ namespace anim {
     // Tint the Entity to given color.
     std::unique_ptr<ProxyAnimator> Tint(Entity e, color::Float4 from, color::Float4 to)
     {
-        ProxyAnimator* p_animator = new ProxyAnimator();
+        ProxyAnimator* p_animator = new ProxyAnimator(SharedTweenEngine);
         std::unique_ptr<ProxyAnimator> proxy { p_animator };
         auto update_cb = [e, from, to, p_animator](bool reverse, float f) -> void {
             auto spr = SharedAnimationSystem->sprite_table->GetComp(e);

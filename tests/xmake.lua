@@ -10,9 +10,6 @@ target("ant2d_test")
     add_files("batch_render_test.cpp")
     add_files("texture_manager_test.cpp")
     add_files("effect_test.cpp")
-    after_build(function (target)
-        os.cp("tests/assets/", path.join(target:targetdir(), "assets"), {rootdir = "tests/assets/"})
-        print("copy test assets to target dir success\n")
-    end)
+    
 target_end()
 

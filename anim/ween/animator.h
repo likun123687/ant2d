@@ -10,8 +10,8 @@ namespace ween {
     using EndCallback = std::function<void(bool)>;
 
     struct Animator {
-        TweenEngine* en;
-        int index;
+        TweenEngine* en = nullptr;
+        int index = 0;
         Animator() = default;
         Animator(TweenEngine* en_, int index_);
         Animator* SetDuration(float d_);

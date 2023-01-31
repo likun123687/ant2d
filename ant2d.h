@@ -14,6 +14,8 @@
 #include <gfx/text/text_table.h>
 #include <gui/gui.h>
 #include <asset/audio_manager.h>
+#include <anim/frame/flipbook_table.h>
+#include <game/script/script_table.h>
 
 namespace ant2d {
 extern Game* SharedGame;
@@ -24,10 +26,12 @@ extern MeshTable* SharedMeshTable;
 extern ParticleSystemTable* SharedParticleSystemTable;
 extern TransformTable* SharedTransformTable;
 extern TextureManager* SharedTextureManager;
-extern FontManager *SharedFontManager;
+extern FontManager* SharedFontManager;
 extern TextTable* SharedTextTable;
-extern AudioManager *SharedAudioManager;
+extern AudioManager* SharedAudioManager;
 extern InputSystem* SharedInputSystem;
+extern frame::FlipbookTable* SharedFlipbookTable;
+extern ScriptTable* SharedScriptTable;
 
-void Run(WindowOptions options, Scene* sn);
+void Run(WindowOptions* options, Scene* sn);
 }

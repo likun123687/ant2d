@@ -28,7 +28,7 @@ namespace math {
     inline float Random(float low, float high)
     {
         std::random_device rd;
-        std::mt19937 gen(rd());
+        static std::mt19937 gen(rd());
         std::uniform_real_distribution<float> dis(low, high);
         return dis(gen);
     }
@@ -43,18 +43,12 @@ namespace math {
 
     inline float Max(float a, float b)
     {
-        if (a < b) {
-            return b;
-        }
-        return a;
+        return a < b ? b : a;
     }
 
     inline float Min(float a, float b)
     {
-        if (a < b) {
-            return a;
-        }
-        return b;
+        return a < b ? a : b;
     }
 
     inline float Clamp(float v, float left, float right)
@@ -172,18 +166,13 @@ namespace math {
 
     inline uint16_t U16Min(uint16_t a, uint16_t b)
     {
-        if (a < b) {
-            return a;
-        }
-        return b;
+        return a < b ? a : b;
     }
 
     inline uint16_t U16Max(uint16_t a, uint16_t b)
     {
-        if (a < b) {
-            return b;
-        }
-        return a;
+
+        return a < b ? b : a;
     }
 
     // Pow2 returns the first power-of-two value >= to n.

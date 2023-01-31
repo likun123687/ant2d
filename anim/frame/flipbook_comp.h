@@ -13,17 +13,17 @@ namespace frame {
         static constexpr LoopType kPingPong = 1;
         static constexpr LoopType kNone = 2;
 
-        std::string define_;
-        float dt_;
-        float rate_;
-        int ii_;
-        bool running_;
-        bool loop_;
-        uint16_t frame_index_;
-        uint16_t last_frame_index_;
-        int gfi_;
-        LoopType typ_;
-        bool reverse_;
+        std::string define_ = "";
+        float dt_ = 0.0f;
+        float rate_ = 0.0f;
+        int ii_ = 0;
+        bool running_ = false;
+        bool loop_ = false;
+        uint16_t frame_index_ = 0;
+        uint16_t last_frame_index_ = 0;
+        int gfi_ = 0;
+        LoopType typ_ = kRestart;
+        bool reverse_ = false;
 
     public:
         void Reset()

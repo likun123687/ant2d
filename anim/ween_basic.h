@@ -1,6 +1,7 @@
 #pragma once
 #include <anim/ween/animator.h>
 #include <anim/ween/tweens.h>
+#include <anim/ween/anim.h>
 
 namespace ant2d {
 namespace anim {
@@ -10,7 +11,8 @@ namespace anim {
         ween::UpdateCallback update;
         ween::EndCallback complete;
 
-        ProxyAnimator();
+        //ProxyAnimator();
+        ProxyAnimator(ween::TweenEngine* en_);
 
         // Proxy the SetDuration method.
         ProxyAnimator* SetDuration(float d_);

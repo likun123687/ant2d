@@ -1,13 +1,14 @@
 #include <anim/ween/anim.h>
+#include <utils/debug.h>
 
 namespace ant2d {
 namespace ween {
     void Animation::Reset()
     {
         interpolator = math::ease::Linear;
-        state.anim_state = Waiting;
+        state.anim_state = kWaiting;
         clock = 0;
-        loop_type = Restart;
+        loop_type = kRestart;
         repeat_count = 0;
         reverse = false;
     }
@@ -19,10 +20,10 @@ namespace ween {
         clock += dt_;
         auto fr = clock / duration;
         if (fr >= 1) {
-            if (iteration < repeat_count || repeat_count == RepeatInfinite) {
+            if (iteration < repeat_count || repeat_count == kRepeatInfinite) {
                 iteration += int(fr);
                 clock = 0;
-                if (loop_type == PingPong) {
+                if (loop_type == kPingPong) {
                     reverse = !reverse;
                 }
 
@@ -31,13 +32,13 @@ namespace ween {
                 }
 
             } else {
-                state.anim_state = Stopped;
+                state.anim_state = kStopped;
                 state.dirty = true;
                 fr = 1;
             }
         }
 
-        if (state.anim_state == Stopped) {
+        if (state.anim_state == kStopped) {
             ret = 1;
         } else {
             ret = float(interpolator(double(fr)));
@@ -50,8 +51,26 @@ namespace ween {
         return ret;
     }
 
+    Animation::Animation()
+        : index { 0 }
+        , clock { 0.0f }
+        , duration { 0.0f }
+        , iteration { 0 }
+        , repeat_count { 0 }
+        , loop_type { kRestart }
+    {
+    }
+
     TweenEngine::TweenEngine()
-        : loopup()
+        : anims {}
+        , values {}
+        , callbacks {}
+        , time { 0.0f }
+        , scale { 0.0f }
+        , active { 0 }
+        , cap { 0 }
+        , loopup {}
+        , unique_id { 0 }
     {
         scale = 1;
         anims.resize(32);
@@ -61,8 +80,7 @@ namespace ween {
 
     int TweenEngine::New()
     {
-        int uid = 0;
-        uid = unique_id;
+        int uid = unique_id;
         unique_id++;
 
         auto index = active;
@@ -77,16 +95,16 @@ namespace ween {
         return uid;
     }
 
-    Animator TweenEngine::NewAnimator()
-    {
-        return Animator { this, New() };
-    }
+    // Animator TweenEngine::NewAnimator()
+    // {
+    //     return Animator { this, New() };
+    // }
 
     void TweenEngine::Delete(int index_)
     {
         auto iter = loopup.find(index_);
         if (iter != loopup.end()) {
-            anims[iter->second].state.anim_state = Dispose;
+            anims[iter->second].state.anim_state = kDispose;
         }
     }
 
@@ -97,11 +115,10 @@ namespace ween {
 
     void TweenEngine::Update(float dt_)
     {
-        auto size = active;
-        // 1. update
-        for (int i = 0; i < size; i++) {
+        //  1. update
+        for (int i = 0; i < active; i++) {
             auto& anim = anims[i];
-            if (anim.state.anim_state == Running) {
+            if (anim.state.anim_state == kRunning) {
                 auto f = anim.Animate(dt_);
                 values[i] = Value { f };
             }
@@ -110,13 +127,13 @@ namespace ween {
         // 2 callback
         for (int i = 0; i < active; i++) {
             auto& anim = anims[i];
-            if (anim.state.anim_state == Stopped && anim.state.dirty) {
+            if (anim.state.anim_state == kStopped && anim.state.dirty) {
                 anim.state.dirty = false;
                 auto cb = callbacks[i].end_callback;
                 if (cb) {
                     cb(anim.reverse);
                 }
-            } else if (anim.state.anim_state == Running) {
+            } else if (anim.state.anim_state == kRunning) {
                 auto cb = callbacks[i].update_callback;
                 if (cb) {
                     cb(anim.reverse, values[i].f);
@@ -126,9 +143,9 @@ namespace ween {
 
         // 3. delete dead
         int i = 0, j = active - 1;
-        while (i < j) {
+        while (i <= j) {
             auto& anim = anims[i];
-            if (anim.state.anim_state == Dispose) {
+            if (anim.state.anim_state == kDispose) {
                 loopup[anims[j].index] = i;
                 loopup.erase(anim.index);
                 anims[i] = anims[j];
@@ -149,7 +166,7 @@ namespace ween {
         if (iter != loopup.end()) {
             auto& anim = anims[iter->second];
             anim.clock = 0;
-            anim.state.anim_state = Running;
+            anim.state.anim_state = kRunning;
             anim.state.dirty = true;
             anim.iteration = 0;
             anim.reverse = false;
@@ -164,13 +181,13 @@ namespace ween {
         if (iter != loopup.end()) {
             auto v = iter->second;
             auto& anim = anims[v];
-            if (anim.state.anim_state == Running) {
+            if (anim.state.anim_state == kRunning) {
                 anim.clock = anim.duration - anim.clock;
                 anim.reverse = !anim.reverse;
             } else {
                 anim.reverse = !anim.reverse;
                 anim.clock = 0;
-                anim.state.anim_state = Running;
+                anim.state.anim_state = kRunning;
                 anim.state.dirty = true;
                 anim.iteration = 0;
             }
@@ -184,7 +201,7 @@ namespace ween {
         if (iter != loopup.end()) {
             auto v = iter->second;
             auto& anim = anims[v];
-            anim.state.anim_state = Stopped;
+            anim.state.anim_state = kStopped;
             anim.state.dirty = true;
         }
     }

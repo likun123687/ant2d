@@ -7,7 +7,6 @@ namespace ant2d {
 struct BkState {
     sg_pipeline pip;
     sg_bindings bind;
-    sg_pass_action pass_action;
 };
 
 class Rect {
@@ -106,8 +105,8 @@ public:
     void UpdatePipeline(uint16_t& old_pipeline, uint16_t& new_pipeline);
     void DoDraw(RenderDraw& draw, RenderDraw& current_state);
 
-    void Draw(std::vector<uint64_t> sort_keys, std::vector<uint16_t> sort_values,
-        std::vector<RenderDraw> draw_list);
+    void Draw(std::vector<uint64_t>& sort_keys, std::vector<uint16_t>& sort_values,
+        std::vector<RenderDraw>& draw_list);
 
     void BindUniformblock(uint32_t begin, uint32_t end);
     void BindState(uint64_t changed_flags, uint64_t new_flags);

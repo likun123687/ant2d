@@ -40,8 +40,6 @@ void RenderSystem::RegisterRender(IRender* render)
 
 void RenderSystem::Update(float dt)
 {
-    Info("update {}", dt);
-
     // update camera
     auto follow = main_camera_->GetFollow();
     if (!follow.IsGhost()) {
@@ -69,7 +67,7 @@ void RenderSystem::Update(float dt)
     }
 
     // sort
-    auto nodes = view_.render_nodes;
+    auto& nodes = view_.render_nodes;
     auto n = nodes.size();
     std::sort(nodes.begin(), nodes.end(),
         [](const SortObject& a, const SortObject& b) -> bool {
@@ -77,10 +75,7 @@ void RenderSystem::Update(float dt)
         });
 
     // draw
-    int i = 0;
-    int j = 0;
-    Info("before sprite for {}--{}--{}", i, j, n);
-    for (; i < n; i = j) {
+    for (int i = 0, j = 0; i < n; i = j) {
         auto fi = (nodes[i].value >> 16); // feature id
         j = i + 1;
         while (j < n && (nodes[j].value >> 16 == fi)) {
@@ -88,7 +83,6 @@ void RenderSystem::Update(float dt)
         }
         auto& f = feature_list_[fi];
         // f.Draw(v.RenderNodes [i:j]);
-        Info("before sprite draw {}--{}", i, j);
         f->Draw({ view_.render_nodes.begin() + i, view_.render_nodes.begin() + j });
     }
 
