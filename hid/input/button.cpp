@@ -44,7 +44,7 @@ void Button::Update(bool down)
 
 void Button::Reset()
 {
-    state_ = state_ & 0x01;
+    state_ &= 0x01;
 }
 
 ButtonManager::ButtonManager()
