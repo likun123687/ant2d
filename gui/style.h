@@ -84,14 +84,18 @@ struct Theme {
         static Theme theme;
         static bool is_init = false;
         if (!is_init) {
-            theme.text.color = 0xFFFFFFFF;
-            theme.text.size = 18;
+            theme.text.color = 0x000000FF;
+            theme.text.size = 12;
             theme.text.line_space = 6;
 
-            theme.button.text_style.color = 0xFFFFFFFF;
-            theme.button.text_style.size = 24;
+            theme.button.text_style.color = 0x000000FF;
+            theme.button.text_style.size = 12;
             theme.button.gravity = math::Vec2 { 0.5, 0.5 };
             theme.button.rounding = 5;
+            theme.button.padding.left = 10;
+            theme.button.padding.right = 10;
+            theme.button.padding.bottom = 10;
+            theme.button.padding.top = 10;
 
             theme.image.tint = 0xFFFFFFFF;
             theme.image_button.image_style.tint = 0xFFFFFFFF;
@@ -101,11 +105,11 @@ struct Theme {
             padding.bottom = 0;
             padding.top = 0;
 
-            theme.slider.bar = 0xFFFFFFFF;
-            theme.slider.knob = 0xFFFFFFFF;
+            theme.slider.bar = 0xCCCCCCFF;
+            theme.slider.knob = 0x888888FF;
 
-            theme.normal = 0xFFFFFFFF;
-            theme.pressed = 0xFFFFFFFF;
+            theme.normal = 0xCCCCCCFF;
+            theme.pressed = 0x888888FF;
             theme.spacing = 4;
         }
 

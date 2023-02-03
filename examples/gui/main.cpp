@@ -21,7 +21,7 @@ class MainScene : public ant2d::Scene {
     void OnEnter(ant2d::Game* g)
     {
         Info("main scene on enter");
-        auto fnt = ant2d::SharedFontManager->Get("font2");
+        auto fnt = ant2d::SharedFontManager->Get("font1");
         ant2d::gui::SetFont(fnt);
 
         // image
@@ -42,10 +42,11 @@ class MainScene : public ant2d::Scene {
         ant2d::gui::Move(100, 60);
 
         // draw text
-        ant2d::gui::Text(2, ant2d::gui::Rect { 0, 0, 0, 0 }, "abcdesadfasdf", nullptr);
+        ant2d::gui::Text(2, ant2d::gui::Rect { 0, 0, 0, 0 }, "SomeText", nullptr);
+        ant2d::gui::Text(7, ant2d::gui::Rect { 100, 100, 0, 0 }, "SomeTextSome", nullptr);
 
-        // //  draw image
-        ant2d::gui::Image(3, ant2d::gui::Rect { 0, 30, 100, 100 }, face_, nullptr);
+        //  draw image
+        ant2d::gui::Image(3, ant2d::gui::Rect { 0, 30, 30, 30 }, face_, nullptr);
 
         // // draw image button
         ant2d::gui::ImageButton(6, ant2d::gui::Rect { 50, 30, 30, 30 }, normal_, pressed_, nullptr);
@@ -57,16 +58,16 @@ class MainScene : public ant2d::Scene {
             showbutton_ = true;
         }
 
-        // if (showbutton_) {
-        //     e = ant2d::gui::Button(4, ant2d::gui::Rect { 0, 150, 0, 0 }, "Dismiss", nullptr);
-        //     if ((ant2d::gui::Event::kEventDown & e) != 0) {
-        //         std::cout << "click new button" << std::endl;
-        //         showbutton_ = false;
-        //     }
-        // }
+        if (showbutton_) {
+            e = ant2d::gui::Button(5, ant2d::gui::Rect { 0, 150, 0, 0 }, "Dismiss", nullptr);
+            if ((ant2d::gui::Event::kEventDown & e) != 0) {
+                std::cout << "click new button" << std::endl;
+                showbutton_ = false;
+            }
+        }
 
         // draw slider
-        // ant2d::gui::Slider(7, ant2d::gui::Rect { 100, 0, 120, 10 }, &slide_, nullptr);
+        ant2d::gui::Slider(8, ant2d::gui::Rect { 100, 0, 120, 10 }, &slide_, nullptr);
     }
 
     void OnExit()
@@ -88,7 +89,7 @@ ant2d::WindowOptions* ant2d_main(int argc, char* argv[])
     };
     auto main_scene = new MainScene();
     main_scene->SetOnLoadCallback(on_load_callback);
-    auto options = new ant2d::WindowOptions { "gui test", 800, 600 };
+    auto options = new ant2d::WindowOptions { "gui test", 480, 320 };
     ant2d::Run(options, main_scene);
     Info("ant2d main end");
     return options;

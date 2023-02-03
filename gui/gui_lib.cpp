@@ -43,7 +43,7 @@ namespace gui {
     EventType Contex::Button(ID id, Rect* bb, const std::string& text, ButtonStyle* style)
     {
         float round = theme_->button.rounding;
-        math::Vec2 offset;
+        math::Vec2 offset { 0.0f, 0.0f };
         font::FontAtlas* font = nullptr;
 
         if (style == nullptr) {
@@ -84,11 +84,13 @@ namespace gui {
         } else {
             ColorBackground(event, bb, Theme::LightTheme().normal, Theme::LightTheme().pressed, round);
         }
+        Info("before text 111 {}:{}:{}:{}", bb->x, bb->y, bb->w, bb->h);
 
         // Render Text
         bb->x += offset[0] + style->padding.left;
         bb->y += offset[1] + style->padding.top;
 
+        Info("before text {}:{}:{}:{}", bb->x, bb->y, bb->w, bb->h);
         DrawText(bb, text, &style->text_style);
         return event;
     }
@@ -105,10 +107,13 @@ namespace gui {
 
         uint8_t event = ClickEvent(id, bb);
         ITexture2D* tex = nullptr;
+        Info("event88 {:#x}", event);
         if (Event::Down(event)) {
             tex = pressed;
+            // Info("event88 1111");
         } else {
             tex = normal;
+            // Info("event88 2222");
         }
         DrawImage(bb, tex, &(style->image_style));
         return event;
@@ -124,6 +129,7 @@ namespace gui {
         auto [v, event] = CheckSlider(id, bb);
         // 说明滑动了，那么应该使用最新的值，而不是传入的值
         if ((event & Event::kEventDragging) != 0) {
+            Info("slider event {}", event);
             *value = v;
             e = event;
         }
@@ -148,9 +154,11 @@ namespace gui {
         float v = 0;
         if ((event & Event::kEventStartDrag) != 0) {
             state_.pointer_capture = id;
+            Info("checkslider 1111 {:#x}", event);
         }
         if ((event & Event::kEventEndDrag) != 0) {
             state_.pointer_capture = -1;
+            Info("checkslider 2222 {:#x}", event);
         }
         // Update the knob position & default = Horizontal
         if ((event & (Event::kEventDragging | Event::kEventWentDown)) != 0) {
@@ -163,19 +171,19 @@ namespace gui {
             if (v < 0) {
                 v = 0;
             }
+            Info("checkslider 3333 {:#x} {} {}", event, v, SharedInputSystem->PointerPosition(0).mouse_pos[0]);
         }
-        return { event, v };
+        return { v, event };
     }
 
     EventType Contex::ClickEvent(ID id, Rect* rect)
     {
         EventType event = Event::kEventNone;
-        auto c = cursor_;
-        auto bb = Rect { (c.x + rect->x) * SharedScreen.scale_x_,
-            (c.x + rect->y) * SharedScreen.scale_y_,
+        auto& c = cursor_;
+        Rect bb { (c.x + rect->x) * SharedScreen.scale_x_,
+            (c.y + rect->y) * SharedScreen.scale_y_,
             rect->w * SharedScreen.scale_x_,
             rect->h * SharedScreen.scale_y_ };
-
         auto p = SharedInputSystem->PointerPosition(0);
         if (bb.InRange(p.mouse_pos)) {
             auto btn = SharedInputSystem->PointerButton(0);
@@ -197,8 +205,8 @@ namespace gui {
     EventType Contex::DraggingEvent(ID id, Rect* bound)
     {
         EventType event = Event::kEventNone;
-        auto c = cursor_;
-        auto bb = Rect {
+        auto& c = cursor_;
+        Rect bb {
             (c.x + bound->x) * SharedScreen.scale_x_,
             (c.y + bound->y) * SharedScreen.scale_y_,
             bound->w * SharedScreen.scale_x_,
@@ -212,24 +220,28 @@ namespace gui {
                 if (btn->JustReleased()) {
                     event = Event::kEventEndDrag;
                     state_.dragging_pointer = -1;
-                    state_.dragging_start = math::Vec2 {};
+                    state_.dragging_start = math::Vec2 { 0, 0 };
                     event |= Event::kEventWentUp;
+                    Info("dragging event 1111 {:#x}", event);
                 } else if (btn->Down()) {
                     event = Event::kEventDragging;
+                    Info("dragging event 2222 {:#x}", event);
                 } else {
                     state_.dragging_pointer = -1;
+                    Info("dragging event 3333 {:#x}", event);
                 }
             } else {
                 // Keep the click position, then use it to check a drag event
                 if (btn->JustPressed()) {
                     state_.dragging_start = p.mouse_pos;
+                    Info("dragging event 4444 {:#x}", event);
                 }
                 // If the next movement out of thresh-hold, then it's a drag event
                 if (btn->Down() && bb.InRange(state_.dragging_start)) {
                     auto start_position = state_.dragging_start;
                     float drag_thresh_hold = 8;
 
-                    auto bb = Rect {
+                    Rect bb {
                         start_position[0] - drag_thresh_hold,
                         start_position[1] - drag_thresh_hold,
                         drag_thresh_hold,
@@ -238,6 +250,7 @@ namespace gui {
 
                     // Start drag event
                     if (!bb.InRange(p.mouse_pos)) {
+                        Info("dragging event 5555 {:#x}", event);
                         event |= Event::kEventStartDrag;
                         state_.dragging_start = p.mouse_pos;
                         state_.dragging_pointer = id;
@@ -396,6 +409,7 @@ namespace gui {
     math::Vec2 Contex::DrawText(Rect* bb, const std::string& text, TextStyle* style)
     {
         auto [x, y] = SharedScreen.Gui2Game(bb->x + cursor_.x, bb->y + cursor_.y);
+        Info("draw text  {}:{}:{}", text, x, y);
         auto font = style->font;
         if (font == nullptr) {
             font = theme_->font;
@@ -405,6 +419,7 @@ namespace gui {
         auto wrap_width = (bb->w + 10) * SharedScreen.scale_x_;
         auto pos = math::Vec2 { x * SharedScreen.scale_x_, y * SharedScreen.scale_y_ };
 
+        Info("before add text {} {} {} {} {:#x} {}", pos[0], pos[1], text, font_size, color, wrap_width);
         auto size = draw_list_.AddText(pos, text, font, font_size, color, wrap_width);
         return size;
     }
