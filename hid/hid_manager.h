@@ -2,6 +2,7 @@
 #include "sokol_app.h"
 #include <hid/config.h>
 #include <hid/life_cycle.h>
+#include <memory>
 
 namespace ant2d {
 class HidManager {

@@ -44,18 +44,18 @@ class MainScene : public ant2d::Scene {
         // draw text
         ant2d::gui::Text(2, ant2d::gui::Rect { 0, 0, 0, 0 }, "abcdesadfasdf", nullptr);
 
-        // //  draw image
-        ant2d::gui::Image(3, ant2d::gui::Rect { 0, 30, 100, 100 }, face_, nullptr);
+        // draw image
+        ant2d::gui::Image(3, ant2d::gui::Rect { 0, 30, 30, 30 }, face_, nullptr);
 
-        // // draw image button
-        ant2d::gui::ImageButton(6, ant2d::gui::Rect { 50, 30, 30, 30 }, normal_, pressed_, nullptr);
+        // draw image button
+       ant2d::gui::ImageButton(6, ant2d::gui::Rect { 50, 30, 30, 30 }, normal_, pressed_, nullptr);
 
-        // draw button
-        auto e = ant2d::gui::Button(4, ant2d::gui::Rect { 0, 100, 0, 0 }, "NewButton", nullptr);
-        if ((ant2d::gui::Event::kEventDown & e) != 0) {
-            std::cout << "click new button" << std::endl;
-            showbutton_ = true;
-        }
+        // // draw button
+        // auto e = ant2d::gui::Button(4, ant2d::gui::Rect { 0, 100, 0, 0 }, "NewButton", nullptr);
+        // if ((ant2d::gui::Event::kEventDown & e) != 0) {
+        //     std::cout << "click new button" << std::endl;
+        //     showbutton_ = true;
+        // }
 
         // if (showbutton_) {
         //     e = ant2d::gui::Button(4, ant2d::gui::Rect { 0, 150, 0, 0 }, "Dismiss", nullptr);

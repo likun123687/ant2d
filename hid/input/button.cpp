@@ -30,7 +30,6 @@ bool Button::Down()
 
 void Button::Update(bool down)
 {
-    Info("btn update {}-{}", button_id_, down);
     auto d = ((state_ & 0x01) == 1);
     state_ &= (0x04 | 0x02);
     if (down) {

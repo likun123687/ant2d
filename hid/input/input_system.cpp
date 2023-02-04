@@ -10,7 +10,6 @@ SparseMap::SparseMap()
 
 void SparseMap::PutKey(Key k, bool st)
 {
-    Info("btn update PutKey {}-{}", k, st);
     auto iter = key_map_.find(k);
     if (iter != key_map_.end()) {
         iter->second.push_back(st);
@@ -108,16 +107,11 @@ std::tuple<Button*, math::Vec2, math::Vec2> InputSystem::Mouse(int key)
 void InputSystem::AdvanceFrame()
 {
     const int n = binds_.size();
-    // auto dirty = dirty_.GetUsed();
     if (n > 0) {
-        // bool ok = false;
-        // bool st = false;
-        //  Button* pr = nullptr;
         for (auto& bd : binds_) {
             auto state_list = dirty_.GetKey(bd.key);
             if (state_list) {
                 for (auto st : *state_list) {
-                    Info("btn update before {}-{}", bd.key, st);
                     bd.btn->Update(st);
                 }
             }
