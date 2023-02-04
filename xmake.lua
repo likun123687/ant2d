@@ -137,6 +137,7 @@ target("ant2d_common")
     add_files("asset/audio_manager.cpp")
     add_files("anim/**.cpp")
     add_files("game/script/**.cpp")
+    add_files("gui/layout/**.cpp")
 
     if is_plat("windows") then
         add_rules("sokol-shdc", {slang = "hlsl5", plat = "windows"})
