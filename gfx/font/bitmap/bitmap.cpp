@@ -14,12 +14,13 @@ namespace font {
         {
             std::unique_ptr<FontAtlas> f = std::make_unique<FontAtlas>();
             if (scale == 1) {
-                auto image_data = ImageData { filename };
+                ImageData image_data { filename };
                 image_data.SetColor(0, 0, 0xff, 0xff, 0xff, 0xff);
                 f->LoadTex(image_data);
             } else {
-                auto image_data = ImageData { filename };
+                ImageData image_data { filename };
                 auto scale_image_data = ImageData::Scale(image_data, scale);
+                scale_image_data.SetColor(0, 0, 0xff, 0xff, 0xff, 0xff);
                 f->LoadTex(scale_image_data);
             }
 

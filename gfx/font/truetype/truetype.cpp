@@ -180,6 +180,7 @@ namespace font {
             }
 
             auto [image_data, width, height] = RenderTextures(glyphs, config, font, pages[0]);
+            image_data.SetColor(0, 0, 0xff, 0xff, 0xff, 0xff);
             f->LoadTex(image_data);
             f->SetGlyphs(std::move(glyphs));
             f->SetGWidth(width);

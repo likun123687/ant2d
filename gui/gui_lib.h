@@ -14,12 +14,12 @@ namespace gui {
     using EventType = uint8_t;
     struct Event {
         static constexpr EventType kEventNone = 0;
-        static constexpr EventType kEventWentDown = 0x1 << 1;
-        static constexpr EventType kEventWentUp = 0x1 << 2;
-        static constexpr EventType kEventDown = 0x1 << 3;
-        static constexpr EventType kEventStartDrag = 0x1 << 4;
-        static constexpr EventType kEventEndDrag = 0x1 << 5;
-        static constexpr EventType kEventDragging = 0x1 << 6;
+        static constexpr EventType kEventWentDown = 0x1 << 0;
+        static constexpr EventType kEventWentUp = 0x1 << 1;
+        static constexpr EventType kEventDown = 0x1 << 2;
+        static constexpr EventType kEventStartDrag = 0x1 << 3;
+        static constexpr EventType kEventEndDrag = 0x1 << 4;
+        static constexpr EventType kEventDragging = 0x1 << 5;
 
         static bool JustPressed(EventType et)
         {

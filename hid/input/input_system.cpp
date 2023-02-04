@@ -127,7 +127,7 @@ void InputSystem::Reset()
         kv.second->Reset();
     }
 
-    for (int i = 0; i < active_; i++) {
+    for (int i = 0; i <= active_; i++) {
         pointer_button_[i].Reset();
     }
 }

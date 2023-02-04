@@ -85,15 +85,6 @@ ant2d::WindowOptions* ant2d_main(int argc, char* argv[])
 
         auto repo = ant2d::SharedTextureManager->GetRepo();
         assert(repo["assets/face.png"].cnt == 1);
-        Info("face rid {}", repo["assets/face.png"].rid);
-
-        Info("SharedGame--{}, SharedSceneManager--{}, SharedEntityManager--{}, SharedSpriteTable--{}, SharedTransformTable--{}, SharedTextureManager--{}",
-            static_cast<void*>(ant2d::SharedGame),
-            static_cast<void*>(ant2d::SharedSceneManager),
-            static_cast<void*>(ant2d::SharedEntityManager),
-            static_cast<void*>(ant2d::SharedSpriteTable),
-            static_cast<void*>(ant2d::SharedTransformTable),
-            static_cast<void*>(ant2d::SharedTextureManager));
     };
     auto main_scene = new MainScene();
     main_scene->SetOnLoadCallback(on_load_callback);

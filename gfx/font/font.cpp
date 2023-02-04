@@ -121,7 +121,6 @@ namespace font {
                     goto NEW_LINE;
                 }
 
-                // std::copy(text.begin() + i, text.begin() + i + w, line.end());
                 line.insert(line.end(), text.begin() + i, text.begin() + i + w);
                 Glyph* g = font->GetGlyph(r);
                 if (g) {
@@ -159,7 +158,6 @@ namespace font {
 
         NEW_LINE:
             line.push_back('\n');
-            // std::copy(line.begin(), line.end(), buff.end());
             buff.insert(buff.end(), line.begin(), line.end());
             line.resize(0);
             n += 1;

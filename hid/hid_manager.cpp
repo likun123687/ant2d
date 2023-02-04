@@ -65,6 +65,8 @@ void HidManager::EventCallback(const sapp_event* e)
 
         Info("mouse cb {}:{}:{}:{}", pb, is_pressed, e->mouse_x, e->mouse_y);
         window_callback_->OnPointEvent(pb, is_pressed, e->mouse_x, e->mouse_y);
+    } else if (e->type == SAPP_EVENTTYPE_MOUSE_MOVE) {
+        window_callback_->OnPointEvent(-1000, false, e->mouse_x, e->mouse_y);
     }
 }
 } // namespace ant2d

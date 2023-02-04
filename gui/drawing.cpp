@@ -207,7 +207,7 @@ void DrawList::AddPolyLine(math::Vec2* points, int point_count, uint32_t color, 
 // Non Anti-aliased Fill
 void DrawList::AddConvexPolyFilled(math::Vec2* points, int point_count, uint32_t color)
 {
-    auto uv = tex_uv_white_pixel_;
+    auto& uv = tex_uv_white_pixel_;
     auto idx_count = (point_count - 2) * 3;
     auto vtx_count = point_count;
     PrimReserve(idx_count, vtx_count);
@@ -441,7 +441,7 @@ void DrawList::AddImageRound(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::
     // map uv to vertex - linear scale
     auto xy_size = b.Sub(a);
     auto uv_size = uvb.Sub(uva);
-    math::Vec2 scale;
+    math::Vec2 scale { 0, 0 };
 
     if (xy_size[0] != 0) {
         scale[0] = uv_size[0] / xy_size[0];
@@ -671,14 +671,14 @@ math::Vec2 DrawList::AddText(math::Vec2 pos, const std::string& text, font::Font
 // 为了减少内存可以一边添加一边尝试向前合并
 void DrawList::AddCommand(int elem_count)
 {
-    auto clip = CurrentClipRect();
-    auto tex = CurrentTextureId();
+    math::Vec4 clip = CurrentClipRect();
+    uint16_t tex = CurrentTextureId();
     uint16_t order = z_order_;
-    auto index = cmd_index_;
+    int index = cmd_index_;
 
-    auto prev = cmd_buffer_[index - 1];
+    DrawCmd& prev = cmd_buffer_[index - 1];
     if (prev.clip_rect == clip && prev.texture_id == tex && prev.z_order == order) {
-        elem_count += elem_count;
+        prev.elem_count += elem_count;
     } else {
         uint16_t fi = prev.first_index + prev.elem_count;
         cmd_buffer_[index] = DrawCmd { fi, uint16_t(elem_count), clip, tex, order };
