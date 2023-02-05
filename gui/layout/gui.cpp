@@ -3,8 +3,6 @@
 
 namespace ant2d {
 namespace layout {
-    //	Awesome GUI System
-
     // Options: margin
     Options* Margin(float top, float left, float right, float bottom)
     {
@@ -100,7 +98,6 @@ namespace layout {
     }
 
     // Layout & Group
-
     // Define a view group
     void Define(const std::string& name)
     {

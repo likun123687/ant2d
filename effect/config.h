@@ -18,6 +18,7 @@ struct CommonConfig {
     Range b;
     Range a;
     bool additive;
+    virtual ~CommonConfig() = default;
 };
 
 } // namespace ant2d
