@@ -67,11 +67,10 @@ std::tuple<CommonConfig*, uint8_t> ParticleConfigManager::LoadFile(const std::st
         g->gravity = math::Vec2 { cfg.gravityx, cfg.gravityy };
         g->speed = Var { cfg.speed, cfg.speedVariance };
 
-        auto ab = math::Radian(cfg.angle);
-        auto av = math::Radian(cfg.angleVariance);
+        float ab = math::Radian(cfg.angle);
+        float av = math::Radian(cfg.angleVariance);
 
         g->angel = Var { ab, av };
-
         g->radial_acc = Var { cfg.radialAcceleration, cfg.radialAccelVariance };
         g->tangential_acc = Var { cfg.tangentialAcceleration, cfg.tangentialAccelVariance };
         g->rotation_is_dir = cfg.rotationIsDir;
@@ -86,6 +85,7 @@ std::tuple<CommonConfig*, uint8_t> ParticleConfigManager::LoadFile(const std::st
         };
 
         r->angle = Var { cfg.angle, cfg.angleVariance };
+
         config = r;
         config_type = kRadiusConfigType;
     }
@@ -107,6 +107,7 @@ std::tuple<CommonConfig*, uint8_t> ParticleConfigManager::LoadFile(const std::st
         Var { cfg.rotationStart, cfg.rotationStartVariance },
         Var { cfg.rotationEnd, cfg.rotationEndVariance }
     };
+
     // color
     config->r = Range {
         Var { cfg.startColorRed, cfg.startColorVarianceRed },

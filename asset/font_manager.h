@@ -14,7 +14,6 @@ public:
         uint32_t cnt;
     };
     void Loadbitmap(const std::string& name, const std::string& file, const std::string& fc);
-
     void LoadTrueType(const std::string& name, const std::string& file, font::truetype::Config config);
     void Unload(const std::string& name);
 
