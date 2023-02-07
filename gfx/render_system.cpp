@@ -7,12 +7,11 @@
 namespace ant2d {
 
 RenderSystem::RenderSystem()
-    : main_camera_(new Camera())
+    : main_camera_(new Camera()), view_{}
 {
     main_camera_->SetFollow(Ghost);
     main_camera_->Init();
     view_.camera = main_camera_.get();
-    // view_.RenderNodes = std::vector<BaseTable>();
 }
 
 void RenderSystem::RequireTable(TableList& tables)

@@ -138,6 +138,7 @@ target("ant2d_common")
     add_files("anim/**.cpp")
     add_files("game/script/**.cpp")
     add_files("gui/layout/**.cpp")
+    add_files("utils/time.cpp")
     add_files("asset/particle_config_manager/**.cpp")
 
     if is_plat("windows") then

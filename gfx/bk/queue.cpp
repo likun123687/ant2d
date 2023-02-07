@@ -162,23 +162,24 @@ int RenderQueue::Flush()
     auto kv_zip = Zip(sort_keys, sort_values);
     switch (sort_mode_) {
     case SortMode::kAscending:
-        Info("key sort1");
+        // Info("key sort1");
         std::sort(kv_zip.begin(), kv_zip.end(), [](const auto& x, const auto& y) {
             return std::get<0>(x) < std::get<0>(y);
         });
         break;
     case SortMode::kDescending:
-        Info("key sort2");
+        // Info("key sort2");
         std::sort(kv_zip.begin(), kv_zip.end(), [](const auto& x, const auto& y) {
             return std::get<0>(x) > std::get<0>(y);
         });
         break;
     case SortMode::kSequential:
-        Info("key sort3");
+        // Info("key sort3");
         break;
     }
     ctx_->Draw(sort_keys, sort_values, draw_list);
-    Info("after draw");
+
+    // Info("after draw");
     draw_call_num_ = 0;
     uniformblock_begin_ = 0;
     uniformblock_end_ = 0;

@@ -77,7 +77,6 @@ void RenderContext::UpdatePipeline(uint16_t& old_pipeline, uint16_t& new_pipelin
 {
     if (new_pipeline != kInvalidId && old_pipeline != new_pipeline) {
         auto sg_p_id = res_manager_->GetPipeline(new_pipeline, true)->GetPipeLineId();
-        Info("apply pipeline {}--{}", new_pipeline, sg_p_id.id);
         sg_apply_pipeline(sg_p_id);
         old_pipeline = new_pipeline;
     }
@@ -86,10 +85,8 @@ void RenderContext::UpdatePipeline(uint16_t& old_pipeline, uint16_t& new_pipelin
 void RenderContext::UpdateBufferBind(RenderDraw& draw, RenderDraw& current_state)
 {
     auto ib = draw.index_buffer_;
-    Info("ib {} {}", ib, current_state.index_buffer_);
     if (ib != kInvalidId && ib != current_state.index_buffer_) {
         bk_state_.bind.index_buffer = res_manager_->GetIndexBuffer(ib, true)->GetId();
-        Info("sg_ib {}", bk_state_.bind.index_buffer.id);
         current_state.index_buffer_ = ib;
     }
 
@@ -109,7 +106,7 @@ void RenderContext::UpdateBufferBind(RenderDraw& draw, RenderDraw& current_state
 
 void RenderContext::DoDraw(RenderDraw& draw, RenderDraw& current_state)
 {
-    Info("bk_state bind {}--{}--{}", bk_state_.bind.index_buffer.id, bk_state_.bind.vertex_buffers[0].id, bk_state_.bind.fs_images[0].id);
+    //Info("bk_state bind {}--{}--{}", bk_state_.bind.index_buffer.id, bk_state_.bind.vertex_buffers[0].id, bk_state_.bind.fs_images[0].id);
     // TODO 优化判断
     if (bk_state_.bind.index_buffer.id == SG_INVALID_ID || bk_state_.bind.vertex_buffers[0].id == SG_INVALID_ID || bk_state_.bind.fs_images[0].id == SG_INVALID_ID) {
         return;
@@ -119,7 +116,6 @@ void RenderContext::DoDraw(RenderDraw& draw, RenderDraw& current_state)
 
     if (draw.index_buffer_ != kInvalidId) {
         auto offset = int(draw.first_index_) * 1; // 2 = sizeOf(unsigned_short)
-        Info("sg_draw {}--{}--{}", offset, draw.num_, 1);
         sg_draw(offset, draw.num_, 1);
     } else {
         sg_draw(draw.first_index_, draw.num_, 1);
@@ -134,13 +130,10 @@ void RenderContext::Draw(std::vector<uint64_t>& sort_keys, std::vector<uint16_t>
     auto sort_key = SortKey {};
     // uint8_t prim_index = static_cast<uint8_t>(static_cast<uint64_t>(0) >> kState.pt_shift);
     //  uint64_t state_bits = State.kDepthWrite | ST.DEPTH_TEST_MASK | ST.RGB_WRITE | ST.ALPHA_WRITE | ST.BLEND_MASK | ST.PT_MASK;
-    Info("render draw index id {}--{}--{}", draw_list[0].index_buffer_, draw_list[1].index_buffer_, draw_list[2].index_buffer_);
-
     for (int i = 0; i < sort_keys.size(); i++) {
         auto encoded_key = sort_keys[i];
         auto item_id = sort_values[i];
         sort_key.Decode(encoded_key);
-        Info("for sort key {}--{}", encoded_key, sort_key.pipeline_);
 
         auto draw = draw_list[item_id];
 
@@ -172,7 +165,6 @@ void RenderContext::BindUniformblock(uint32_t begin, uint32_t end)
 
         uint8_t stage, slot, size;
         Uniformblock::Decode(opcode, &stage, &slot, &size);
-        Info("stage--{}, slot--{}, size--{}", stage, slot, size);
         auto data = uniformblock_buffer_->ReadPointer(size);
         auto sg_data = sg_range { data, size };
 

@@ -130,19 +130,30 @@ void SpriteRenderFeature::Extract(View* v)
     Info("extract sprite table size {}", sprite_table_->GetSize());
     auto camera = v->camera;
     auto fi = uint32_t(id_) << 16;
-    for (int i = 0; i < sprite_table_->GetSize(); i++) {
-        auto sprite = sprite_table_->GetComp(i);
-        auto transform = transform_table_->GetComp(sprite->GetEntity());
-        auto [gravity_width, gravity_height] = sprite->GetGravity();
 
-        math::Vec2 sz = math::Vec2(sprite->GetWidth(), sprite->GetHeight());
-        math::Vec2 g = math::Vec2(gravity_width, gravity_height);
+    SpriteComp* sprite = nullptr;
+    Transform* transform = nullptr;
+    float gravity_width = 0;
+    float gravity_height = 0;
+
+    ZOrder z_order {};
+    BatchId batch_id {};
+    uint32_t sid = 0;
+    uint32_t value = 0;
+
+    for (int i = 0; i < sprite_table_->GetSize(); i++) {
+        sprite = sprite_table_->GetComp(i);
+        transform = transform_table_->GetComp(sprite->GetEntity());
+        std::tie(gravity_width, gravity_height) = sprite->GetGravity();
+
+        math::Vec2 sz(sprite->GetWidth(), sprite->GetHeight());
+        math::Vec2 g(gravity_width, gravity_height);
 
         if (sprite->GetVisible() && camera->InView(transform, sz, g)) {
-            auto z_order = sprite->GetZOrder();
-            auto batch_id = sprite->GetBatchId(); // batch_id就是texid
-            auto sid = PackSortId(z_order.GetValue(), batch_id.GetValue());
-            auto value = fi + uint32_t(i);
+            z_order = sprite->GetZOrder();
+            batch_id = sprite->GetBatchId(); // batch_id就是texid
+            sid = PackSortId(z_order.GetValue(), batch_id.GetValue());
+            value = fi + uint32_t(i);
             v->render_nodes.push_back(SortObject { sid, value });
         }
     }
@@ -156,8 +167,8 @@ void SpriteRenderFeature::Draw(const std::vector<SortObject>& nodes)
     // batch draw!
     auto sprite_batch_object = SpriteBatchObject {};
     for (auto& b : nodes) {
-        auto ii = b.value & 0xFFFF; // 在sprite_table索引
-        auto sid = b.sort_id & 0xFFFF; // batch_id也就是texid
+        uint32_t ii = b.value & 0xFFFF; // 在sprite_table索引
+        uint32_t sid = b.sort_id & 0xFFFF; // batch_id也就是texid
         if (sort_id != sid) {
             if (begin) {
                 batch_render_->End();

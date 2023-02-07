@@ -250,12 +250,7 @@ bool Camera::InView(Transform* xf, math::Vec2 size, math::Vec2 gravity)
     auto w = view_.w * mat_.sx;
     auto h = view_.h * mat_.sy;
 
-    Info("w-h--[{}-{}]--[{}-{}]", view_.w, mat_.sx, view_.h, mat_.sy);
     auto world = xf->GetWorld();
-    Info("world--[{}-{}],{}, [{},{}]", world.scale[0], world.scale[1], world.rotation, world.position[0], world.position[1]);
-    Info("size--[{}-{}]", size[0], size[1]);
-    Info("gravity--[{}-{}]", gravity[0], gravity[1]);
-
     if (world.rotation == 0) { // happy path
         auto p = world.position;
         size[0] = size[0] * world.scale[0];

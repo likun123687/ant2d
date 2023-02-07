@@ -20,7 +20,7 @@ class MainScene : public ant2d::Scene {
         // assert(repo["assets/face.png"].rid == tex->GetTextureId());
 
         auto entity = ant2d::SharedEntityManager->New();
-        ant2d::SharedSpriteTable->NewCompX(entity, face)->SetSize(100, 100);
+        ant2d::SharedSpriteTable->NewCompX(entity, tex)->SetSize(100, 100);
         auto xf = ant2d::SharedTransformTable->NewComp(entity);
         xf->SetPosition(ant2d::math::Vec2 { 200, 200 });
 

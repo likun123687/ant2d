@@ -134,9 +134,9 @@ void BatchContext::Begin(uint16_t tex_id, int16_t depth)
 void BatchContext::DrawComp(IBatchObject* bo)
 {
     uint32_t step = bo->Size();
-    if (vertex_pos_ + step > kMaxBatchVertexSize) {
-        FlushBuffer();
+    if (vertex_pos_ + step > vertex_.size()) {
         End();
+        FlushBuffer();
         vertex_pos_ = 0;
         first_vertex_ = 0;
     }
