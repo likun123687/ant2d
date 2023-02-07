@@ -126,7 +126,7 @@ TEST_CASE("test_drawcall")
     sg_pipeline_desc pdesc = {};
     pdesc.shader = sh->GetShdId();
     pdesc.layout.attrs[0].format = SG_VERTEXFORMAT_FLOAT4;
-    pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_FLOAT4;
+    pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_UBYTE4N;
     pdesc.index_type = SG_INDEXTYPE_UINT16;
 
     sg_pipeline pip = { 1 };
@@ -320,7 +320,7 @@ TEST_CASE("test_multiple_drawcall_sort")
         sg_pipeline_desc pdesc = {};
         pdesc.shader = sh->GetShdId();
         pdesc.layout.attrs[0].format = SG_VERTEXFORMAT_FLOAT4;
-        pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_FLOAT4;
+        pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_UBYTE4N;
         pdesc.index_type = SG_INDEXTYPE_UINT16;
 
         sg_pipeline pip = { static_cast<uint32_t>(i + 1) };

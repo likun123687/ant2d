@@ -16,9 +16,8 @@ public:
     void SetVisible(bool v);
     bool GetVisible();
     std::tuple<float, float, float, float> GetRgbaColor();
-    // void SetColor(sg_color color);
-    uint32_t GetColor();
-    void SetColor(uint32_t color);
+    color::Byte4 GetColor();
+    void SetColor(color::Byte4 color);
     void Flip(bool flip_x, bool flip_y);
     void Reset();
     float GetWidth();
@@ -51,7 +50,7 @@ private:
     ZOrder z_order_;
     BatchId batch_id_;
 
-    uint32_t color_;
+    color::Byte4 color_;
     uint16_t flip_x_;
     uint16_t flip_y_;
 

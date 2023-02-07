@@ -7,7 +7,7 @@ SpriteComp* SpriteTable::NewComp(Entity entity)
 {
     SpriteComp *comp = BaseTable::NewComp(entity);
     comp->SetGravity(0.5, 0.5);
-    comp->SetColor(0xFFFFFFFF);
+    comp->SetColor({0xFF, 0xFF, 0xFF, 0xFF});
     comp->SetVisible(true);
     return comp;
 }

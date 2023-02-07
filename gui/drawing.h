@@ -47,7 +47,7 @@ struct DrawCmd {
 struct DrawVert {
     math::Vec2 xy;
     math::Vec2 uv;
-    color::Float4 color;
+    color::Byte4 color;
 };
 
 static_assert(std::is_pod<DrawVert>::value, "DrawVert must be pod");
@@ -121,19 +121,19 @@ public:
     // primitive operation, auto scale by 1024
     void PrimReserve(int idx_count, int vtx_count);
 
-    void PrimRect(math::Vec2 min, math::Vec2 max, uint32_t color);
+    void PrimRect(math::Vec2 min, math::Vec2 max, color::Byte4 color);
 
-    void PrimRectUV(math::Vec2 a, math::Vec2 c, math::Vec2 uva, math::Vec2 uvc, uint32_t color);
+    void PrimRectUV(math::Vec2 a, math::Vec2 c, math::Vec2 uva, math::Vec2 uvc, color::Byte4 color);
 
     void PrimQuadUV(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d,
-        math::Vec2 uva, math::Vec2 uvb, math::Vec2 uvc, math::Vec2 uvd, uint32_t color);
+        math::Vec2 uva, math::Vec2 uvb, math::Vec2 uvc, math::Vec2 uvd, color::Byte4 color);
 
     // 此处生成最终的顶点数据和索引数据
     // 当前并不支持抗锯齿！！简单的用顶点生成线段
-    void AddPolyLine(math::Vec2* points, int point_count, uint32_t color, float thickness, bool closed);
+    void AddPolyLine(math::Vec2* points, int point_count, color::Byte4 color, float thickness, bool closed);
 
     // Non Anti-aliased Fill
-    void AddConvexPolyFilled(math::Vec2* points, int point_count, uint32_t color);
+    void AddConvexPolyFilled(math::Vec2* points, int point_count, color::Byte4 color);
 
     // 此处圆角的算法：
     // 使用一个12边形近似圆形，采用中心放射算法，计算出
@@ -149,37 +149,37 @@ public:
 
     void PathRect(math::Vec2 a, math::Vec2 b, float rounding, FlagCorner corners);
 
-    void AddLine(math::Vec2 a, math::Vec2 b, uint32_t color, float thickness);
+    void AddLine(math::Vec2 a, math::Vec2 b, color::Byte4 color, float thickness);
 
     // 所有非填充图形看来都是使用路径实现的
-    void AddRect(math::Vec2 a, math::Vec2 b, uint32_t color, float rounding, FlagCorner roundFlags, float thickness);
+    void AddRect(math::Vec2 a, math::Vec2 b, color::Byte4 color, float rounding, FlagCorner roundFlags, float thickness);
 
-    void AddRectFilled(math::Vec2 min, math::Vec2 max, uint32_t color, float rounding, FlagCorner corner);
+    void AddRectFilled(math::Vec2 min, math::Vec2 max, color::Byte4 color, float rounding, FlagCorner corner);
 
     void AddRectFilledMultiColor();
 
-    void AddQuad(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d, uint32_t color, float thickness);
+    void AddQuad(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d, color::Byte4 color, float thickness);
 
-    void AddQuadFilled(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d, uint32_t color);
+    void AddQuadFilled(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d, color::Byte4 color);
 
-    void AddTriangle(math::Vec2 a, math::Vec2 b, math::Vec2 c, uint32_t color, float thickness);
+    void AddTriangle(math::Vec2 a, math::Vec2 b, math::Vec2 c, color::Byte4 color, float thickness);
 
-    void AddTriangleFilled(math::Vec2 a, math::Vec2 b, math::Vec2 c, uint32_t color);
+    void AddTriangleFilled(math::Vec2 a, math::Vec2 b, math::Vec2 c, color::Byte4 color);
 
-    void AddCircle(math::Vec2 centre, float radius, uint32_t color, int segments, float thickness);
+    void AddCircle(math::Vec2 centre, float radius, color::Byte4 color, int segments, float thickness);
 
-    void AddCircleFilled(math::Vec2 centre, float radius, uint32_t color, int segments);
+    void AddCircleFilled(math::Vec2 centre, float radius, color::Byte4 color, int segments);
 
     void AddBezierCurve(math::Vec2 pos0, math::Vec2 cp0, math::Vec2 cp1, math::Vec2 pos1,
-        uint32_t color, float thickness, int segments);
+        color::Byte4 color, float thickness, int segments);
 
-    void AddImage(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::Vec2 uva, math::Vec2 uvb, uint32_t color);
+    void AddImage(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::Vec2 uva, math::Vec2 uvb, color::Byte4 color);
 
     void AddImageQuad(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d,
-        math::Vec2 uva, math::Vec2 uvb, math::Vec2 uvc, math::Vec2 uvd, uint32_t color);
+        math::Vec2 uva, math::Vec2 uvb, math::Vec2 uvc, math::Vec2 uvd, color::Byte4 color);
 
     void AddImageRound(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::Vec2 uva, math::Vec2 uvb,
-        uint32_t color, float rounding, FlagCorner corners);
+        color::Byte4 color, float rounding, FlagCorner corners);
 
     // NinePatch Algorithm
     //  12   13   14   15
@@ -198,11 +198,11 @@ public:
     //  0    1    2    3
     // patch = {x1, x2, y1, y2} % TextureSize
     void AddImageNinePatch(uint16_t tex_id, math::Vec2 min, math::Vec2 max, math::Vec2 uva, math::Vec2 uvb,
-        math::Vec4 patch, uint32_t color);
+        math::Vec4 patch, color::Byte4 color);
 
-    void PathFillConvex(uint32_t col);
+    void PathFillConvex(color::Byte4 col);
 
-    void PathStroke(uint32_t color, float thickness, bool closed);
+    void PathStroke(color::Byte4 color, float thickness, bool closed);
 
     math::Vec4 CurrentClipRect();
 
@@ -227,7 +227,7 @@ public:
 
     void PopTextureId();
 
-    math::Vec2 AddText(math::Vec2 pos, const std::string& text, font::FontAtlas* font, float font_size, uint32_t color, float wrap_width);
+    math::Vec2 AddText(math::Vec2 pos, const std::string& text, font::FontAtlas* font, float font_size, color::Byte4 color, float wrap_width);
 
     // 每次绘制都会产生一个 Command （可能会造成内存浪费! 1k cmd = 1000 * 6 * 4 = 24k）
     // 为了减少内存可以一边添加一边尝试向前合并

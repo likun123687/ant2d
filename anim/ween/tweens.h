@@ -40,15 +40,14 @@ namespace ween {
         return v2;
     }
 
-    inline color::Float4 ColorLerp(color::Float4 from, color::Float4 to, float f)
+    inline color::Byte4 ColorLerp(color::Byte4 from, color::Byte4 to, float f)
     {
-        auto c = color::Float4 {
-            F32Lerp(from.r, to.r, f),
-            F32Lerp(from.g, to.g, f),
-            F32Lerp(from.b, to.b, f),
-            F32Lerp(from.a, to.a, f),
+        return color::Byte4 {
+            U8Lerp(from.r, to.r, f),
+            U8Lerp(from.g, to.g, f),
+            U8Lerp(from.b, to.b, f),
+            U8Lerp(from.a, to.a, f)
         };
-        return c;
     }
 
     // A float32 linear interpolation between a beginning and ending value.
@@ -131,8 +130,8 @@ namespace ween {
 
     struct ColorTween {
         Animator* am;
-        color::Float4 from;
-        color::Float4 to;
+        color::Byte4 from;
+        color::Byte4 to;
 
         // Animate sets the Animator that drives the Tween.
         Animator* Animate(Animator* am_)
@@ -152,7 +151,7 @@ namespace ween {
         }
 
         // Range sets the beginning and ending value of the F32Tween.
-        ColorTween* Range(color::Float4 from_, color::Float4 to_)
+        ColorTween* Range(color::Byte4 from_, color::Byte4 to_)
         {
             from = from_;
             to = to_;
@@ -160,7 +159,7 @@ namespace ween {
         }
 
         // Returns the interpolated value for the current value of the given Animator.
-        color::Float4 GetValue()
+        color::Byte4 GetValue()
         {
             return ColorLerp(from, to, am->GetValue());
         }

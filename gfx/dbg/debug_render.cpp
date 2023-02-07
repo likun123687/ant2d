@@ -13,7 +13,7 @@ DebugRender::DebugRender(ShaderType shader_type)
     sg_pipeline_desc pdesc = {};
     pdesc.shader = sh->GetShdId();
     pdesc.layout.attrs[0].format = SG_VERTEXFORMAT_FLOAT4;
-    pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_FLOAT4;
+    pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_UBYTE4N;
     pdesc.index_type = SG_INDEXTYPE_UINT16;
     pdesc.colors->blend.enabled = true;
     pdesc.colors->blend.src_factor_rgb = SG_BLENDFACTOR_ONE;

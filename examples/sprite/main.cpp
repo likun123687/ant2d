@@ -15,20 +15,21 @@ class MainScene : public ant2d::Scene {
     {
         Info("main scene on enter");
         auto tex = ant2d::SharedTextureManager->Get("assets/block.png");
+        auto face = ant2d::SharedTextureManager->Get("assets/face.png");
         auto repo = ant2d::SharedTextureManager->GetRepo();
         // assert(repo["assets/face.png"].rid == tex->GetTextureId());
 
         auto entity = ant2d::SharedEntityManager->New();
-        ant2d::SharedSpriteTable->NewCompX(entity, tex)->SetSize(100, 100);
+        ant2d::SharedSpriteTable->NewCompX(entity, face)->SetSize(100, 100);
         auto xf = ant2d::SharedTransformTable->NewComp(entity);
-        xf->SetPosition(ant2d::math::Vec2 { 50, 50 });
+        xf->SetPosition(ant2d::math::Vec2 { 200, 200 });
 
-        for (int i = 0; i < 16000; i++) {
+        for (int i = 0; i < 20000; i++) {
             auto entity = ant2d::SharedEntityManager->New();
-            ant2d::SharedSpriteTable->NewCompX(entity, tex)->SetSize(100, 100);
+            ant2d::SharedSpriteTable->NewCompX(entity, tex)->SetSize(40, 40);
             auto xf = ant2d::SharedTransformTable->NewComp(entity);
-            float x = ant2d::math::Random(0, 480);
-            float y = ant2d::math::Random(0, 200) + 120;
+            float x = ant2d::math::Random(0, 960);
+            float y = ant2d::math::Random(0, 400) + 240;
             xf->SetPosition(ant2d::math::Vec2 { x, y });
         }
 

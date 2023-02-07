@@ -39,6 +39,6 @@ namespace anim {
     std::unique_ptr<ProxyAnimator> OfVec2(math::Vec2* target, math::Vec2 from, math::Vec2 to);
 
     // OfColor returns a Animator that animates between gfx.Color values.
-    std::unique_ptr<ProxyAnimator> OfColor(color::Float4* target, color::Float4 from, color::Float4 to);
+    std::unique_ptr<ProxyAnimator> OfColor(color::Byte4* target, color::Byte4 from, color::Byte4 to);
 }
 } // namespace ant2d

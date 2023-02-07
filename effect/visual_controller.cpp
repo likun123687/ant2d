@@ -19,6 +19,19 @@ void VisualController::Visualize(PosTexColorVertex* buf, ITexture2D* tex, int li
         float b = math::Clamp(color_[i][2], 0, 1);
         float a = math::Clamp(color_[i][3], 0, 1);
 
+        color::Byte4 c {};
+        if (additive) {
+            c.r = r * 255;
+            c.g = g * 255;
+            c.b = b * 255;
+            c.a = 0x0;
+        } else {
+            c.r = r * 255;
+            c.g = g * 255;
+            c.b = b * 255;
+            c.a = a * 255;
+        }
+
         auto rg = tex->GetRegion();
 
         // Transform matrix
@@ -46,7 +59,7 @@ void VisualController::Visualize(PosTexColorVertex* buf, ITexture2D* tex, int li
         buf[vi + 3].v = rg.y2;
 
         for (int j = 0; j < 4; j++) {
-            buf[vi + j].rgba = color::Float4 { r, g, b, a };
+            buf[vi + j].rgba = c;
         }
     }
 }

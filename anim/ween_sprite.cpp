@@ -4,7 +4,7 @@ namespace ant2d {
 namespace anim {
     // Convenient methods that uses to animate the Sprite Component.
     // Tint the Entity to given color.
-    std::unique_ptr<ProxyAnimator> Tint(Entity e, color::Float4 from, color::Float4 to)
+    std::unique_ptr<ProxyAnimator> Tint(Entity e, color::Byte4 from, color::Byte4 to)
     {
         ProxyAnimator* p_animator = new ProxyAnimator(SharedTweenEngine);
         std::unique_ptr<ProxyAnimator> proxy { p_animator };
@@ -12,7 +12,7 @@ namespace anim {
             auto spr = SharedAnimationSystem->sprite_table->GetComp(e);
             if (spr) {
                 auto c = ween::ColorLerp(from, to, f);
-                spr->SetColor(c.GetByte4Color());
+                spr->SetColor(c);
             }
 
             auto fn = p_animator->update;

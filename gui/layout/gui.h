@@ -18,7 +18,7 @@ namespace layout {
     // Widgets: Text
     void Text(gui::ID id, const std::string& text, gui::TextStyle* style, Options* p);
 
-    void TextSizeColored(gui::ID id, const std::string& text, uint32_t color, float size, Options* p);
+    void TextSizeColored(gui::ID id, const std::string& text, color::Byte4 color, float size, Options* p);
     // Widgets: InputEditor
     void InputText(const std::string& hint, gui::InputStyle* style, Options* p);
 

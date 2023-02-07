@@ -19,7 +19,7 @@ void TextBatchObject::Fill(std::vector<PosTexColorVertex>& buf, uint32_t vertex_
     m.Initialize(position[0], position[1], srt.rotation, srt.scale[0], srt.scale[1], ox, oy, 0, 0);
 
     auto& vertex = text_comp_->GetVertex();
-    uint32_t color = text_comp_->Color();
+    color::Byte4 color = text_comp_->Color();
     auto buf_begin = &buf[vertex_pos];
 
     for (int i = 0; i < vertex.size(); i++) {
@@ -47,7 +47,7 @@ void TextBatchObject::Fill(std::vector<PosTexColorVertex>& buf, uint32_t vertex_
         v->v = vertex[i].region.y1;
 
         for (int j = 0; j < 4; j++) {
-            buf_begin[vi + j].rgba = color::Float4 { color };
+            buf_begin[vi + j].rgba = color;
         }
     }
 }
@@ -90,7 +90,7 @@ void TextRenderFeature::SetTable(TextTable* text_table, TransformTable* transfor
 
 void TextRenderFeature::Register(RenderSystem* rs)
 {
-    Info("get table {}", 11); 
+    Info("get table {}", 11);
     for (auto& r : rs->GetRenderList()) {
         if (r->GetType() == ShaderType::kBatchShader) {
             batch_render_ = reinterpret_cast<BatchRender*>(r.get());

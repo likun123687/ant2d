@@ -10,8 +10,8 @@ struct PosTexColorVertex {
     float y;
     float u;
     float v;
-    color::Float4 rgba;
     // uint32_t rgba;
+    color::Byte4 rgba;
 };
 
 static_assert(std::is_pod<PosTexColorVertex>::value, "PosTexColorVertex must be a POD type.");

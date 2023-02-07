@@ -81,7 +81,7 @@ void DrawList::PrimReserve(int idx_count, int vtx_count)
     reserve_vtx_count_ = vtx_count;
 }
 
-void DrawList::PrimRect(math::Vec2 min, math::Vec2 max, uint32_t color)
+void DrawList::PrimRect(math::Vec2 min, math::Vec2 max, color::Byte4 color)
 {
     auto uv = tex_uv_white_pixel_;
     auto a = min;
@@ -106,7 +106,7 @@ void DrawList::PrimRect(math::Vec2 min, math::Vec2 max, uint32_t color)
     idx_index_ += 6;
 }
 
-void DrawList::PrimRectUV(math::Vec2 a, math::Vec2 c, math::Vec2 uva, math::Vec2 uvc, uint32_t color)
+void DrawList::PrimRectUV(math::Vec2 a, math::Vec2 c, math::Vec2 uva, math::Vec2 uvc, color::Byte4 color)
 {
     auto b = math::Vec2 { c[0], a[1] };
     auto d = math::Vec2 { a[0], c[1] };
@@ -131,7 +131,7 @@ void DrawList::PrimRectUV(math::Vec2 a, math::Vec2 c, math::Vec2 uva, math::Vec2
 }
 
 void DrawList::PrimQuadUV(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d,
-    math::Vec2 uva, math::Vec2 uvb, math::Vec2 uvc, math::Vec2 uvd, uint32_t color)
+    math::Vec2 uva, math::Vec2 uvb, math::Vec2 uvc, math::Vec2 uvd, color::Byte4 color)
 {
     // vertex
     vtx_writer_[0] = DrawVert { a, uva, color };
@@ -153,7 +153,7 @@ void DrawList::PrimQuadUV(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d
 
 // 此处生成最终的顶点数据和索引数据
 // 当前并不支持抗锯齿！！简单的用顶点生成线段
-void DrawList::AddPolyLine(math::Vec2* points, int point_count, uint32_t color, float thickness, bool closed)
+void DrawList::AddPolyLine(math::Vec2* points, int point_count, color::Byte4 color, float thickness, bool closed)
 {
     if (point_count < 2) {
         return;
@@ -205,7 +205,7 @@ void DrawList::AddPolyLine(math::Vec2* points, int point_count, uint32_t color, 
 }
 
 // Non Anti-aliased Fill
-void DrawList::AddConvexPolyFilled(math::Vec2* points, int point_count, uint32_t color)
+void DrawList::AddConvexPolyFilled(math::Vec2* points, int point_count, color::Byte4 color)
 {
     auto& uv = tex_uv_white_pixel_;
     auto idx_count = (point_count - 2) * 3;
@@ -297,7 +297,7 @@ void DrawList::PathRect(math::Vec2 a, math::Vec2 b, float rounding, FlagCorner c
     }
 }
 
-void DrawList::AddLine(math::Vec2 a, math::Vec2 b, uint32_t color, float thickness)
+void DrawList::AddLine(math::Vec2 a, math::Vec2 b, color::Byte4 color, float thickness)
 {
     PathLineTo(a.Add(math::Vec2 { .5, .5 }));
     PathLineTo(b.Add(math::Vec2 { .5, .5 }));
@@ -305,7 +305,7 @@ void DrawList::AddLine(math::Vec2 a, math::Vec2 b, uint32_t color, float thickne
 }
 
 // 所有非填充图形看来都是使用路径实现的
-void DrawList::AddRect(math::Vec2 a, math::Vec2 b, uint32_t color, float rounding, FlagCorner roundFlags, float thickness)
+void DrawList::AddRect(math::Vec2 a, math::Vec2 b, color::Byte4 color, float rounding, FlagCorner roundFlags, float thickness)
 {
     // dl.PathRect(a.Add(mgl32.Vec2{5, .5}), b.Sub(mgl32.Vec2{.5, .5}), rounding, roundFlags)
     //  TODO
@@ -313,7 +313,7 @@ void DrawList::AddRect(math::Vec2 a, math::Vec2 b, uint32_t color, float roundin
     PathStroke(color, thickness, true);
 }
 
-void DrawList::AddRectFilled(math::Vec2 min, math::Vec2 max, uint32_t color, float rounding, FlagCorner corner)
+void DrawList::AddRectFilled(math::Vec2 min, math::Vec2 max, color::Byte4 color, float rounding, FlagCorner corner)
 {
     if (rounding > 0 && corner != FlagCornerNone) {
         PathRect(min, max, rounding, corner);
@@ -329,7 +329,7 @@ void DrawList::AddRectFilledMultiColor()
 {
 }
 
-void DrawList::AddQuad(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d, uint32_t color, float thickness)
+void DrawList::AddQuad(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d, color::Byte4 color, float thickness)
 {
     PathLineTo(a);
     PathLineTo(b);
@@ -338,7 +338,7 @@ void DrawList::AddQuad(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d, u
     PathStroke(color, thickness, true);
 }
 
-void DrawList::AddQuadFilled(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d, uint32_t color)
+void DrawList::AddQuadFilled(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d, color::Byte4 color)
 {
     PathLineTo(a);
     PathLineTo(b);
@@ -347,7 +347,7 @@ void DrawList::AddQuadFilled(math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec
     PathFillConvex(color);
 }
 
-void DrawList::AddTriangle(math::Vec2 a, math::Vec2 b, math::Vec2 c, uint32_t color, float thickness)
+void DrawList::AddTriangle(math::Vec2 a, math::Vec2 b, math::Vec2 c, color::Byte4 color, float thickness)
 {
     PathLineTo(a);
     PathLineTo(b);
@@ -355,7 +355,7 @@ void DrawList::AddTriangle(math::Vec2 a, math::Vec2 b, math::Vec2 c, uint32_t co
     PathStroke(color, thickness, true);
 }
 
-void DrawList::AddTriangleFilled(math::Vec2 a, math::Vec2 b, math::Vec2 c, uint32_t color)
+void DrawList::AddTriangleFilled(math::Vec2 a, math::Vec2 b, math::Vec2 c, color::Byte4 color)
 {
     PathLineTo(a);
     PathLineTo(b);
@@ -363,14 +363,14 @@ void DrawList::AddTriangleFilled(math::Vec2 a, math::Vec2 b, math::Vec2 c, uint3
     PathFillConvex(color);
 }
 
-void DrawList::AddCircle(math::Vec2 centre, float radius, uint32_t color, int segments, float thickness)
+void DrawList::AddCircle(math::Vec2 centre, float radius, color::Byte4 color, int segments, float thickness)
 {
     auto max = math::PI * 2 * float(segments - 1) / float(segments);
     PathArcTo(centre, radius, 0.0, max, segments);
     PathStroke(color, thickness, true);
 }
 
-void DrawList::AddCircleFilled(math::Vec2 centre, float radius, uint32_t color, int segments)
+void DrawList::AddCircleFilled(math::Vec2 centre, float radius, color::Byte4 color, int segments)
 {
     auto max = math::PI * 2 * float(segments - 1) / float(segments);
     PathArcTo(centre, radius, 0.0, max, segments);
@@ -378,14 +378,14 @@ void DrawList::AddCircleFilled(math::Vec2 centre, float radius, uint32_t color, 
 }
 
 void DrawList::AddBezierCurve(math::Vec2 pos0, math::Vec2 cp0, math::Vec2 cp1, math::Vec2 pos1,
-    uint32_t color, float thickness, int segments)
+    color::Byte4 color, float thickness, int segments)
 {
     PathLineTo(pos0);
     PathBezierCurveTo(cp0, cp1, pos1, segments);
     PathStroke(color, thickness, false);
 }
 
-void DrawList::AddImage(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::Vec2 uva, math::Vec2 uvb, uint32_t color)
+void DrawList::AddImage(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::Vec2 uva, math::Vec2 uvb, color::Byte4 color)
 {
     auto n = texture_id_stack_.size();
     bool stack_changed = false;
@@ -403,7 +403,7 @@ void DrawList::AddImage(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::Vec2 
 }
 
 void DrawList::AddImageQuad(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::Vec2 c, math::Vec2 d,
-    math::Vec2 uva, math::Vec2 uvb, math::Vec2 uvc, math::Vec2 uvd, uint32_t color)
+    math::Vec2 uva, math::Vec2 uvb, math::Vec2 uvc, math::Vec2 uvd, color::Byte4 color)
 {
     auto n = texture_id_stack_.size();
     bool stack_changed = false;
@@ -421,7 +421,7 @@ void DrawList::AddImageQuad(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::V
 }
 
 void DrawList::AddImageRound(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::Vec2 uva, math::Vec2 uvb,
-    uint32_t color, float rounding, FlagCorner corners)
+    color::Byte4 color, float rounding, FlagCorner corners)
 {
     if (rounding <= 0 || (corners & FlagCornerAll) == 0) {
         AddImage(tex_id, a, b, uva, uvb, color);
@@ -463,7 +463,7 @@ void DrawList::AddImageRound(uint16_t tex_id, math::Vec2 a, math::Vec2 b, math::
 }
 
 void DrawList::AddImageNinePatch(uint16_t tex_id, math::Vec2 min, math::Vec2 max, math::Vec2 uva, math::Vec2 uvb,
-    math::Vec4 patch, uint32_t color)
+    math::Vec4 patch, color::Byte4 color)
 {
     auto n = texture_id_stack_.size();
     bool stack_changed = false;
@@ -534,13 +534,13 @@ void DrawList::AddImageNinePatch(uint16_t tex_id, math::Vec2 min, math::Vec2 max
     AddCommand(idx_count);
 }
 
-void DrawList::PathFillConvex(uint32_t col)
+void DrawList::PathFillConvex(color::Byte4 col)
 {
     AddConvexPolyFilled(&path_[0], path_used_, col);
     path_used_ = 0;
 }
 
-void DrawList::PathStroke(uint32_t color, float thickness, bool closed)
+void DrawList::PathStroke(color::Byte4 color, float thickness, bool closed)
 {
     AddPolyLine(&path_[0], path_used_, color, thickness, closed);
     PathClear();
@@ -638,7 +638,7 @@ void DrawList::PopTextureId()
     texture_id_stack_.pop_back();
 }
 
-math::Vec2 DrawList::AddText(math::Vec2 pos, const std::string& text, font::FontAtlas* font, float font_size, uint32_t color, float wrap_width)
+math::Vec2 DrawList::AddText(math::Vec2 pos, const std::string& text, font::FontAtlas* font, float font_size, color::Byte4 color, float wrap_width)
 {
     if (text.length() == 0) {
         return { 0, 0 };

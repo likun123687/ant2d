@@ -4,7 +4,7 @@
 
 namespace ant2d {
 
-FontRender::FontRender(DrawList* draw_list, float font_size, font::FontAtlas* font, uint32_t color)
+FontRender::FontRender(DrawList* draw_list, float font_size, font::FontAtlas* font, color::Byte4 color)
     : draw_list_(draw_list)
     , font_(font)
     , font_size_(font_size)

@@ -79,18 +79,16 @@ namespace gui {
         auto event = ClickEvent(id, bb);
         // Render Frame
         auto bg = style->back_ground;
-        if (bg.normal != 0x0) {
+        if (bg.normal.r != 0x0) {
             ColorBackground(event, bb, bg.normal, bg.pressed, round);
         } else {
             ColorBackground(event, bb, Theme::LightTheme().normal, Theme::LightTheme().pressed, round);
         }
-        Info("before text 111 {}:{}:{}:{}", bb->x, bb->y, bb->w, bb->h);
 
         // Render Text
         bb->x += offset[0] + style->padding.left;
         bb->y += offset[1] + style->padding.top;
 
-        Info("before text {}:{}:{}:{}", bb->x, bb->y, bb->w, bb->h);
         DrawText(bb, text, &style->text_style);
         return event;
     }
@@ -261,7 +259,7 @@ namespace gui {
         return event;
     }
 
-    void Contex::DrawQuad(std::array<math::Vec2, 4>& vertex, uint32_t fill)
+    void Contex::DrawQuad(std::array<math::Vec2, 4>& vertex, color::Byte4 fill)
     {
         float cx = cursor_.x;
         float cy = cursor_.y;
@@ -272,7 +270,7 @@ namespace gui {
         draw_list_.AddQuadFilled(vertex[0], vertex[1], vertex[2], vertex[3], fill);
     }
 
-    void Contex::DrawGradient(Rect bb, uint32_t c0, uint32_t c1, bool vertical)
+    void Contex::DrawGradient(Rect bb, color::Byte4 c0, color::Byte4 c1, bool vertical)
     {
         float x = bb.x + cursor_.x;
         float y = bb.y + cursor_.y;
@@ -317,7 +315,7 @@ namespace gui {
         dl->AddCommand(6);
     }
 
-    void Contex::DrawRect(Rect* bb, uint32_t fill, float round)
+    void Contex::DrawRect(Rect* bb, color::Byte4 fill, float round)
     {
         auto x = bb->x + cursor_.x;
         auto y = bb->y + cursor_.y;
@@ -328,7 +326,7 @@ namespace gui {
         draw_list_.AddRectFilled(min, max, fill, round * SharedScreen.scale_x_, FlagCornerAll);
     }
 
-    void Contex::DrawBorder(Rect* bb, uint32_t color, float round, float thick)
+    void Contex::DrawBorder(Rect* bb, color::Byte4 color, float round, float thick)
     {
         auto x = bb->x + cursor_.x;
         auto y = bb->y + cursor_.y;
@@ -339,7 +337,7 @@ namespace gui {
         draw_list_.AddRect(min, max, color, round * SharedScreen.scale_x_, FlagCornerAll, thick);
     }
 
-    void Contex::DrawDebugBorder(float x, float y, float w, float h, uint32_t color)
+    void Contex::DrawDebugBorder(float x, float y, float w, float h, color::Byte4 color)
     {
         x = x + cursor_.x;
         y = y + cursor_.y;
@@ -350,7 +348,7 @@ namespace gui {
     }
 
     // default segment = 12 TODO, circle scale factor
-    void Contex::DrawCircle(float x, float y, float radius, uint32_t fill)
+    void Contex::DrawCircle(float x, float y, float radius, color::Byte4 fill)
     {
         std::tie(x, y) = SharedScreen.Gui2Game(x + cursor_.x, y + cursor_.y);
         x = x * SharedScreen.scale_x_;
@@ -359,7 +357,7 @@ namespace gui {
     }
 
     // segment default=12
-    void Contex::DrawCircleNoneFill(float x, float y, float radius, uint32_t stroke_color, int segment, float thickness)
+    void Contex::DrawCircleNoneFill(float x, float y, float radius, color::Byte4 stroke_color, int segment, float thickness)
     {
         std::tie(x, y) = SharedScreen.Gui2Game(x + cursor_.x, y + cursor_.y);
         x = x * SharedScreen.scale_x_;
@@ -377,7 +375,7 @@ namespace gui {
         }
 
         auto max = min.Add(math::Vec2 { bound->w, bound->h });
-        uint32_t color = 0xFFFFFFFF;
+        color::Byte4 color { 0xFF, 0xFF, 0xFF, 0xFF };
         if (style != nullptr) {
             color = style->tint;
         } else {
@@ -419,7 +417,6 @@ namespace gui {
         auto wrap_width = (bb->w + 10) * SharedScreen.scale_x_;
         auto pos = math::Vec2 { x * SharedScreen.scale_x_, y * SharedScreen.scale_y_ };
 
-        Info("before add text {} {} {} {} {:#x} {}", pos[0], pos[1], text, font_size, color, wrap_width);
         auto size = draw_list_.AddText(pos, text, font, font_size, color, wrap_width);
         return size;
     }
@@ -433,7 +430,7 @@ namespace gui {
     // 在 Android 中，Widget的前景和背景都可以根据控件状态发生变化
     // 但是在大部分UI中，比如 Text/Image 只会改变背景的状态
     // 偷懒的自定义UI，不做任何状态的改变... 所以说呢, 我们也采用偷懒的做法呗。。
-    void Contex::ColorBackground(EventType event, Rect* bb, uint32_t normal, uint32_t pressed, float round)
+    void Contex::ColorBackground(EventType event, Rect* bb, color::Byte4 normal, color::Byte4 pressed, float round)
     {
         if ((event & Event::kEventDown) != 0) {
             DrawRect(bb, pressed, round);

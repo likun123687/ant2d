@@ -12,7 +12,7 @@ namespace gui {
         default_contex.Text(id, &bb, text, style);
     }
 
-    void TextSizeColored(ID id, Rect bb, const std::string& text, uint32_t color, float size)
+    void TextSizeColored(ID id, Rect bb, const std::string& text, color::Byte4 color, float size)
     {
         auto style = Contex::DefaultContext().GetTheme()->text;
         style.color = color;
@@ -59,7 +59,7 @@ namespace gui {
     }
 
     // Widget: ColorRect
-    void ColorRect(Rect bb, uint32_t fill, float rounding)
+    void ColorRect(Rect bb, color::Byte4 fill, float rounding)
     {
         Contex::DefaultContext().DrawRect(&bb, fill, rounding);
     }

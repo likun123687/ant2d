@@ -37,7 +37,7 @@ namespace layout {
         LayoutManager::GLayoutManager().Text(id, text, style, p);
     }
 
-    void TextSizeColored(gui::ID id, const std::string& text, uint32_t color, float size, Options* p)
+    void TextSizeColored(gui::ID id, const std::string& text, color::Byte4 color, float size, Options* p)
     {
         auto style = gui::Contex::DefaultContext().GetTheme()->text;
         style.color = color;

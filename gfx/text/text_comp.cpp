@@ -2,12 +2,12 @@
 
 namespace ant2d {
 
-uint32_t TextComp::Color()
+color::Byte4 TextComp::Color()
 {
     return color_;
 }
 
-void TextComp::SetColor(uint32_t color)
+void TextComp::SetColor(color::Byte4 color)
 {
     color_ = color;
 }

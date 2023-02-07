@@ -7,6 +7,6 @@ namespace ant2d {
 namespace anim {
     // Convenient methods that uses to animate the Sprite Component.
     // Tint the Entity to given color.
-    std::unique_ptr<ProxyAnimator> Tint(Entity e, color::Float4 from, color::Float4 to);
+    std::unique_ptr<ProxyAnimator> Tint(Entity e, color::Byte4 from, color::Byte4 to);
 }
 }

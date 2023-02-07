@@ -26,7 +26,7 @@ public:
 
     void SetCamera(float x, float y, float w, float h);
 
-    void SetColor(uint32_t rgba);
+    void SetColor(color::Byte4 rgba);
 
     // draw a rect
     void DrawRect(float x, float y, float w, float h);

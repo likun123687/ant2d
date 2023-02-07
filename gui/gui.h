@@ -7,7 +7,7 @@ namespace ant2d {
 namespace gui {
     void Text(ID id, Rect bb, const std::string& text, TextStyle* style);
 
-    void TextSizeColored(ID id, Rect bb, const std::string& text, uint32_t color, float size);
+    void TextSizeColored(ID id, Rect bb, const std::string& text, color::Byte4 color, float size);
     // Widgets: InputEditor
     void InputText(ID id, Rect bb, const std::string& hint, InputStyle* style);
     // Widget: Image
@@ -22,7 +22,7 @@ namespace gui {
     void ProgressBar(ID id, Rect bb, float fraction, ProgressBarStyle* style);
     EventType Slider(ID id, Rect bb, float* value, SliderStyle* style);
     // Widget: ColorRect
-    void ColorRect(Rect bb, uint32_t fill, float rounding);
+    void ColorRect(Rect bb, color::Byte4 fill, float rounding);
     // Offset move the ui coordinate's origin by (dx, dy)
     void Offset(float dx, float dy);
     // Move sets the ui coordinate's origin to (x, y)

@@ -51,7 +51,7 @@ void SpriteBatchObject::Fill(std::vector<PosTexColorVertex>& buf, uint32_t verte
     // Info("sprite color {:#x}", color);
     auto rgba_color = sprite_comp_->GetColor();
     for (int i = 0; i < 4; i++) {
-        buf[vertex_pos + i].rgba = color::Float4 { rgba_color };
+        buf[vertex_pos + i].rgba = rgba_color;
     }
 
     // Center of model

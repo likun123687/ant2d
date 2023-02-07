@@ -18,10 +18,10 @@ class MainScene : public ant2d::Scene {
         std::vector<uint16_t> s_index = { 3, 1, 2, 3, 2, 0 };
 
         std::vector<ant2d::PosTexColorVertex> s_vertices = {
-            { 200.0, 200.0, 1, 1, { 1.0, 1.0, 1.0, 1.0 } },
-            { 0.0, 0.0, 0, 0, { 1.0, 1.0, 1.0, 1.0 } },
-            { 200.0, 0.0, 1, 0, { 1.0, 1.0, 1.0, 1.0 } },
-            { 0.0, 200.0, 0, 1, { 1.0, 1.0, 1.0, 1.0 } },
+            { 200.0, 200.0, 1, 1, {0xFF, 0xFF, 0xFF, 0xFF} },
+            { 0.0, 0.0, 0, 0, {0xFF, 0xFF, 0xFF, 0xFF} },
+            { 200.0, 0.0, 1, 0, {0xFF, 0xFF, 0xFF, 0xFF} },
+            { 0.0, 200.0, 0, 1, {0xFF, 0xFF, 0xFF, 0xFF} },
         };
 
         auto tex = ant2d::SharedTextureManager->Get("assets/face.png");

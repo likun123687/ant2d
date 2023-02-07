@@ -87,9 +87,9 @@ namespace layout {
         auto [x, y] = SharedScreen.Gui2Game(bb->x, bb->y);
         auto font = context_.GetTheme()->text.font;
         if (bb->w == 0) {
-            context_.GetDrawList().AddText(math::Vec2 { x, y }, text, font, 12, 0xFF000000, 0);
+            context_.GetDrawList().AddText(math::Vec2 { x, y }, text, font, 12, { 0xFF, 0x00, 0x00, 0x00 }, 0);
         } else {
-            context_.GetDrawList().AddText(math::Vec2 { x, y }, text, font, 12, 0xFF000000, bb->w);
+            context_.GetDrawList().AddText(math::Vec2 { x, y }, text, font, 12, { 0xFF, 0x00, 0x00, 0x00 }, bb->w);
         }
     }
 
@@ -190,7 +190,7 @@ namespace layout {
         depth_++;
         auto [elem, ok] = current_->BeginLayout(id, opt, xtype);
         if (ok) {
-            context_.DrawDebugBorder(elem->rect.x, elem->rect.y, elem->rect.w, elem->rect.h, 0xFF00FF00);
+            context_.DrawDebugBorder(elem->rect.x, elem->rect.y, elem->rect.w, elem->rect.h, {0xFF, 0x00, 0xFF, 0x00});
         }
     }
 

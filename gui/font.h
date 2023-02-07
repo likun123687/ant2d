@@ -1,5 +1,6 @@
 #pragma once
 #include <gfx/font/font.h>
+#include <gfx/color.h>
 
 namespace ant2d {
 class DrawList;
@@ -7,7 +8,7 @@ class DrawList;
 // 拥有所有需要的条件属性
 class FontRender {
 public:
-    FontRender(DrawList* draw_list, float font_size, font::FontAtlas* font, uint32_t color);
+    FontRender(DrawList* draw_list, float font_size, font::FontAtlas* font, color::Byte4 color);
 
     // 当前的实现中，不考虑裁切优化，全部绘制所有字符
     math::Vec2 RenderText(math::Vec2 pos, const std::string& text);
@@ -17,7 +18,7 @@ private:
     DrawList* draw_list_;
     float font_size_;
     font::FontAtlas* font_;
-    uint32_t color_;
+    color::Byte4 color_;
     float line_space_;
 };
 } // namespace ant2d

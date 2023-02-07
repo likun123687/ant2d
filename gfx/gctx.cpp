@@ -110,13 +110,15 @@ namespace gfx {
         if (shared_.index.empty()) {
             InitIndexBuffer();
         }
+        Info("shared index buffer size {}", shared_.size);
         return std::make_tuple(shared_.id, shared_.size);
     }
 
     void Context::InitIndexBuffer()
     {
+        Info("init shared index buffer");
         shared_.index.resize(kSharedIndexBufferSize);
-        uint16_t i_format[6] = { 3, 0, 1, 3, 1, 2 };
+        static uint16_t i_format[6] = { 3, 0, 1, 3, 1, 2 };
         for (int i = 0; i < kSharedIndexBufferSize; i += 6) {
             std::copy(i_format, i_format + 6, shared_.index.begin() + i);
             i_format[0] += 4;

@@ -18,7 +18,7 @@ MeshRender::MeshRender(ShaderType shader_type)
     // sh->AddAttributeBinding("xyuv", 0, SG_VERTEXFORMAT_FLOAT4);
     // sh->AddAttributeBinding("rgba", 0, SG_VERTEXFORMAT_BYTE4);
     pdesc.layout.attrs[0].format = SG_VERTEXFORMAT_FLOAT4;
-    pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_FLOAT4;
+    pdesc.layout.attrs[1].format = SG_VERTEXFORMAT_UBYTE4N;
     pdesc.index_type = SG_INDEXTYPE_UINT16;
     pdesc.colors->blend.enabled = true;
     pdesc.colors->blend.src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA;

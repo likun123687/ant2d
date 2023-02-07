@@ -147,20 +147,20 @@ namespace gui {
 
         EventType DraggingEvent(ID id, Rect* bound);
 
-        void DrawQuad(std::array<math::Vec2, 4>& vertex, uint32_t fill);
-        void DrawGradient(Rect bb, uint32_t c0, uint32_t c1, bool vertical);
+        void DrawQuad(std::array<math::Vec2, 4>& vertex, color::Byte4 fill);
+        void DrawGradient(Rect bb, color::Byte4 c0, color::Byte4 c1, bool vertical);
 
-        void DrawRect(Rect* bb, uint32_t fill, float round);
+        void DrawRect(Rect* bb, color::Byte4 fill, float round);
 
-        void DrawBorder(Rect* bb, uint32_t color, float round, float thick);
+        void DrawBorder(Rect* bb, color::Byte4 color, float round, float thick);
 
-        void DrawDebugBorder(float x, float y, float w, float h, uint32_t color);
+        void DrawDebugBorder(float x, float y, float w, float h, color::Byte4 color);
 
         // default segment = 12 TODO, circle scale factor
-        void DrawCircle(float x, float y, float radius, uint32_t fill);
+        void DrawCircle(float x, float y, float radius, color::Byte4 fill);
 
         // segment default=12
-        void DrawCircleNoneFill(float x, float y, float radius, uint32_t stroke_color, int segment, float thickness);
+        void DrawCircleNoneFill(float x, float y, float radius, color::Byte4 stroke_color, int segment, float thickness);
         void DrawImage(Rect* bound, ITexture2D* tex, ImageStyle* style);
 
         // 绘制元素, bb 存储相对于父容器的相对坐标..
@@ -171,7 +171,7 @@ namespace gui {
         // 在 Android 中，Widget的前景和背景都可以根据控件状态发生变化
         // 但是在大部分UI中，比如 Text/Image 只会改变背景的状态
         // 偷懒的自定义UI，不做任何状态的改变... 所以说呢, 我们也采用偷懒的做法呗。。
-        void ColorBackground(EventType event, Rect* bb, uint32_t normal, uint32_t pressed, float round);
+        void ColorBackground(EventType event, Rect* bb, color::Byte4 normal, color::Byte4 pressed, float round);
 
         // Clip:
         void PushClipRect(math::Vec2 min_clip, math::Vec2 max_clip, bool intersect_current);

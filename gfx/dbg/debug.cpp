@@ -6,16 +6,16 @@ namespace ant2d {
 
 void Debug::DrawFps(float x, float y)
 {
-    buffer_.SetColor(0x000000FF);
+    buffer_.SetColor({ 0x00, 0x00, 0x00, 0xFF });
     buffer_.Rect(x + 5, y + 5, 50, 6);
 
     // format: RGBA
-    buffer_.SetColor(0x00FF00FF);
+    buffer_.SetColor({ 0x00, 0xFF, 0x00, 0xFF });
 
     auto w = float(fps_) / 60 * 50;
     buffer_.Rect(x + 5, y + 5, w, 5);
 
-    buffer_.SetColor(0x000000FF);
+    buffer_.SetColor({ 0x00, 0x00, 0x00, 0xFF });
     buffer_.String(float(x + 5), float(y + 10), std::to_string(fps_) + "fps", .6f);
 }
 
@@ -80,7 +80,7 @@ void Debug::SetCamera(float x, float y, float w, float h)
     debug_render_.SetViewPort(x, y, w, h);
 }
 
-void Debug::SetColor(uint32_t rgba)
+void Debug::SetColor(color::Byte4 rgba)
 {
     buffer_.SetColor(rgba);
 }

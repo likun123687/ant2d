@@ -30,7 +30,10 @@ TextShapeBuffer::TextShapeBuffer(uint32_t max_vertex)
 
     std::tie(font_tex_id_, std::ignore) = SharedResManager.AllocTexture(image_data);
     assert(font_tex_id_);
-    color_ = 0xFF0000FF;
+    color_.r = 0xFF;
+    color_.g = 0x00;
+    color_.b = 0x00;
+    color_.a = 0xFF;
 }
 
 void TextShapeBuffer::String(float x, float y, const std::string& chars, float scale)
@@ -65,7 +68,7 @@ void TextShapeBuffer::String(float x, float y, const std::string& chars, float s
         b[3].v = top;
 
         for (int j = 0; j < 4; j++) {
-            b[j].rgba = color::Float4 { color_ };
+            b[j].rgba = color_;
         }
 
         // advance x,y
@@ -103,10 +106,8 @@ void TextShapeBuffer::Rect(float x, float y, float w, float h)
     b[3].u = 2;
     b[3].v = 0;
 
-    Info("color color rect {:#x}", color_);
-
     for (int j = 0; j < 4; j++) {
-        b[j].rgba = color::Float4 { color_ };
+        b[j].rgba = color_;
     }
 }
 
@@ -144,7 +145,7 @@ void TextShapeBuffer::Line(math::Vec2 from, math::Vec2 to)
     b[3].v = 0;
 
     for (int j = 0; j < 4; j++) {
-        b[j].rgba = color::Float4(color_);
+        b[j].rgba = color_;
     }
 }
 
@@ -229,7 +230,7 @@ uint16_t TextShapeBuffer::GetFontTexId()
     return font_tex_id_;
 }
 
-void TextShapeBuffer::SetColor(uint32_t color)
+void TextShapeBuffer::SetColor(color::Byte4 color)
 {
     color_ = color;
 }

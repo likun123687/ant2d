@@ -1,1 +1,1 @@
-#include <examples/sprite/main.cpp>
+#include "./main.cpp"

@@ -105,7 +105,7 @@ namespace anim {
     }
 
     // OfColor returns a Animator that animates between gfx.Color values.
-    std::unique_ptr<ProxyAnimator> OfColor(color::Float4* target, color::Float4 from, color::Float4 to)
+    std::unique_ptr<ProxyAnimator> OfColor(color::Byte4* target, color::Byte4 from, color::Byte4 to)
     {
         ProxyAnimator* p_animator = new ProxyAnimator(SharedTweenEngine);
         std::unique_ptr<ProxyAnimator> proxy { p_animator };

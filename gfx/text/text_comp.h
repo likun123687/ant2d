@@ -17,9 +17,9 @@ struct TextQuad {
 
 class TextComp : public IComp {
 public:
-    uint32_t Color();
+    color::Byte4 Color();
 
-    void SetColor(uint32_t color);
+    void SetColor(color::Byte4 color);
 
     const std::string& Text();
 
@@ -75,7 +75,7 @@ private:
     ZOrder z_order_;
     BatchId batch_id_;
     float size_;
-    uint32_t color_;
+    color::Byte4 color_;
 
     float width_;
     float height_;

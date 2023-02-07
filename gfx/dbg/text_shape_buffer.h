@@ -26,7 +26,7 @@ public:
     uint16_t GetIndexId();
     uint16_t GetPos();
     uint16_t GetFontTexId();
-    void SetColor(uint32_t color);
+    void SetColor(color::Byte4 color);
 
 private:
     std::vector<PosTexColorVertex> vertex_;
@@ -40,7 +40,7 @@ private:
     uint16_t font_tex_id_;
 
     // current painter color
-    uint32_t color_;
+    color::Byte4 color_;
 
     // current buffer position
     uint32_t pos_;

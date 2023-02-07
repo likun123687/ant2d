@@ -6,7 +6,7 @@ SpriteComp::SpriteComp()
     , sprite_(nullptr)
     , z_order_()
     , batch_id_()
-    , color_(0)
+    , color_ {}
     , flip_x_(0)
     , flip_y_(0)
     , width_(0)
@@ -62,10 +62,10 @@ bool SpriteComp::GetVisible()
 
 std::tuple<float, float, float, float> SpriteComp::GetRgbaColor()
 {
-    auto r = static_cast<uint8_t>(color_ >> 24) / 255.0f;
-    auto g = static_cast<uint8_t>(color_ >> 16) / 255.0f;
-    auto b = static_cast<uint8_t>(color_ >> 8) / 255.0f;
-    auto a = static_cast<uint8_t>(color_ >> 0) / 255.0f;
+    auto r = static_cast<uint8_t>(color_.r) / 255.0f;
+    auto g = static_cast<uint8_t>(color_.g) / 255.0f;
+    auto b = static_cast<uint8_t>(color_.b) / 255.0f;
+    auto a = static_cast<uint8_t>(color_.a) / 255.0f;
     return { r, g, b, a };
 }
 // sg_color SpriteComp::GetColor()
@@ -78,12 +78,12 @@ std::tuple<float, float, float, float> SpriteComp::GetRgbaColor()
 //     return result;
 // }
 
-uint32_t SpriteComp::GetColor()
+color::Byte4 SpriteComp::GetColor()
 {
     return color_;
 }
 
-void SpriteComp::SetColor(uint32_t color)
+void SpriteComp::SetColor(color::Byte4 color)
 {
     color_ = color;
 }
