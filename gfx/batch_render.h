@@ -77,7 +77,7 @@ public:
     BatchRender(ShaderType shader_type);
     void SetCamera(Camera* camera);
     // submit all batched group
-    void Submit(std::vector<Batch> b_list);
+    void Submit(std::vector<Batch>& b_list);
     void Begin(uint16_t tex, uint16_t depth);
     void Draw(IBatchObject* b);
     void End();

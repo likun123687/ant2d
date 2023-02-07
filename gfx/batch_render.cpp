@@ -55,13 +55,13 @@ void BatchRender::SetCamera(Camera* camera)
     float top = 0.0f;
     std::tie(left, right, bottom, top) = camera->P();
     auto p = math::Ortho2D(left, right, bottom, top);
-    batch_vs_params_t vs_params = { p };
+    batch_vs_params_t vs_params { p };
     bk::SetUniformblock(umh_projection_, (uint8_t*)(&vs_params));
     bk::Submit(0, pipeline_id_, 0);
 }
 
 // submit all batched group
-void BatchRender::Submit(std::vector<Batch> b_list)
+void BatchRender::Submit(std::vector<Batch>& b_list)
 {
     Info("submit b list size {}", b_list.size());
     for (auto& b : b_list) {

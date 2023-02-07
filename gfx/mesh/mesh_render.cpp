@@ -56,7 +56,7 @@ void MeshRender::SetCamera(Camera* camera)
     bk::Submit(0, pipeline_id_, 0);
 }
 
-void MeshRender::Extract(std::vector<uint32_t> visible_objects)
+void MeshRender::Extract(std::vector<uint32_t>& visible_objects)
 {
 }
 

@@ -24,7 +24,7 @@ class MainScene : public ant2d::Scene {
         auto xf = ant2d::SharedTransformTable->NewComp(entity);
         xf->SetPosition(ant2d::math::Vec2 { 200, 200 });
 
-        for (int i = 0; i < 20000; i++) {
+        for (int i = 0; i < 5000; i++) {
             auto entity = ant2d::SharedEntityManager->New();
             ant2d::SharedSpriteTable->NewCompX(entity, tex)->SetSize(40, 40);
             auto xf = ant2d::SharedTransformTable->NewComp(entity);

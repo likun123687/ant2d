@@ -16,7 +16,7 @@ public:
 
     void SetCamera(Camera* camera);
 
-    void Extract(std::vector<uint32_t> visible_objects);
+    void Extract(std::vector<uint32_t>& visible_objects);
 
     // draw
     void Draw(Mesh* m, math::Mat4* mat4, int32_t depth);

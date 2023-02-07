@@ -121,7 +121,7 @@ TEST_CASE("test_image_data")
     auto file_content = SharedContent.LoadFile("assets/face.png");
     auto image_data = ImageData(file_content.first.get(), file_content.second);
     REQUIRE((image_data.width_ == 512 && image_data.height_ == 512
-        &&  image_data.num_channels_ == 4));
+        && image_data.num_channels_ == 4));
 }
 
 TEST_CASE("test_shader")
@@ -471,7 +471,7 @@ TEST_CASE("test_transform_table")
     auto wheel3_comp = transform_table.NewComp(wheel3_e);
     auto wheel4_comp = transform_table.NewComp(wheel4_e);
 
-    std::vector<Transform*> wheel_list = { wheel1_comp, wheel2_comp, wheel3_comp, wheel4_comp };
+    std::vector<Transform*> wheel_list { wheel1_comp, wheel2_comp, wheel3_comp, wheel4_comp };
     car_comp->LinkChildren(wheel_list);
     for (auto& w : wheel_list) {
         auto parent_tran = w->Parent();
@@ -692,7 +692,7 @@ TEST_CASE("test_fps")
     for (int i = 0; i < 100; i++) {
         auto dt = fps.Smooth();
         auto fps_count = static_cast<int32_t>(1 / dt);
-        //Info("dt dt {}", fps_count);
+        // Info("dt dt {}", fps_count);
         if ((std::abs(fps_count - 60)) < 10) {
             valid_fps_list.push_back(fps_count);
         }
