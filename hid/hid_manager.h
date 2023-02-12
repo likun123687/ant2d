@@ -9,7 +9,13 @@ class HidManager {
 public:
     WindowCallback* window_callback_;
     std::array<int, 1024> keys_;
+
+#ifdef WITH_LUA_BIND
+    WindowOptions* options_;
+#else
     std::unique_ptr<WindowOptions> options_;
+#endif
+
     sg_pass_action pass_action_;
     void SetWindowCallback(WindowCallback* callback);
     void SetOptions(WindowOptions* options);

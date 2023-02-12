@@ -1,4 +1,5 @@
 #include <ant2d.h>
+#include <iostream>
 
 #if BK_PLATFORM_OSX
 #import <Foundation/Foundation.h>
@@ -14,6 +15,7 @@ class MainScene : public ant2d::Scene {
     void OnEnter(ant2d::Game* g)
     {
         Info("main scene on enter");
+
         auto tex = ant2d::SharedTextureManager->Get("assets/block.png");
         auto face = ant2d::SharedTextureManager->Get("assets/face.png");
         auto repo = ant2d::SharedTextureManager->GetRepo();
@@ -24,7 +26,7 @@ class MainScene : public ant2d::Scene {
         auto xf = ant2d::SharedTransformTable->NewComp(entity);
         xf->SetPosition(ant2d::math::Vec2 { 200, 200 });
 
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 60000; i++) {
             auto entity = ant2d::SharedEntityManager->New();
             ant2d::SharedSpriteTable->NewCompX(entity, tex)->SetSize(40, 40);
             auto xf = ant2d::SharedTransformTable->NewComp(entity);
@@ -91,7 +93,6 @@ ant2d::WindowOptions* ant2d_main(int argc, char* argv[])
         ant2d::SharedTextureManager->Load("assets/1111.png");
         ant2d::SharedTextureManager->Load("assets/block.png");
         ant2d::SharedTextureManager->Load("assets/debug_font.png");
-
         ant2d::SharedTextureManager->LoadAtlas("assets/test.png", "assets/test.json");
 
         auto repo = ant2d::SharedTextureManager->GetRepo();

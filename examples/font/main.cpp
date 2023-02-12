@@ -9,6 +9,7 @@
 #define SOKOL_IMPL
 #include "sokol_app.h"
 #include "sokol_glue.h"
+#include "gfx/color.h"
 
 class MainScene : public ant2d::Scene {
     void OnEnter(ant2d::Game* g)
@@ -19,7 +20,7 @@ class MainScene : public ant2d::Scene {
 
         auto text = ant2d::SharedTextTable->NewComp(entity);
         text->SetFont(font);
-        //text->SetColor(0xFF0000FF);
+        text->SetColor({ 0xFF, 0x00, 0x00, 0xFF });
 
         text->SetText("aaabbbbccc");
 
@@ -31,8 +32,8 @@ class MainScene : public ant2d::Scene {
         auto font1 = ant2d::SharedFontManager->Get("font2");
         auto text1 = ant2d::SharedTextTable->NewComp(entity1);
         text1->SetFont(font1);
-        //text1->SetColor(0xFF0000FF);
-        text1->SetText("aaaaaabbbccc");
+        text1->SetText("dddd");
+        text1->SetColor({ 0xFF, 0x00, 0x00, 0xFF });
 
         auto xf1 = ant2d::SharedTransformTable->NewComp(entity1);
         xf1->SetPosition(ant2d::math::Vec2 { 300, 300 });

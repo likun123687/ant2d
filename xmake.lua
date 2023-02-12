@@ -68,6 +68,12 @@ option("with_example")
     set_description("build with ant2d example")
 option_end()
 
+option("with_lua_bind")
+    set_default(false)
+    set_showmenu(true)
+    set_description("build with lua bind")
+option_end()
+
 add_includedirs("$(projectdir)/third_party/cpp-stdio-file-wrapper/include",  {public = true})
 add_includedirs("$(projectdir)/third_party/sokol", {public = true})
 add_includedirs("$(projectdir)/third_party/trompeloeil/include", {public = true})
@@ -183,6 +189,11 @@ if has_config("with_test") then
     includes("tests")
 end
 
+if has_config("with_lua_bind") then
+    add_defines("WITH_LUA_BIND")
+    add_requires("lua 5.4.4")
+    includes("lua_example")
+end
 
 --includes("ant2dnet/base")
 --includes("ant2dnet/net")

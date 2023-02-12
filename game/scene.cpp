@@ -22,7 +22,6 @@ void SceneManager::UnLoad(Scene* sn)
 
 void SceneManager::Setup(Game* g)
 {
-    Info("g {}", static_cast<void*>(g));
     g_ = g;
     if (h_scene_) {
         auto callback = h_scene_->GetOnLoadCallback();
@@ -56,30 +55,45 @@ void SceneManager::Push(Scene* sn)
     sn->OnEnter(g_);
 }
 
-std::unique_ptr<Scene> SceneManager::Pop()
+SceneManager::SceneOwnType SceneManager::Pop()
 {
-    std::unique_ptr<Scene> ret_sn;
+    SceneOwnType ret_sn;
     size_t size = stack_.size();
     if (size > 0) {
+#ifdef WITH_LUA_BIND
+        ret_sn = stack_.back();
+#else
         ret_sn = std::move(stack_.back());
+#endif
         stack_.pop_back();
         ret_sn->OnExit();
+#ifdef WITH_LUA_BIND
+        UnLoad(ret_sn);
+#else
         UnLoad(ret_sn.get());
-
+#endif
         auto& next_sn = stack_.back();
         if (next_sn) {
+#ifdef WITH_LUA_BIND
+            h_scene_ = next_sn;
+#else
             h_scene_ = next_sn.get();
+#endif
             next_sn->OnEnter(g_);
         }
     }
     return ret_sn;
 }
 
-std::unique_ptr<Scene> SceneManager::Peek()
+SceneManager::SceneOwnType SceneManager::Peek()
 {
-    std::unique_ptr<Scene> ret_sn;
+    SceneOwnType ret_sn;
     if (!stack_.empty()) {
+#ifdef WITH_LUA_BIND
+        ret_sn = stack_.back();
+#else
         ret_sn = std::move(stack_.back());
+#endif
         stack_.pop_back();
     }
     return ret_sn;

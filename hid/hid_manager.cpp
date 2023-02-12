@@ -10,7 +10,11 @@ void HidManager::SetWindowCallback(WindowCallback* callback)
 
 void HidManager::SetOptions(WindowOptions* options)
 {
+#ifdef WITH_LUA_BIND
+    options_ = options;
+#else
     options_.reset(options);
+#endif
 }
 
 void HidManager::InitCallback()

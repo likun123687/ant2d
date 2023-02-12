@@ -43,19 +43,25 @@ public:
 
 class SceneManager {
 public:
+#ifdef WITH_LUA_BIND
+    using SceneOwnType = Scene*;
+#else
+    using SceneOwnType = std::unique_ptr<Scene>;
+#endif
+
     void Load(Scene* sn);
     void UnLoad(Scene* sn);
     void Setup(Game* g);
     void Update(float dt);
     void SetDefault(Scene* sn);
     void Push(Scene* sn);
-    std::unique_ptr<Scene> Pop();
-    std::unique_ptr<Scene> Peek();
+    SceneOwnType Pop();
+    SceneOwnType Peek();
     void Clear();
 
 private:
     Game* g_;
-    std::vector<std::unique_ptr<Scene>> stack_;
+    std::vector<SceneOwnType> stack_;
     Scene* h_scene_;
 };
 }
