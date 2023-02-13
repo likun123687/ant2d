@@ -40,7 +40,7 @@ private:
     uint32_t idx_;
 };
 
-const Entity Ghost = Entity(0xFFFFFFFF);
+extern const Entity Ghost;
 
 class EntityManager {
 public:

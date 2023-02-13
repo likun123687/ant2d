@@ -2,6 +2,7 @@
 
 namespace ant2d {
 
+const Entity Ghost { 0xFFFFFFFF };
 Entity EntityManager::New()
 {
     uint32_t ei = 0;

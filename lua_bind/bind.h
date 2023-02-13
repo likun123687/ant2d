@@ -12,12 +12,44 @@
     bool no_title_bar;
     bool re_sizable;
 */
+using namespace ant2d;
+
+namespace {
+template <typename T, typename U>
+auto fetchIndex(T const& c, typename T::length_type idx) -> U const&
+{
+    if (idx < c.length()) {
+        return c[idx];
+    } else {
+        throw std::logic_error("GLM index out of range");
+    }
+}
+
+template <typename T, typename U>
+auto fetchIndex(T& c, typename T::length_type idx) -> U&
+{
+    if (idx < c.length()) {
+        return c[idx];
+    } else {
+        throw std::logic_error("GLM index out of range");
+    }
+}
+
+template <typename T, typename U>
+auto storeIndex(T& c, typename T::length_type idx, U const& v) -> void
+{
+    if (idx < c.length()) {
+        c[idx] = v;
+    } else {
+        throw std::logic_error("GLM index out of range");
+    }
+}
+}
 
 void init_bind()
 {
     sol::state& lua = SharedLua;
     lua.open_libraries(sol::lib::base);
-    using namespace ant2d;
 
     auto ant2d_ns = lua["ant2d"].get_or_create<sol::table>();
 
@@ -32,8 +64,24 @@ void init_bind()
     options_type["no_title_bar"] = &ant2d::WindowOptions::no_title_bar;
     options_type["re_sizable"] = &ant2d::WindowOptions::re_sizable;
 
-    ant2d_ns.new_usertype<ant2d::Scene>("Scene", "OnEnter", &ant2d::Scene::OnEnter, "Update", &ant2d::Scene::Update, "OnExit", &ant2d::Scene::OnExit);
-    ant2d_ns.new_usertype<LuaScene>("LuaScene", "OnEnter", &LuaScene::OnEnter, "Update", &LuaScene::Update, "OnExit", &LuaScene::OnExit,
+    ant2d_ns.new_usertype<ant2d::Scene>("Scene",
+        "OnEnter", &ant2d::Scene::OnEnter,
+        "Update", &ant2d::Scene::Update,
+        "OnExit", &ant2d::Scene::OnExit,
+        "GetOnLoadCallback", &Scene::GetOnLoadCallback,
+        "SetOnLoadCallback", &Scene::SetOnLoadCallback,
+        "GetUnLoadCallback", &Scene::GetUnLoadCallback,
+        "SetUnLoadCallback", &Scene::SetUnLoadCallback);
+
+    ant2d_ns.new_usertype<LuaScene>("LuaScene",
+        "OnEnter", &LuaScene::OnEnter,
+        "Update", &LuaScene::Update,
+        "OnExit", &LuaScene::OnExit,
+        "GetOnLoadCallback", &LuaScene::GetOnLoadCallback,
+        "SetOnLoadCallback", &LuaScene::SetOnLoadCallback,
+        "GetUnLoadCallback", &LuaScene::GetUnLoadCallback,
+        "SetUnLoadCallback", &LuaScene::SetUnLoadCallback,
+        sol::meta_function::new_index, &LuaScene::Setter,
         sol::base_classes, sol::bases<ant2d::Scene>());
 
     ant2d_ns.set_function("Run", &ant2d::Run);
@@ -60,6 +108,15 @@ void init_bind()
         "GetSize", &ITexture2D::GetSize,
         sol::base_classes, sol::bases<ant2d::ITexture2D>());
 
+    ant2d_ns.new_usertype<math::Vec2>("Vec2",
+        sol::constructors<math::Vec2(), math::Vec2(float, float)>(),
+        "Sub", &math::Vec2::Sub);
+
+    ant2d_ns.new_usertype<Entity>("Entity",
+        sol::constructors<Entity(), Entity(uint32_t)>(),
+        "Gene", &Entity::Gene,
+        "Index", &Entity::Index);
+
     ant2d_ns.new_usertype<TextureManager>("TextureManager",
         "Load", &TextureManager::Load,
         "Unload", &TextureManager::Unload,
@@ -72,9 +129,31 @@ void init_bind()
         "Alive", &EntityManager::Alive,
         "Destroy", &EntityManager::Destroy);
 
+    ant2d_ns.new_usertype<SpriteComp>("SpriteComp",
+        "SetSprite", &SpriteComp::SetSprite,
+        "SetSize", &SpriteComp::SetSize,
+        "GetSize", &SpriteComp::GetSize,
+        "SetGravity", &SpriteComp::SetGravity,
+        "GetGravity", &SpriteComp::GetGravity,
+        "SetVisible", &SpriteComp::SetVisible,
+        "GetVisible", &SpriteComp::GetVisible);
+
     ant2d_ns.new_usertype<SpriteTable>("SpriteTable",
         "NewComp", &SpriteTable::NewComp,
         "NewCompX", &SpriteTable::NewCompX);
+
+    ant2d_ns.new_usertype<Transform>("Transform",
+        "GetParentIdx", &Transform::GetParentIdx,
+        "SetParentIdx", &Transform::SetParentIdx,
+        "GetFirstChildIdx", &Transform::GetFirstChildIdx,
+        "SetFirstChildIdx", &Transform::SetFirstChildIdx,
+        "GetPreSiblingIdx", &Transform::GetPreSiblingIdx,
+        "SetPreSiblingIdx", &Transform::SetPreSiblingIdx,
+        "GetNxtSiblingIdx", &Transform::GetNxtSiblingIdx,
+        "SetNxtSiblingIdx", &Transform::SetNxtSiblingIdx,
+        "GetPosition", &Transform::GetPosition,
+        "GetScale", &Transform::GetScale,
+        "SetPosition", sol::resolve<void(math::Vec2)>(&Transform::SetPosition));
 
     ant2d_ns.new_usertype<TransformTable>("TransformTable",
         "NewComp", &TransformTable::NewComp,
@@ -89,4 +168,5 @@ void load_global()
     ant2d_ns["SharedTextureManager"] = ant2d::SharedTextureManager;
     ant2d_ns["SharedEntityManager"] = ant2d::SharedEntityManager;
     ant2d_ns["SharedSpriteTable"] = ant2d::SharedSpriteTable;
+    ant2d_ns["SharedTransformTable"] = ant2d::SharedTransformTable;
 }

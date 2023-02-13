@@ -19,9 +19,16 @@ ant2d::WindowOptions* ant2d_main(int argc, char* argv[])
     std::cout << "main enter" << std::endl;
     init_bind();
     sol::state& lua = SharedLua;
-    std::string full_path = SharedContent.GetFullPath("asset/lua/run.lua");
 
-    ant2d::WindowOptions* options = lua.script_file(full_path);
+    // std::string full_path = SharedContent.GetFullPath("assets/lua/run.lua");
+    sol::protected_function_result result = lua.script_file("assets/lua/run.lua", [](lua_State*, sol::protected_function_result pfr) {
+        return pfr;
+    });
+    if (!result.valid()) {
+        sol::error err = result;
+        std::cout << err.what() << std::endl;
+    }
     load_global();
+    ant2d::WindowOptions* options = result;
     return options;
 }
