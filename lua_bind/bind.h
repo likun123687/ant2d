@@ -49,7 +49,7 @@ auto storeIndex(T& c, typename T::length_type idx, U const& v) -> void
 void init_bind()
 {
     sol::state& lua = SharedLua;
-    lua.open_libraries(sol::lib::base);
+    lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::os, sol::lib::debug, sol::lib::io, sol::lib::table);
 
     auto ant2d_ns = lua["ant2d"].get_or_create<sol::table>();
 
@@ -93,9 +93,9 @@ void init_bind()
         "y2", &Region::y2,
         "rotated", &Region::rotated);
 
-    ant2d_ns.new_usertype<Size>("Size",
-        "width", &Size::width,
-        "height", &Size::height);
+    ant2d_ns.new_usertype<ant2d::Size>("Size",
+        "width", &ant2d::Size::width,
+        "height", &ant2d::Size::height);
 
     ant2d_ns.new_usertype<ITexture2D>("ITexture2D",
         "GetTextureId", &ITexture2D::GetTextureId,

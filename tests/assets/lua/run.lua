@@ -10,7 +10,7 @@ local on_load_callback = function()
     ant2d.SharedTextureManager:Load("assets/face.png");
 end
 
-local scene = ant2d.LuaScene.new()
+scene = ant2d.LuaScene.new()
 scene:SetOnLoadCallback(on_load_callback)
 function scene:OnEnterCb (g)
     print("lua on enter", g)
@@ -18,10 +18,10 @@ function scene:OnEnterCb (g)
     local entity = ant2d.SharedEntityManager:New()
     local sprite = ant2d.SharedSpriteTable:NewCompX(entity, tex)
 
-    sprite:SetSize(100, 100)
+    sprite:SetSize(600, 600)
 
     local xf = ant2d.SharedTransformTable:NewComp(entity)
-    xf:SetPosition(ant2d.Vec2.new(200, 200));
+    xf:SetPosition(ant2d.Vec2.new(400, 400));
 end
 
 function scene:UpdateCb (dt)
